@@ -194,6 +194,7 @@ namespace Bonobo.Git.Server.Models
 
     public class RepositoryTreeModel
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Branch { get; set; }
         public string Path { get; set; }
