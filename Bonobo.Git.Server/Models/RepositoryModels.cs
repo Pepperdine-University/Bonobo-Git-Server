@@ -199,6 +199,8 @@ namespace Bonobo.Git.Server.Models
         public string Branch { get; set; }
         public string Path { get; set; }
         public string Readme { get; set; }
+        public string GitUrl { get; set; }
+        public string PersonalGitUrl { get; set; }
         public RepositoryLogoDetailModel Logo { get; set; }
         public IEnumerable<RepositoryTreeDetailModel> Files { get; set; }
     }
@@ -207,6 +209,8 @@ namespace Bonobo.Git.Server.Models
     {
         public string Name { get; set; }
         public RepositoryLogoDetailModel Logo { get; set; }
+        public string GitUrl { get; set; }
+        public string PersonalGitUrl { get; set; }
         public IEnumerable<RepositoryCommitModel> Commits { get; set; }
     }
 
