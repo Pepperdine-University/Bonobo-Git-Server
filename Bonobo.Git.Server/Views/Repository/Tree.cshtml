@@ -10,40 +10,45 @@
         @Html.Partial("_BranchSwitcher")
         @Html.Partial("_AddressBar")
 
-        <table id="files" class="pure-table">
-            <thead>
-                <tr>
-                    <th>@typeof(RepositoryTreeDetailModel).GetDisplayValue("Name")</th>
-                    <th>@typeof(RepositoryTreeDetailModel).GetDisplayValue("CommitMessage")</th>
-                    <th>@typeof(RepositoryTreeDetailModel).GetDisplayValue("CommitDate")</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.Files)
-                {
+        <div class="pure-tree-layout">
+            <table id="files" class="pure-table">
+                <thead>
                     <tr>
-                        <td class="path">
-                            @if (item.IsLink)
-                            {
-                                <span class="directory">@item.Name</span>
-                            }
-                            else if (item.IsTree)
-                            {
-                                @Html.ActionLink(item.Name, "Tree", new { id = ViewBag.ID, encodedName = PathEncoder.Encode(Model.Branch), encodedPath = PathEncoder.Encode(item.Path, allowSlash: true) }, new { @class = "directory" })
-                            }
-                            else
-                            {
-                                @Html.ActionLink(item.Name, "Blob", new { id = ViewBag.ID, encodedName = PathEncoder.Encode(Model.Branch), encodedPath = PathEncoder.Encode(item.Path, allowSlash: true) }, new { @class = item.IsImage ? "image" : "file" })
-                            }
-                        </td>
-                        <td class="message"></td>
-                        <td class="date"></td>
+                        <th>@typeof(RepositoryTreeDetailModel).GetDisplayValue("Name")</th>
+                        <th>@typeof(RepositoryTreeDetailModel).GetDisplayValue("CommitMessage")</th>
+                        <th>@typeof(RepositoryTreeDetailModel).GetDisplayValue("CommitDate")</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Files)
+                    {
+                        <tr>
+                            <td class="path">
+                                @if (item.IsLink)
+                                {
+                                    <span class="directory">@item.Name</span>
+                                }
+                                else if (item.IsTree)
+                                {
+                                    @Html.ActionLink(item.Name, "Tree", new { id = ViewBag.ID, encodedName = PathEncoder.Encode(Model.Branch), encodedPath = PathEncoder.Encode(item.Path, allowSlash: true) }, new { @class = "directory" })
+                                }
+                                else
+                                {
+                                    @Html.ActionLink(item.Name, "Blob", new { id = ViewBag.ID, encodedName = PathEncoder.Encode(Model.Branch), encodedPath = PathEncoder.Encode(item.Path, allowSlash: true) }, new { @class = item.IsImage ? "image" : "file" })
+                                }
+                            </td>
+                            <td class="message"></td>
+                            <td class="date"></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 
-        @{ Html.RenderAction("Detail", "Repository", Model.Id);}
+            <div class="pure-sidebar">
+                @{ Html.RenderAction("Detail", "Repository", Model.Id);}
+            </div>
+
+        </div>
 
         @{ Html.RenderAction("Buttons", "Repository", Model.Id);}
 

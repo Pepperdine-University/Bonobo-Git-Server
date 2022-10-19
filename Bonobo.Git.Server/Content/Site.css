@@ -18,6 +18,11 @@ th a:hover { text-decoration: none; color: #4183c4; }
 .pure-table thead { background: none; }
 .pure-table th { font-weight: 300; }
 
+/*My code */
+/*.pure-table-sidebar {
+    color: red;
+}*/
+
 pre code { font-family: Consolas, monospace; }
 
 .field-validation-error { color: #a94442; margin-left: 0.7em; }
@@ -85,7 +90,7 @@ tfoot td { text-align: center; border-bottom: none !important; }
 .repository-menu a:hover { text-decoration: none; }
 .Detail .repository-menu .detail, .Tree .repository-menu .browser, .Blame .repository-menu .browser, .Blob .repository-menu .browser, .Commit .repository-menu .commits, .Commits .repository-menu .commits { color: #4183c4; }
 
-.Repository div.detail { margin-top: 2em; }
+/*.Repository div.detail { margin-top: 2em; }*/
 
 
 nav.branches a:hover { text-decoration: none; }

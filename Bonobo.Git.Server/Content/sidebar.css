@@ -1,0 +1,12 @@
+﻿.pure-tree-layout {
+    --sidebar-width: 400px;
+    --sidebar-gutter: 16px;
+    display: grid;
+    grid-template-columns: minmax(0, calc(100% - var(--sidebar-width) - var(--sidebar-gutter))) 0 auto;
+}
+.pure-sidebar {
+    grid-column-start: 2;
+    grid-column-end: span 2;
+    width: var(--sidebar-width);
+    margin: 2em 0;
+}

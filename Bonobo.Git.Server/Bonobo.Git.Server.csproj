@@ -560,6 +560,7 @@
     <Content Include="Content\fonts\opensans-light.svg" />
     <Content Include="Content\fonts\opensans-regular.svg" />
     <Content Include="Content\images\git-logo.png" />
+    <Content Include="Content\sidebar.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\clipboard.min.js" />
