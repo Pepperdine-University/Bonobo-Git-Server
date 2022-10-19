@@ -7,7 +7,7 @@
 {
     <div class="pure-form pure-form-aligned detail">
         <fieldset>
-            <div class="pure-control-group">
+            @*<div class="pure-control-group">
                 @Html.LabelFor(m => m.Name)
                 @Model.Name
                 @switch (Model.Status)
@@ -22,8 +22,8 @@
                     <span class="status">(Status Unknown)</span>
                         break;
                 }
-            </div>
-            <div class="pure-control-group">
+            </div>*@
+@*          <div class="pure-control-group">
                 <label>@Resources.Repository_Detail_Location</label>
                 <button class="pure-button copy-to-clip-button" data-clipboard-target=".git-url-text"><i class="fa fa-copy"></i>@Resources.Copy</button>
                 <span class="git-url-text">@Model.GitUrl</span>
@@ -38,7 +38,7 @@
                     <span class="personal-url-text">@Model.PersonalGitUrl</span>
                 </div>
             }
-
+*@
             <div class="pure-control-group">
                 @Html.LabelFor(m => m.Group)
                 @Model.Group
