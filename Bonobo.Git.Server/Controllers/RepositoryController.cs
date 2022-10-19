@@ -229,6 +229,28 @@ namespace Bonobo.Git.Server.Controllers
             return View(model);
         }
 
+        [WebAuthorizeRepository]
+        public ActionResult Buttons(Guid id)
+        {
+            ViewBag.ID = id;
+
+            var model = ConvertRepositoryModel(RepositoryRepository.GetRepository(id), User);
+            if (model != null)
+            {
+                model.IsCurrentUserAdministrator = RepositoryPermissionService.HasPermission(User.Id(), model.Id, RepositoryAccessLevel.Administer);
+                SetGitUrls(model);
+            }
+            using (var browser = new RepositoryBrowser(Path.Combine(UserConfiguration.Current.Repositories, model.Name)))
+            {
+                string defaultReferenceName;
+                browser.BrowseTree(null, null, out defaultReferenceName);
+                RouteData.Values.Add("encodedName", defaultReferenceName);
+            }
+
+            return View(model);
+        }
+
+
         /// <summary>
         /// Construct the URLs for the repository
         /// (This code extracted from the view)
