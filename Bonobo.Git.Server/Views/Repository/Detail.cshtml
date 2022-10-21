@@ -8,109 +8,91 @@
     <div class="pure-form pure-form-aligned detail">
         <fieldset>
             @*<div class="pure-control-group">
-                @Html.LabelFor(m => m.Name)
-                @Model.Name
-                @switch (Model.Status)
-                {
-                    case RepositoryDetailStatus.Valid:
-                        break;
-                    case RepositoryDetailStatus.Missing:
-                        <span class="status">(Missing)</span>
-                        break;
-                    case RepositoryDetailStatus.Unknown:
-                    default:
-                    <span class="status">(Status Unknown)</span>
-                        break;
-                }
-            </div>*@
-@*          <div class="pure-control-group">
-                <label>@Resources.Repository_Detail_Location</label>
-                <button class="pure-button copy-to-clip-button" data-clipboard-target=".git-url-text"><i class="fa fa-copy"></i>@Resources.Copy</button>
-                <span class="git-url-text">@Model.GitUrl</span>
-            </div>
-
-            @if (User.Identity.IsAuthenticated) {
-                <div class="pure-control-group">
-                    <label>
-                        @Resources.Repository_Detail_Location_Personal
-                    </label>
-                    <button class="pure-button copy-to-clip-button" data-clipboard-target=".personal-url-text"><i class="fa fa-copy"></i>@Resources.Copy</button>
-                    <span class="personal-url-text">@Model.PersonalGitUrl</span>
-                </div>
+            @Html.LabelFor(m => m.Name)
+            @Model.Name
+            @switch (Model.Status)
+            {
+                case RepositoryDetailStatus.Valid:
+                    break;
+                case RepositoryDetailStatus.Missing:
+                    <span class="status">(Missing)</span>
+                    break;
+                case RepositoryDetailStatus.Unknown:
+                default:
+                <span class="status">(Status Unknown)</span>
+                    break;
             }
-*@
-            <div class="pure-control-group">
-                @Html.LabelFor(m => m.Group)
-                @Model.Group
-            </div>
-            <div class="pure-control-group">
-                @Html.LabelFor(m => m.Description)
-                @Model.Description
-            </div>
-            <div class="pure-control-group">
-                @Html.LabelFor(m => m.AllowAnonymous)
-                @if (Model.AllowAnonymous)
-                {
-                    @Resources.Repository_Detail_Yes
-                }
-                else
-                {
-                    @Resources.Repository_Detail_No
-                }
-            </div>
-            <div class="pure-control-group">
-                @Html.LabelFor(m => m.AllowAnonymousPush)
-                @Html.DisplayEnum(Model.AllowAnonymousPush)
-            </div>
+        </div>*@
+            @*          <div class="pure-control-group">
+            <label>@Resources.Repository_Detail_Location</label>
+            <button class="pure-button copy-to-clip-button" data-clipboard-target=".git-url-text"><i class="fa fa-copy"></i>@Resources.Copy</button>
+            <span class="git-url-text">@Model.GitUrl</span>
+        </div>
 
+        @if (User.Identity.IsAuthenticated) {
             <div class="pure-control-group">
-                @Html.LabelFor(m => m.LinksUseGlobal)
-                @Html.CheckBoxFor(m => m.LinksUseGlobal, new { disabled=""})
+                <label>
+                    @Resources.Repository_Detail_Location_Personal
+                </label>
+                <button class="pure-button copy-to-clip-button" data-clipboard-target=".personal-url-text"><i class="fa fa-copy"></i>@Resources.Copy</button>
+                <span class="personal-url-text">@Model.PersonalGitUrl</span>
             </div>
-            <div class="pure-control-group">
-                @Html.LabelFor(m => m.LinksRegex)
-                @Html.TextBoxFor(m => m.LinksRegex, new { @readonly=""})
-            </div>
-            <div class="pure-control-group">
-                @Html.LabelFor(m => m.LinksUrl)
-                @Html.TextBoxFor(m => m.LinksUrl, new { @readonly=""})
-            </div>
-            @if (AppSettings.IsPushAuditEnabled) {
+        }
+            *@
+            <div class="sidebar-bordergrid top">
                 <div class="pure-control-group">
-                    @Html.LabelFor(m => m.AuditPushUser)
-                    @if (Model.AuditPushUser)
-                    {
-                        @Resources.Repository_Detail_Yes
-                    }
-                    else
-                    {
-                        @Resources.Repository_Detail_No
-                    }
-                </div>
-            }
-                <div class="pure-control-group">
-                @Html.LabelFor(m => m.Users)
-                @for (int i = 0; i < Model.Users.Length; i++)
-                {
-                        @Html.ActionLink(@Model.Users[i].DisplayName, "Detail", "Account", new { id = @Model.Users[i].Id}, new { title = @Model.Users[i].Username })
-                        if (i + 1 != Model.Users.Length)
-                        {
-                            <text>, </text>
+                    @Html.LabelFor(m => m.Description)
+                    <div class="sidebar-overflowtext">
+                        @Model.Description
+                        
+                        @*Attempt at creating see more button for description*@
+                        @*@{
+                            ViewBag.FullDescription = "Hello";
                         }
-                    }
+                        @ViewBag.FullDescription*@
+                        @*<input type="button" value="See More" onclick='@Url.Action("SeeMore","Repository",Model.Description)' />*@
+                        @*<button onclick='@Url.Action("SeeMore","Repository",Model.Description)' id="see-more-button">See More</button>*@
+                        @*<button onclick=@{ViewBag.FullDescription = Model.Description} id="see-more-button">See More</button>*@
+                        @*@{
+                            System.Windows.Forms.WebBrowser webBrowser;
+
+                        }*@
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-bordergrid middle">
+                <div class="pure-control-group">
+                    @Html.LabelFor(m => m.Group)
+                    @Model.Group
                 </div>
                 <div class="pure-control-group">
-                @Html.LabelFor(m => m.Administrators)
-                @for (int i = 0; i < Model.Administrators.Length; i++)
-                    {
-                        @Html.ActionLink(@Model.Administrators[i].DisplayName, "Detail", "Account", new { id = @Model.Administrators[i].Id }, new { title = @Model.Administrators[i].Username })
-                        if (i + 1 != Model.Administrators.Length)
+                    <div class="sidebar-overflowtext">
+                        @Html.LabelFor(m => m.Users)
+                        @for (int i = 0; i < Model.Users.Length; i++)
                         {
-                            <text>, </text>
+                            @Html.ActionLink(@Model.Users[i].DisplayName, "Detail", "Account", new { id = @Model.Users[i].Id }, new { title = @Model.Users[i].Username })
+                            if (i + 1 != Model.Users.Length)
+                            {
+                                <text>, </text>
+                            }
                         }
-                    }
+                    </div>
                 </div>
-                    <div class="pure-control-group">
+                <div class="pure-control-group">
+                    <div class="sidebar-overflowtext">
+                        @Html.LabelFor(m => m.Administrators)
+                        @for (int i = 0; i < Model.Administrators.Length; i++)
+                        {
+                            @Html.ActionLink(@Model.Administrators[i].DisplayName, "Detail", "Account", new { id = @Model.Administrators[i].Id }, new { title = @Model.Administrators[i].Username })
+                            if (i + 1 != Model.Administrators.Length)
+                            {
+                                <text>, </text>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="pure-control-group">
+                    <div class="sidebar-overflowtext">
                         @Html.LabelFor(m => m.Teams)
                         @for (int i = 0; i < Model.Teams.Length; i++)
                         {
@@ -121,8 +103,54 @@
                             }
                         }
                     </div>
-                
-</fieldset>
+                </div>
+            </div>
+            <div class="sidebar-bordergrid bottom">
+                <div class="pure-control-group">
+                    @Html.LabelFor(m => m.AllowAnonymous)
+                    @if (Model.AllowAnonymous)
+                    {
+                        @Resources.Repository_Detail_Yes
+                    }
+                    else
+                    {
+                        @Resources.Repository_Detail_No
+                    }
+                </div>
+                <div class="pure-control-group">
+                    @Html.LabelFor(m => m.AllowAnonymousPush)
+                    @Html.DisplayEnum(Model.AllowAnonymousPush)
+                </div>
+
+                <div class="pure-control-group">
+                    @Html.LabelFor(m => m.LinksUseGlobal)
+                    @Html.CheckBoxFor(m => m.LinksUseGlobal, new { disabled = "" })
+                </div>
+                <div class="pure-control-group">
+                    @Html.LabelFor(m => m.LinksRegex)
+                    @Html.TextBoxFor(m => m.LinksRegex, new { @readonly = "" })
+                </div>
+                <div class="pure-control-group">
+                    @Html.LabelFor(m => m.LinksUrl)
+                    @Html.TextBoxFor(m => m.LinksUrl, new { @readonly = "" })
+                </div>
+                @if (AppSettings.IsPushAuditEnabled)
+                {
+                    <div class="pure-control-group">
+                        @Html.LabelFor(m => m.AuditPushUser)
+                        @if (Model.AuditPushUser)
+                        {
+                            @Resources.Repository_Detail_Yes
+                        }
+                        else
+                        {
+                            @Resources.Repository_Detail_No
+                        }
+                    </div>
+                }
+            </div>
+
+        </fieldset>
     </div>
 }
 

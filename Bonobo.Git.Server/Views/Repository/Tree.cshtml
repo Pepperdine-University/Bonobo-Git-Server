@@ -10,7 +10,7 @@
         @Html.Partial("_BranchSwitcher")
         @Html.Partial("_AddressBar")
 
-        <div class="pure-tree-layout">
+        <div class="tree-layout">
             <table id="files" class="pure-table">
                 <thead>
                     <tr>
@@ -44,7 +44,7 @@
                 </tbody>
             </table>
 
-            <div class="pure-sidebar">
+            <div class="sidebar">
                 @{ Html.RenderAction("Detail", "Repository", Model.Id);}
             </div>
 

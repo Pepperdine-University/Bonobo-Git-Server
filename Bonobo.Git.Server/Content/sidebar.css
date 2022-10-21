@@ -1,12 +1,38 @@
-﻿.pure-tree-layout {
-    --sidebar-width: 400px;
-    --sidebar-gutter: 16px;
+﻿.tree-layout {
+    --sidebar-width: 350px;
+    --sidebar-gutter: 30px;
     display: grid;
     grid-template-columns: minmax(0, calc(100% - var(--sidebar-width) - var(--sidebar-gutter))) 0 auto;
+    grid-gap: var(--sidebar-gutter);
 }
-.pure-sidebar {
+.sidebar {
     grid-column-start: 2;
     grid-column-end: span 2;
     width: var(--sidebar-width);
     margin: 2em 0;
+}
+
+.sidebar-bordergrid {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid hsla(210,18%,87%,1);
+}
+.sidebar-bordergrid.top {
+    padding-top: 0px;
+}
+.sidebar-bordergrid.bottom {
+    border-bottom: hidden;
+}
+
+.pure-form-aligned .pure-control-group label {
+    display: inline-block;
+    vertical-align: middle;
+    --sidebar-label-width: 7em;
+    width: var(--sidebar-label-width);
+    margin: 0 1em 0 0
+}
+.sidebar-overflowtext {
+    display: inline-block;
+    width: calc(var(--sidebar-width) - 9em);
+    vertical-align: top;
 }
