@@ -42,7 +42,7 @@
             <div class="sidebar-bordergrid top">
                 <div class="pure-control-group">
                     @Html.LabelFor(m => m.Description)
-                    <div class="sidebar-overflowtext">
+                    <div class="sidebar-description-text">
                         @Model.Description
                         
                         @*Attempt at creating see more button for description*@
@@ -63,7 +63,9 @@
             <div class="sidebar-bordergrid middle">
                 <div class="pure-control-group">
                     @Html.LabelFor(m => m.Group)
-                    @Model.Group
+                    <div class="sidebar-overflowtext">
+                        @Model.Group
+                    </div>
                 </div>
                 <div class="pure-control-group">
                     @Html.LabelFor(m => m.Users)

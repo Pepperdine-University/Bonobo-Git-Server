@@ -1,5 +1,5 @@
 ﻿.tree-grid-layout {
-    --sidebar-width: 300px;
+    --sidebar-width: 320px;
     --sidebar-gutter: 30px;
     display: grid;
     grid-template-columns: minmax(0, calc(100% - var(--sidebar-width) - var(--sidebar-gutter))) 0 auto;
@@ -18,13 +18,14 @@
 .sidebar-bordergrid {
     padding-top: 15px;
     padding-bottom: 15px;
-    border-bottom: 1px solid hsla(210,18%,87%,1);
+    border-bottom: 1px solid white;
 }
 .sidebar-bordergrid.top {
     padding-top: 0px;
 }
 .sidebar-bordergrid.bottom {
     border-bottom: hidden;
+    padding-bottom: 0px;
 }
 
 .pure-form-aligned .pure-control-group label {
@@ -34,10 +35,23 @@
     width: var(--sidebar-label-width);
     margin: 0 1em 0 0
 }
+.pure-form fieldset {
+    margin: 0;
+    padding: 0.8em 0 0.8em;
+    border: 0;
+}
+.pure-form.pure-form-aligned.detail fieldset {
+    padding: 0.8em 0.8em 0.8em 0.8em;
+    background-color: hsla(210,18%,87%,1);
+    border-radius: 0px;
+}
 .sidebar-overflowtext {
     display: inline-block;
-    width: calc(var(--sidebar-width) - 9em);
+    width: calc(var(--sidebar-width) - 10em);
     vertical-align: top;
+}
+.sidebar-description-text {
+    margin-top: 0.5em;
 }
 
 /*for screen size responsive sidebar*/
