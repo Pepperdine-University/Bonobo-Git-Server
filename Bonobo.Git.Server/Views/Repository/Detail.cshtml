@@ -66,8 +66,8 @@
                     @Model.Group
                 </div>
                 <div class="pure-control-group">
+                    @Html.LabelFor(m => m.Users)
                     <div class="sidebar-overflowtext">
-                        @Html.LabelFor(m => m.Users)
                         @for (int i = 0; i < Model.Users.Length; i++)
                         {
                             @Html.ActionLink(@Model.Users[i].DisplayName, "Detail", "Account", new { id = @Model.Users[i].Id }, new { title = @Model.Users[i].Username })
@@ -79,8 +79,8 @@
                     </div>
                 </div>
                 <div class="pure-control-group">
+                    @Html.LabelFor(m => m.Administrators)
                     <div class="sidebar-overflowtext">
-                        @Html.LabelFor(m => m.Administrators)
                         @for (int i = 0; i < Model.Administrators.Length; i++)
                         {
                             @Html.ActionLink(@Model.Administrators[i].DisplayName, "Detail", "Account", new { id = @Model.Administrators[i].Id }, new { title = @Model.Administrators[i].Username })
@@ -128,11 +128,11 @@
                 </div>
                 <div class="pure-control-group">
                     @Html.LabelFor(m => m.LinksRegex)
-                    @Html.TextBoxFor(m => m.LinksRegex, new { @readonly = "" })
+                    @Html.TextBoxFor(m => m.LinksRegex, new { style = "width: 160px", @readonly = "" })
                 </div>
                 <div class="pure-control-group">
                     @Html.LabelFor(m => m.LinksUrl)
-                    @Html.TextBoxFor(m => m.LinksUrl, new { @readonly = "" })
+                    @Html.TextBoxFor(m => m.LinksUrl, new { style = "width: 160px", @readonly = "" })
                 </div>
                 @if (AppSettings.IsPushAuditEnabled)
                 {

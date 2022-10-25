@@ -12,16 +12,11 @@ i.fa { margin-right: 0.25em; }
 table { width: 100%; margin: 2em 0; }
 th a { color: #333; }
 th a:hover { text-decoration: none; color: #4183c4; }
-.pure-table td, .pure-table th { padding: 0.8em; }
+.pure-table td, .pure-table th { padding: 0.8em; word-break: break-word; }
 .pure-table { border: none; }
 .pure-table td, .pure-table th { border: none; border-bottom: 1px solid #f6f6f6; text-align: left; }
 .pure-table thead { background: none; }
 .pure-table th { font-weight: 300; }
-
-/*My code */
-/*.pure-table-sidebar {
-    color: red;
-}*/
 
 pre code { font-family: Consolas, monospace; }
 
@@ -115,8 +110,8 @@ Tags .tag a { background-color: rgba(148, 190, 214, 1); border-radius: 5px; colo
 .links a:before { content: '\f0c1'; font-family: FontAwesome; margin-right: 0.25em; margin-left: 0.5em; }
 
 .Tree .pure-table tbody { font-size: 0.8em; }
-.Tree #files .path { width: 230px;}
-.Tree #files .date { width: 150px;}
+.Tree #files .path { /*width: 230px;*/}
+.Tree #files .date { /*width: 150px;*/}
 .breadcrumbs { padding: 7px; margin: 0; }
 .breadcrumbs em { font-weight: bold; font-style: normal; }
 .inline-form { display: inline-block; }

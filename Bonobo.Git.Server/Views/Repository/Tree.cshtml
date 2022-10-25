@@ -10,7 +10,7 @@
         @Html.Partial("_BranchSwitcher")
         @Html.Partial("_AddressBar")
 
-        <div class="tree-layout">
+        <div class="tree-grid-layout">
             <table id="files" class="pure-table">
                 <thead>
                     <tr>
@@ -49,6 +49,11 @@
             </div>
 
         </div>
+
+        @*For screen size responsive sidebar*@
+        @*<div class="sidebar-moved-bottom" style="">
+            @{ Html.RenderAction("Detail", "Repository", Model.Id);}
+        </div>*@
 
         @{ Html.RenderAction("Buttons", "Repository", Model.Id);}
 
