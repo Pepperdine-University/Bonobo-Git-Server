@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <link rel="shortcut icon" href="~/favicon.ico?v=2" type="image/x-icon" />
     <link rel="stylesheet" href="~/Content/sidebar.css" />
+    <link rel="stylesheet" href="~/Content/dropdown.css" />
     <title>@ViewBag.Title :: @UserConfiguration.Current.GetSiteTitle()</title>
     @Styles.Render("~/Content/bundledCss")
     @if (UserConfiguration.Current.HasCustomSiteCss)
@@ -13,11 +14,11 @@
     }
     @if (UserConfiguration.Current.HasCustomSiteLogo)
     {
-    <style>
+        <style>
         .navigation.pure-menu a.pure-menu-heading {
             background: url('@Url.Content(UserConfiguration.Current.SiteLogoUrl)') no-repeat 0 4px;
         }
-    </style>
+        </style>
     }
 </head>
 <body class="@HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString() @HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString()">

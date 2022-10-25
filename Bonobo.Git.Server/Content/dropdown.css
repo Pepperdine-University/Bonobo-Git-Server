@@ -1,0 +1,32 @@
+﻿.dropdown {
+    display: inline-block;
+}
+.dropdownBox {
+    position: relative;
+    width: 500px;
+    background: white;
+    padding: 15px;
+    color: #777;
+    border-radius: 15px;
+    right: 45%;
+    border-style: outset;
+}
+    .dropdownBox span {
+        color: black;
+        left: 28%;
+        position: absolute;
+    }
+    .dropdownBox label{
+        position:relative;
+        left: 20px;
+    }
+.dropdownBox .copy-to-clip-button {
+    font-size: 12px;
+    padding: 4px;
+    position: absolute;
+    right: 15px;
+}
+
+.dropdown summary{
+    color:#777;
+}
