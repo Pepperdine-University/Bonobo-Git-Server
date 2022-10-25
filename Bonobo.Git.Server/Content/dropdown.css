@@ -23,10 +23,15 @@
 .dropdownBox .copy-to-clip-button {
     font-size: 12px;
     padding: 4px;
+    width:15px;
     position: absolute;
-    right: 15px;
+    right: 25px;
+    background-color:white;
 }
-
-.dropdown summary{
-    color:#777;
+#dropbuttons{
+    margin-top:10px;
+}
+.dropdown summary {
+    color: #777;
+    padding: 5px 20px;
 }

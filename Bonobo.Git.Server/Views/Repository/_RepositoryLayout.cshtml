@@ -23,34 +23,34 @@ else
                         <summary><i class="fa fa-chevron-down"></i>Code</summary>
                         <div style="position:fixed;">
                             @*To get dropdown box as Relative to Fixed postition*@
-                        <div class="dropdownBox">
-                            <div>
-                                @*Git URL + Copy Button*@
-                            <label>@Resources.Repository_Detail_Location</label>
-                            <span class="git-url-text">@Model.GitUrl</span>
-                            <button class="pure-button copy-to-clip-button layout" data-clipboard-target=".git-url-text"><i class="fa fa-clipboard"></i></button>
-                        </div>
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <div>
-                                @*Personal URL + Copy Button*@
-                                <label>
-                                    @Resources.Repository_Detail_Location_Personal
-                                </label>
-                                <span class="personal-url-text">@Model.PersonalGitUrl</span>
-                                <button class="pure-button copy-to-clip-button layout" data-clipboard-target=".personal-url-text"><i class="fa fa-copy"></i></button>
+                            <div class="dropdownBox">
+                                <div>
+                                    @*Git URL + Copy Button*@
+                                    <label>@Resources.Repository_Detail_Location</label>
+                                    <span class="git-url-text">@Model.GitUrl</span>
+                                    <button class="pure-button copy-to-clip-button layout" data-clipboard-target=".git-url-text"><i class="fa fa-clone"></i></button>
+                                </div>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <div>
+                                        @*Personal URL + Copy Button*@
+                                        <label>
+                                            @Resources.Repository_Detail_Location_Personal
+                                        </label>
+                                        <span class="personal-url-text">@Model.PersonalGitUrl</span>
+                                        <button class="pure-button copy-to-clip-button layout" data-clipboard-target=".personal-url-text"><i class="fa fa-clone"></i></button>
+                                    </div>
+                                }
+                                <div id="dropbuttons">
+                                    <a href="@Url.Action("Download", new { id = ViewBag.ID })" class="download"><i class="fa fa-download"></i> @Resources.Repository_Tree_Zip</a>
+                                    <a href="@Url.Action("Clone", new { id = ViewBag.ID })" class="clone"><i class="fa fa-copy"></i> @Resources.Repository_Layout_Clone</a>
+                                </div>
                             </div>
-                        }
-                        <div>
-                            <a href="@Url.Action("Download", new { id = ViewBag.ID })" class="download"><i class="fa fa-download"></i> @Resources.Repository_Tree_Zip</a>
-                            <a href="@Url.Action("Clone", new { id = ViewBag.ID })" class="clone"><i class="fa fa-copy"></i> @Resources.Repository_Layout_Clone</a>
                         </div>
-                    </div>
-                </div>
-            </details>
-        </li>
-    </ul>
-</div>
+                    </details>
+                </li>
+            </ul>
+        </div>
     </text>
 }
 @RenderBody()
@@ -58,5 +58,6 @@ else
 @section scripts
 {
     @RenderSection("scripts", false)
-   <script>new Clipboard('.copy-to-clip-button');</script>
+    <script>new Clipboard('.copy-to-clip-button');</script>
+    <script src="https://kit.fontawesome.com/66c8834e3a.js" crossorigin="anonymous"></script>
 }
