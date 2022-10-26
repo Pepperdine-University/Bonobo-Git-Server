@@ -20,14 +20,14 @@ else
                 <li><a href="@Url.Action("Tags", new { id = ViewBag.ID })" class="tags"><i class="fa fa-tag"></i> @Resources.Repository_Layout_Tags</a></li>
                 <li class="dropdown">
                     <details style="display:inline-block;">
-                        <summary><i class="fa fa-chevron-down"></i>Code</summary>
+                        <summary><i class="fa fa-chevron-down"></i>@Resources.Repository_Layout_Code</summary>
                         <div style="position:fixed;">
                             @*To get dropdown box as Relative to Fixed postition*@
                             <div class="dropdownBox">
                                 <div>
                                     @*Git URL + Copy Button*@
                                     <label>@Resources.Repository_Detail_Location</label>
-                                    <span class="git-url-text">@Model.GitUrl</span>
+                                    <input type="text" class="git-url-text" value="@Model.GitUrl" readonly/>
                                     <button class="pure-button copy-to-clip-button layout" data-clipboard-target=".git-url-text"><i class="fa fa-clone"></i></button>
                                 </div>
                                 @if (User.Identity.IsAuthenticated)
@@ -37,7 +37,7 @@ else
                                         <label>
                                             @Resources.Repository_Detail_Location_Personal
                                         </label>
-                                        <span class="personal-url-text">@Model.PersonalGitUrl</span>
+                                        <input type="text" class="personal-url-text" value="@Model.PersonalGitUrl " readonly/>
                                         <button class="pure-button copy-to-clip-button layout" data-clipboard-target=".personal-url-text"><i class="fa fa-clone"></i></button>
                                     </div>
                                 }

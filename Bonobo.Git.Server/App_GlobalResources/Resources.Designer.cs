@@ -1773,6 +1773,15 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Code.
+        /// </summary>
+        public static string Repository_Layout_Code {
+            get {
+                return ResourceManager.GetString("Repository_Layout_Code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Commits.
         /// </summary>
         public static string Repository_Layout_Commits {

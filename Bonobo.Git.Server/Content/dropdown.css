@@ -11,12 +11,17 @@
     right: 45%;
     border-style: outset;
 }
-    .dropdownBox span {
+    .dropdownBox input {
         color: black;
         left: 28%;
         position: absolute;
+        width: 320px;
+        border-style: none;
     }
-    .dropdownBox label{
+    .dropdownBox input {
+        outline:none;
+    }
+        .dropdownBox label{
         position:relative;
         left: 20px;
     }
