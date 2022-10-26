@@ -44,19 +44,19 @@
                     @Html.LabelFor(m => m.Description)
                     <div class="sidebar-description-text">
                         @Model.Description
-                        
+
                         @*Attempt at creating see more button for description*@
                         @*@{
-                            ViewBag.FullDescription = "Hello";
-                        }
-                        @ViewBag.FullDescription*@
+                        ViewBag.FullDescription = "Hello";
+                    }
+                    @ViewBag.FullDescription*@
                         @*<input type="button" value="See More" onclick='@Url.Action("SeeMore","Repository",Model.Description)' />*@
                         @*<button onclick='@Url.Action("SeeMore","Repository",Model.Description)' id="see-more-button">See More</button>*@
                         @*<button onclick=@{ViewBag.FullDescription = Model.Description} id="see-more-button">See More</button>*@
                         @*@{
-                            System.Windows.Forms.WebBrowser webBrowser;
+                        System.Windows.Forms.WebBrowser webBrowser;
 
-                        }*@
+                    }*@
                     </div>
                 </div>
             </div>
@@ -148,6 +148,30 @@
                         {
                             @Resources.Repository_Detail_No
                         }
+                    </div>
+                }
+            </div>
+
+            <div>
+                @foreach (ThirdPartyModel ThirdParty in Model.ThirdPartyComponents)
+                {
+                    <div>
+                        <label>
+                            Component Name
+                        </label>
+                        <input value="@ThirdParty.ComponentName" />
+                    </div>
+                    <div>
+                        <label>
+                            Version In Use
+                        </label>
+                        <input value="@ThirdParty.VersionInUse" />
+                    </div>
+                    <div>
+                        <label>
+                            Date Updated
+                        </label>
+                        <input value="@ThirdParty.DateUpdated" />
                     </div>
                 }
             </div>

@@ -155,6 +155,19 @@ namespace Bonobo.Git.Server.Models
         public string LinksUrl { get; set; }
         [Display(ResourceType = typeof(Resources), Name = "Repository_Detail_LinksUseGlobal")]
         public bool LinksUseGlobal { get; set; }
+
+        public ThirdPartyModel[] ThirdPartyComponents { get; set; } = new ThirdPartyModel[1]
+       {
+            new ThirdPartyModel()
+            {
+                ComponentName = "Hello World", VersionInUse = "1.0.0", DateUpdated = "10/10/1000"
+            }
+       };
+
+        //Navigation properties (1 (Repo) > Many (ThirdParyMode)
+        //Foreign key 
+        public List<ThirdPartyModel> ThirdPartyModels { get; set; }
+
     }
 
     public enum RepositoryDetailStatus
