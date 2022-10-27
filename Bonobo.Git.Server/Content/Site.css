@@ -111,7 +111,9 @@ Tags .tag a { background-color: rgba(148, 190, 214, 1); border-radius: 5px; colo
 
 .Tree .pure-table tbody { font-size: 0.8em; }
 .Tree #files .path { /*width: 230px;*/}
-.Tree #files .date { /*width: 150px;*/}
+.Tree #files .date { /*width: 150px;*/
+    min-width: 25px
+}
 .breadcrumbs { padding: 7px; margin: 0; }
 .breadcrumbs em { font-weight: bold; font-style: normal; }
 .inline-form { display: inline-block; }
