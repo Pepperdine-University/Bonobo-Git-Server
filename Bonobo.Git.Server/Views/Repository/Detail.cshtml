@@ -154,27 +154,59 @@
                     </div>
                 }
             </div>
-
-            <div>
-                @foreach (ThirdPartyModel ThirdParty in Model.ThirdPartyComponents)
+            <div class="sidebar-bordergrid">
+                <div>
+                    @foreach (ThirdPartyModel ThirdParty in Model.ThirdPartyComponents)
+                    {
+                        <div>
+                            <label>
+                                Component Name
+                            </label>
+                            <input value="@ThirdParty.ComponentName" readonly/>
+                        </div>
+                        <div>
+                            <label>
+                                Version In Use
+                            </label>
+                            <input value="@ThirdParty.VersionInUse" readonly/>
+                        </div>
+                        <div>
+                            <label>
+                                Date Updated
+                            </label>
+                            <input value="@ThirdParty.DateUpdated" readonly/>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="sidebar-bordergrid" id="bottomBar">
+                @foreach (RepositoryServiceAccountModel ServiceAccount in Model.ServiceAccountsTracking)
                 {
                     <div>
                         <label>
-                            Component Name
+                            Service Account Name
                         </label>
-                        <input value="@ThirdParty.ComponentName" />
+                        <input value="@ServiceAccount.AccountName" readonly />
                     </div>
                     <div>
                         <label>
-                            Version In Use
+                            It is in The Password Manager
                         </label>
-                        <input value="@ThirdParty.VersionInUse" />
+                        @if (@ServiceAccount.IsPassManager == true)
+                        {
+                            <input value="Yes" readonly />
+                        }
+                        else
+                        {
+                            <input value="No" readonly />
+                        }
+
                     </div>
                     <div>
                         <label>
-                            Date Updated
+                            Password Last Updated
                         </label>
-                        <input value="@ThirdParty.DateUpdated" />
+                        <input value="@ServiceAccount.PassLastChanged" readonly />
                     </div>
                 }
             </div>

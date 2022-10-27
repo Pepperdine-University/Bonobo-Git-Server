@@ -15,6 +15,7 @@ using Bonobo.Git.Server.Data;
 
 using LibGit2Sharp;
 using System.Web.Mvc;
+using System.Security.Cryptography.X509Certificates;
 using System.Security.AccessControl;
 
 namespace Bonobo.Git.Server.Models
@@ -115,6 +116,14 @@ namespace Bonobo.Git.Server.Models
 
         [Display(ResourceType = typeof(Resources), Name = "Repository_Detail_Users")]
         public UserModel[] Users { get; set; }
+        public List<RepositoryServiceAccountModel> ServiceAccounts { get; set; }
+        public RepositoryServiceAccountModel[] ServiceAccountsTracking { get; set; } = new RepositoryServiceAccountModel[1]
+       {
+            new RepositoryServiceAccountModel()
+            {
+                AccountName = "Hello World", PassLastChanged = 0, IsPassManager = false
+            }
+       };
         public Guid[] PostedSelectedUsers { get; set; }
         public UserModel[] AllUsers { get; set; }
 
@@ -336,6 +345,14 @@ namespace Bonobo.Git.Server.Models
     {
         public RepositoryCommitModel Commit { get; set; }
         public string[] Lines { get; set; }
+    }
+
+    public class RepositoryServiceAccountModel
+    {
+        public string AccountName { get; set; }
+        public bool IsPassManager { get; set; }
+        public int PassLastChanged { get; set; }
+        public RepositoryDetailModel RepositoryDetail { get; set; }
     }
 
     public class RepositoryLogoDetailModel

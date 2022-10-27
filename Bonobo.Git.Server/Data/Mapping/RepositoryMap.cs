@@ -56,6 +56,7 @@ namespace Bonobo.Git.Server.Data.Mapping
             Property(t => t.LinksRegex).HasColumnName("LinksRegex");
             Property(t => t.LinksUrl).HasColumnName("LinksUrl");
             Property(t => t.LinksUseGlobal).HasColumnName("LinksUseGlobal");
+            
         }
 
         private void SetProperties()

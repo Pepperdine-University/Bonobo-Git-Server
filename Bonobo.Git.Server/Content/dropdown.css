@@ -1,6 +1,10 @@
 ﻿.dropdown {
     display: inline-block;
 }
+    .dropdown summary {
+        color: #777;
+        padding: 5px 20px;
+    }
 .dropdownBox {
     position: relative;
     width: 500px;
@@ -21,22 +25,18 @@
     .dropdownBox input {
         outline:none;
     }
-        .dropdownBox label{
+    .dropdownBox label{
         position:relative;
         left: 20px;
     }
-.dropdownBox .copy-to-clip-button {
-    font-size: 12px;
-    padding: 4px;
-    width:15px;
-    position: absolute;
-    right: 25px;
-    background-color:white;
-}
+    .dropdownBox .copy-to-clip-button {
+        font-size: 12px;
+        padding: 4px;
+        width: 15px;
+        position: absolute;
+        right: 25px;
+        background-color: white;
+    }
 #dropbuttons{
     margin-top:10px;
-}
-.dropdown summary {
-    color: #777;
-    padding: 5px 20px;
 }
