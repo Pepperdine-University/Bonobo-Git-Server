@@ -21,6 +21,7 @@ namespace Bonobo.Git.Server.Configuration
         public string SiteFooterMessage { get; set; }
         public string SiteCssUrl { get; set; }
         public bool IsCommitAuthorAvatarVisible { get; set; }
+        public bool AreRegexLinksVisible { get; set; }
         public string LinksRegex { get; set; }
         public string LinksUrl { get; set; }
 

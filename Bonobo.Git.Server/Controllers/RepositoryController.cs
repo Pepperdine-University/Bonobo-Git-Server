@@ -761,6 +761,7 @@ namespace Bonobo.Git.Server.Controllers
                 Status = GetRepositoryStatus(model),
                 AuditPushUser = model.AuditPushUser,
                 Logo = new RepositoryLogoDetailModel(model.Logo),
+                AreRegexLinksVisible = UserConfiguration.Current.AreRegexLinksVisible,
                 LinksUseGlobal = model.LinksUseGlobal,
                 LinksRegex = model.LinksRegex,
                 LinksUrl = model.LinksUrl,

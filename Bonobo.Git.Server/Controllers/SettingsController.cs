@@ -31,6 +31,7 @@ namespace Bonobo.Git.Server.Controllers
                 SiteFooterMessage = UserConfiguration.Current.SiteFooterMessage,
                 SiteCssUrl = UserConfiguration.Current.SiteCssUrl,
                 IsCommitAuthorAvatarVisible = UserConfiguration.Current.IsCommitAuthorAvatarVisible,
+                AreRegexLinksVisible = UserConfiguration.Current.AreRegexLinksVisible,
                 LinksRegex = UserConfiguration.Current.LinksRegex,
                 LinksUrl = UserConfiguration.Current.LinksUrl,
             });
@@ -65,6 +66,7 @@ namespace Bonobo.Git.Server.Controllers
                         UserConfiguration.Current.SiteFooterMessage = model.SiteFooterMessage;
                         UserConfiguration.Current.SiteCssUrl = model.SiteCssUrl;
                         UserConfiguration.Current.IsCommitAuthorAvatarVisible = model.IsCommitAuthorAvatarVisible;
+                        UserConfiguration.Current.AreRegexLinksVisible = model.AreRegexLinksVisible;
                         UserConfiguration.Current.LinksRegex = model.LinksRegex;
                         UserConfiguration.Current.LinksUrl = model.LinksUrl;
                         UserConfiguration.Current.Save();

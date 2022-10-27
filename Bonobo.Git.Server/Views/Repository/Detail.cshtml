@@ -94,8 +94,8 @@
                     </div>
                 </div>
                 <div class="pure-control-group">
+                    @Html.LabelFor(m => m.Teams)
                     <div class="sidebar-overflowtext">
-                        @Html.LabelFor(m => m.Teams)
                         @for (int i = 0; i < Model.Teams.Length; i++)
                         {
                             @Html.ActionLink(@Model.Teams[i].DisplayName, "Detail", "Team", new { id = @Model.Teams[i].Id }, null)
@@ -128,14 +128,17 @@
                     @Html.LabelFor(m => m.LinksUseGlobal)
                     @Html.CheckBoxFor(m => m.LinksUseGlobal, new { disabled = "" })
                 </div>
-                <div class="pure-control-group">
-                    @Html.LabelFor(m => m.LinksRegex)
-                    @Html.TextBoxFor(m => m.LinksRegex, new { style = "width: 160px", @readonly = "" })
-                </div>
-                <div class="pure-control-group">
-                    @Html.LabelFor(m => m.LinksUrl)
-                    @Html.TextBoxFor(m => m.LinksUrl, new { style = "width: 160px", @readonly = "" })
-                </div>
+                @if (Model.AreRegexLinksVisible)
+                {
+                    <div class="pure-control-group">
+                        @Html.LabelFor(m => m.LinksRegex)
+                        @Html.TextBoxFor(m => m.LinksRegex, new { style = "width: 160px", @readonly = "" })
+                    </div>
+                    <div class="pure-control-group">
+                        @Html.LabelFor(m => m.LinksUrl)
+                        @Html.TextBoxFor(m => m.LinksUrl, new { style = "width: 160px", @readonly = "" })
+                    </div>
+                }
                 @if (AppSettings.IsPushAuditEnabled)
                 {
                     <div class="pure-control-group">

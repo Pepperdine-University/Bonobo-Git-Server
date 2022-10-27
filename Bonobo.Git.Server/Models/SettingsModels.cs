@@ -45,6 +45,9 @@ namespace Bonobo.Git.Server.Models
         [Display(ResourceType = typeof(Resources), Name = "Settings_Global_IsCommitAuthorAvatarVisible")]
         public bool IsCommitAuthorAvatarVisible { get; set; }
 
+        [Display(ResourceType = typeof(Resources), Name = "Settings_Global_AreRegexLinksVisible")]
+        public bool AreRegexLinksVisible { get; set; }
+
         [Display(ResourceType = typeof(Resources), Name = "Settings_Global_LinksUrl")]
         public string LinksUrl { get; set; }
 

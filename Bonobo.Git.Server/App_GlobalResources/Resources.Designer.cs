@@ -1413,6 +1413,15 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Links.
+        /// </summary>
+        public static string Repository_Detail_AreRegexLinksVisible {
+            get {
+                return ResourceManager.GetString("Repository_Detail_AreRegexLinksVisible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Audit Pushes.
         /// </summary>
         public static string Repository_Detail_AuditPushUser {
@@ -2057,6 +2066,15 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         public static string Settings_Global_AllowUserRepositoryCreation_Hint {
             get {
                 return ResourceManager.GetString("Settings_Global_AllowUserRepositoryCreation_Hint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show link regex and URL in Repository Browser.
+        /// </summary>
+        public static string Settings_Global_AreRegexLinksVisible {
+            get {
+                return ResourceManager.GetString("Settings_Global_AreRegexLinksVisible", resourceCulture);
             }
         }
         

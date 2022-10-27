@@ -15,6 +15,7 @@ using Bonobo.Git.Server.Data;
 
 using LibGit2Sharp;
 using System.Web.Mvc;
+using System.Security.AccessControl;
 
 namespace Bonobo.Git.Server.Models
 {
@@ -146,6 +147,9 @@ namespace Bonobo.Git.Server.Models
         public RepositoryLogoDetailModel Logo { get; set; }
         public string GitUrl { get; set; }
         public string PersonalGitUrl { get; set; }
+
+        [Display(ResourceType = typeof(Resources), Name = "Repository_Detail_AreRegexLinksVisible")]
+        public bool AreRegexLinksVisible { get; set; }
 
         [Remote("IsValidRegex", "Validation")]
         [IsValidRegex]
