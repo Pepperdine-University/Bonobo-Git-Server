@@ -1,7 +1,7 @@
 html, button, input, select, textarea, .pure-g [class *= "pure-u"], .pure-g-r [class *= "pure-u"] { font-family: OpenSans, sans-serif; }
 
 html { font-size: 16px; color: #333; text-rendering: optimizeLegibility; }
-html, body { margin: 0; padding: 0; height: 100%; min-width: 1100px;}
+html, body { margin: 0; padding: 0; height: 100%; min-width: 480px;}
 
 h1, h2, h3, h4, h5, h6 { font-weight: 300; }
 a { color: #4183c4; text-decoration: none; }
@@ -13,7 +13,7 @@ table { width: 100%; margin: 2em 0; }
 th a { color: #333; }
 th a:hover { text-decoration: none; color: #4183c4; }
 .pure-table td, .pure-table th { padding: 0.8em; word-break: break-word; }
-.pure-table { border: none; }
+.pure-table { border: none; height: 1px;}
 .pure-table td, .pure-table th { border: none; border-bottom: 1px solid #f6f6f6; text-align: left; }
 .pure-table thead { background: none; }
 .pure-table th { font-weight: 300; }
@@ -58,7 +58,10 @@ table.repositories button.copy-to-clip-button { margin-left: 0px; border-radius:
 
 .main { min-height: 100%; position: relative; }
 
-.content { width: 980px; margin: 0 auto; padding-bottom: 50px; }
+.content { width: 85%; margin: 0 auto; padding-bottom: 50px; }
+.content-tree {
+    padding-bottom: 50px;
+}
 .content h1 { position:relative; }
 .content h1 img {   position: absolute; left: -54px; top: 6px; }
 
@@ -110,9 +113,9 @@ Tags .tag a { background-color: rgba(148, 190, 214, 1); border-radius: 5px; colo
 .links a:before { content: '\f0c1'; font-family: FontAwesome; margin-right: 0.25em; margin-left: 0.5em; }
 
 .Tree .pure-table tbody { font-size: 0.8em; }
-.Tree #files .path { /*width: 230px;*/}
+.Tree #files .path { /*width: 230px;*/ min-width: 55px }
 .Tree #files .date { /*width: 150px;*/
-    min-width: 25px
+    min-width: 55px
 }
 .breadcrumbs { padding: 7px; margin: 0; }
 .breadcrumbs em { font-weight: bold; font-style: normal; }

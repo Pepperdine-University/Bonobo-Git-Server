@@ -44,6 +44,7 @@
     padding: 0.8em 0.8em 0.8em 0.8em;
     background-color: #E6E6E6; /*hsla(210,18%,87%,1)*/
     border-radius: 10px;
+    margin-bottom: 25px;
 }
 .sidebar-overflowtext {
     display: inline-block;
@@ -59,10 +60,11 @@
     .tree-grid-layout {
         --sidebar-width: 300px;
     }
-}
-@media (max-width: 1000px) {
+}*/
+@media (max-width: 900px) {
     .tree-grid-layout {
         --sidebar-width: 0px;
+        --sidebar-gutter: 0px;
     }
     .sidebar {
         display: none;
@@ -70,5 +72,5 @@
     .sidebar-moved-bottom {
         display: inline;
     }
-}*/
+}
 

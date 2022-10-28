@@ -6,7 +6,7 @@
 }
 @if (Model != null)
 {
-    <div class="content">
+    <div class="content-tree">
         @Html.Partial("_BranchSwitcher")
         @Html.Partial("_AddressBar")
 
@@ -51,9 +51,9 @@
         </div>
 
         @*For screen size responsive sidebar*@
-        @*<div class="sidebar-moved-bottom" style="">
+        <div class="sidebar-moved-bottom" style="">
             @{ Html.RenderAction("Detail", "Repository", Model.Id);}
-        </div>*@
+        </div>
 
         @{ Html.RenderAction("Buttons", "Repository", Model.Id);}
 
