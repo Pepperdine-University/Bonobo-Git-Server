@@ -44,32 +44,19 @@
                     @Html.LabelFor(m => m.Description)
                     <div class="sidebar-description-text">
                         @Model.Description
-
-                        @*Attempt at creating see more button for description*@
-                        @*@{
-                        ViewBag.FullDescription = "Hello";
-                    }
-                    @ViewBag.FullDescription*@
-                        @*<input type="button" value="See More" onclick='@Url.Action("SeeMore","Repository",Model.Description)' />*@
-                        @*<button onclick='@Url.Action("SeeMore","Repository",Model.Description)' id="see-more-button">See More</button>*@
-                        @*<button onclick=@{ViewBag.FullDescription = Model.Description} id="see-more-button">See More</button>*@
-                        @*@{
-                        System.Windows.Forms.WebBrowser webBrowser;
-
-                    }*@
                     </div>
                 </div>
             </div>
             <div class="sidebar-bordergrid middle">
                 <div class="pure-control-group">
                     @Html.LabelFor(m => m.Group)
-                    <div class="sidebar-overflowtext">
+                    <div class="sidebar-text">
                         @Model.Group
                     </div>
                 </div>
                 <div class="pure-control-group">
                     @Html.LabelFor(m => m.Users)
-                    <div class="sidebar-overflowtext">
+                    <div class="sidebar-text">
                         @for (int i = 0; i < Model.Users.Length; i++)
                         {
                             @Html.ActionLink(@Model.Users[i].DisplayName, "Detail", "Account", new { id = @Model.Users[i].Id }, new { title = @Model.Users[i].Username })
@@ -82,7 +69,7 @@
                 </div>
                 <div class="pure-control-group">
                     @Html.LabelFor(m => m.Administrators)
-                    <div class="sidebar-overflowtext">
+                    <div class="sidebar-text">
                         @for (int i = 0; i < Model.Administrators.Length; i++)
                         {
                             @Html.ActionLink(@Model.Administrators[i].DisplayName, "Detail", "Account", new { id = @Model.Administrators[i].Id }, new { title = @Model.Administrators[i].Username })
@@ -95,7 +82,7 @@
                 </div>
                 <div class="pure-control-group">
                     @Html.LabelFor(m => m.Teams)
-                    <div class="sidebar-overflowtext">
+                    <div class="sidebar-text">
                         @for (int i = 0; i < Model.Teams.Length; i++)
                         {
                             @Html.ActionLink(@Model.Teams[i].DisplayName, "Detail", "Team", new { id = @Model.Teams[i].Id }, null)
@@ -107,7 +94,7 @@
                     </div>
                 </div>
             </div>
-            <div class="sidebar-bordergrid bottom">
+            <div class="sidebar-bordergrid">
                 <div class="pure-control-group">
                     @Html.LabelFor(m => m.AllowAnonymous)
                     @if (Model.AllowAnonymous)
@@ -132,11 +119,11 @@
                 {
                     <div class="pure-control-group">
                         @Html.LabelFor(m => m.LinksRegex)
-                        @Html.TextBoxFor(m => m.LinksRegex, new { style = "width: 160px", @readonly = "" })
+                        @Html.TextBoxFor(m => m.LinksRegex, new { @*style = "width: 160px",*@ @readonly = "" })
                     </div>
                     <div class="pure-control-group">
                         @Html.LabelFor(m => m.LinksUrl)
-                        @Html.TextBoxFor(m => m.LinksUrl, new { style = "width: 160px", @readonly = "" })
+                        @Html.TextBoxFor(m => m.LinksUrl, new { @*style = "width: 160px",*@ @readonly = "" })
                     </div>
                 }
                 @if (AppSettings.IsPushAuditEnabled)
@@ -179,7 +166,7 @@
                     }
                 </div>
             </div>
-            <div class="sidebar-bordergrid" id="bottomBar">
+            <div class="sidebar-bordergrid bottom" @*id="bottomBar"*@>
                 @foreach (RepositoryServiceAccountModel ServiceAccount in Model.ServiceAccountsTracking)
                 {
                     <div>
