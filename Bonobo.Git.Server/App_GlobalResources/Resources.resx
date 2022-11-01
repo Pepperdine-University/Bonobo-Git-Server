@@ -961,7 +961,7 @@ The regular C# string formatting rules apply: To get {} in your link you need to
     <value>Show Links</value>
   </data>
   <data name="Settings_Global_AreRegexLinksVisible" xml:space="preserve">
-    <value>Show link regex and URL in Repository Browser</value>
+    <value>Use linkification</value>
   </data>
   <data name="Repository_Layout_Code" xml:space="preserve">
     <value>Code</value>

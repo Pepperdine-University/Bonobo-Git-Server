@@ -25,13 +25,12 @@
 }
 .sidebar-bordergrid.bottom {
     border-bottom: hidden;
-    
 }
 
 .pure-form-aligned .pure-control-group label {
     display: inline-block;
     vertical-align: middle;
-    --sidebar-label-width: 7em;
+    --sidebar-label-width: 9em;
     width: var(--sidebar-label-width);
     margin: 0 1em 0 0
 }
@@ -52,8 +51,11 @@
     width: calc(var(--sidebar-width) - 10em);
     vertical-align: top;
 }*/
-.sidebar-description-text {
-    margin-top: 0.4em;
+.sidebar-text.description {
+    /*margin-top: 0.4em;*/
+}
+.sidebar-text {
+    margin-left: 1em
 }
 
 /*for screen size responsive sidebar*/

@@ -2070,7 +2070,7 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show link regex and URL in Repository Browser.
+        ///   Looks up a localized string similar to Use linkification.
         /// </summary>
         public static string Settings_Global_AreRegexLinksVisible {
             get {

@@ -42,7 +42,7 @@
             <div class="sidebar-bordergrid top">
                 <div class="pure-control-group">
                     @Html.LabelFor(m => m.Description)
-                    <div class="sidebar-description-text">
+                    <div class="sidebar-text description">
                         @Model.Description
                     </div>
                 </div>
@@ -97,33 +97,49 @@
             <div class="sidebar-bordergrid">
                 <div class="pure-control-group">
                     @Html.LabelFor(m => m.AllowAnonymous)
-                    @if (Model.AllowAnonymous)
-                    {
-                        @Resources.Repository_Detail_Yes
-                    }
-                    else
-                    {
-                        @Resources.Repository_Detail_No
-                    }
+                    @Html.CheckBoxFor(m => m.AllowAnonymous, new { disabled = "" })
                 </div>
                 <div class="pure-control-group">
                     @Html.LabelFor(m => m.AllowAnonymousPush)
-                    @Html.DisplayEnum(Model.AllowAnonymousPush)
+                    <div class="sidebar-text">
+
+                        @{
+                            string currentGlobal = (UserConfiguration.Current.AllowAnonymousPush ? @Resources.Repository_Detail_Yes : @Resources.Repository_Detail_No);
+                            if (Model.AllowAnonymousPush.Equals(Bonobo.Git.Server.Data.RepositoryPushMode.Global))
+                            {
+                                @Html.DisplayName($"Global: {currentGlobal}");
+                            }
+                            else
+                            {
+                                @Html.DisplayEnum(Model.AllowAnonymousPush);
+                            }
+                        }
+
+                    </div>
                 </div>
 
-                <div class="pure-control-group">
-                    @Html.LabelFor(m => m.LinksUseGlobal)
-                    @Html.CheckBoxFor(m => m.LinksUseGlobal, new { disabled = "" })
-                </div>
                 @if (Model.AreRegexLinksVisible)
                 {
                     <div class="pure-control-group">
+                        @Html.LabelFor(m => m.LinksUseGlobal)
+                        @Html.CheckBoxFor(m => m.LinksUseGlobal, new { disabled = "" })
+                    </div>
+
+                    <div class="pure-control-group">
                         @Html.LabelFor(m => m.LinksRegex)
-                        @Html.TextBoxFor(m => m.LinksRegex, new { @*style = "width: 160px",*@ @readonly = "" })
+                        <div class="sidebar-text">
+                            @Html.TextBoxFor(m => m.LinksRegex, new
+                            {@*style = "width: 160px",*@@readonly = ""
+})
+                        </div>
                     </div>
                     <div class="pure-control-group">
                         @Html.LabelFor(m => m.LinksUrl)
-                        @Html.TextBoxFor(m => m.LinksUrl, new { @*style = "width: 160px",*@ @readonly = "" })
+                        <div class="sidebar-text">
+                            @Html.TextBoxFor(m => m.LinksUrl, new
+                            {@*style = "width: 160px",*@@readonly = ""
+})
+                        </div>
                     </div>
                 }
                 @if (AppSettings.IsPushAuditEnabled)
@@ -149,51 +165,62 @@
                             <label>
                                 Component Name
                             </label>
-                            <input value="@ThirdParty.ComponentName" readonly/>
+                            <div class="sidebar-text">
+                                <input value="@ThirdParty.ComponentName" readonly/>
+                            </div>
                         </div>
                         <div>
                             <label>
                                 Version In Use
                             </label>
-                            <input value="@ThirdParty.VersionInUse" readonly/>
+                            <div class="sidebar-text">
+                                <input value="@ThirdParty.VersionInUse" readonly />
+                            </div>
                         </div>
                         <div>
                             <label>
                                 Date Updated
                             </label>
-                            <input value="@ThirdParty.DateUpdated" readonly/>
+                            <div class="sidebar-text">
+                                <input value="@ThirdParty.DateUpdated" readonly />
+                            </div>
                         </div>
                     }
                 </div>
             </div>
-            <div class="sidebar-bordergrid bottom" @*id="bottomBar"*@>
+            <div class="sidebar-bordergrid bottom">
                 @foreach (RepositoryServiceAccountModel ServiceAccount in Model.ServiceAccountsTracking)
                 {
                     <div>
                         <label>
                             Service Account Name
                         </label>
-                        <input value="@ServiceAccount.AccountName" readonly />
+                        <div class="sidebar-text">
+                            <input value="@ServiceAccount.AccountName" readonly />
+                        </div>
                     </div>
                     <div>
                         <label>
                             It is in The Password Manager
                         </label>
-                        @if (@ServiceAccount.IsPassManager == true)
-                        {
-                            <input value="Yes" readonly />
-                        }
-                        else
-                        {
-                            <input value="No" readonly />
-                        }
-
+                        <div class="sidebar-text">
+                            @if (@ServiceAccount.IsPassManager == true)
+                            {
+                                <input value="Yes" readonly />
+                            }
+                            else
+                            {
+                                <input value="No" readonly />
+                            }
+                        </div>
                     </div>
                     <div>
                         <label>
                             Password Last Updated
                         </label>
-                        <input value="@ServiceAccount.PassLastChanged" readonly />
+                        <div class="sidebar-text">
+                            <input value="@ServiceAccount.PassLastChanged" readonly />
+                        </div>
                     </div>
                 }
             </div>
