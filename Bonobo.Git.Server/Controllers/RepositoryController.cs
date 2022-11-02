@@ -763,8 +763,8 @@ namespace Bonobo.Git.Server.Controllers
                 Logo = new RepositoryLogoDetailModel(model.Logo),
                 AreRegexLinksVisible = UserConfiguration.Current.AreRegexLinksVisible,
                 LinksUseGlobal = model.LinksUseGlobal,
-                LinksRegex = model.LinksRegex,
-                LinksUrl = model.LinksUrl,
+                LinksRegex = (model.LinksUseGlobal? UserConfiguration.Current.LinksRegex: model.LinksRegex),
+                LinksUrl = (model.LinksUseGlobal ? UserConfiguration.Current.LinksUrl : model.LinksUrl),
             };
         }
 

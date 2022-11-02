@@ -47,7 +47,7 @@
                     </div>
                 </div>
             </div>
-            <div class="sidebar-bordergrid middle">
+            <div class="sidebar-bordergrid">
                 <div class="pure-control-group">
                     @Html.LabelFor(m => m.Group)
                     <div class="sidebar-text">
@@ -125,22 +125,21 @@
                         @Html.CheckBoxFor(m => m.LinksUseGlobal, new { disabled = "" })
                     </div>
 
-                    <div class="pure-control-group">
-                        @Html.LabelFor(m => m.LinksRegex)
-                        <div class="sidebar-text">
-                            @Html.TextBoxFor(m => m.LinksRegex, new
-                            {@*style = "width: 160px",*@@readonly = ""
-})
+                    if (!Model.LinksUseGlobal)
+                    {
+                        <div class="pure-control-group">
+                            @Html.LabelFor(m => m.LinksRegex)
+                            <div class="sidebar-text">
+                                @Html.TextBoxFor(m => m.LinksRegex, new { @readonly = "", @class = "sidebar-removeInput" })
+                            </div>
                         </div>
-                    </div>
-                    <div class="pure-control-group">
-                        @Html.LabelFor(m => m.LinksUrl)
-                        <div class="sidebar-text">
-                            @Html.TextBoxFor(m => m.LinksUrl, new
-                            {@*style = "width: 160px",*@@readonly = ""
-})
+                        <div class="pure-control-group">
+                            @Html.LabelFor(m => m.LinksUrl)
+                            <div class="sidebar-text">
+                                @Html.TextBoxFor(m => m.LinksUrl, new { @readonly = "", @class = "sidebar-removeInput" })
+                            </div>
                         </div>
-                    </div>
+                    }
                 }
                 @if (AppSettings.IsPushAuditEnabled)
                 {
@@ -161,28 +160,28 @@
                 <div>
                     @foreach (ThirdPartyModel ThirdParty in Model.ThirdPartyComponents)
                     {
-                        <div>
+                        <div class="pure-control-group">
                             <label>
                                 Component Name
                             </label>
                             <div class="sidebar-text">
-                                <input value="@ThirdParty.ComponentName" readonly/>
+                                <input class="sidebar-removeInput" value="@ThirdParty.ComponentName" readonly/>
                             </div>
                         </div>
-                        <div>
+                        <div class="pure-control-group">
                             <label>
                                 Version In Use
                             </label>
                             <div class="sidebar-text">
-                                <input value="@ThirdParty.VersionInUse" readonly />
+                                <input class="sidebar-removeInput" value="@ThirdParty.VersionInUse" readonly />
                             </div>
                         </div>
-                        <div>
+                        <div class="pure-control-group">
                             <label>
                                 Date Updated
                             </label>
                             <div class="sidebar-text">
-                                <input value="@ThirdParty.DateUpdated" readonly />
+                                <input class="sidebar-removeInput" value="@ThirdParty.DateUpdated" readonly />
                             </div>
                         </div>
                     }
@@ -191,35 +190,35 @@
             <div class="sidebar-bordergrid bottom">
                 @foreach (RepositoryServiceAccountModel ServiceAccount in Model.ServiceAccountsTracking)
                 {
-                    <div>
+                    <div class="pure-control-group">
                         <label>
                             Service Account Name
                         </label>
                         <div class="sidebar-text">
-                            <input value="@ServiceAccount.AccountName" readonly />
+                            <input class="sidebar-removeInput" value="@ServiceAccount.AccountName" readonly />
                         </div>
                     </div>
-                    <div>
+                    <div class="pure-control-group">
                         <label>
-                            It is in The Password Manager
+                            In Password Manager
                         </label>
                         <div class="sidebar-text">
                             @if (@ServiceAccount.IsPassManager == true)
                             {
-                                <input value="Yes" readonly />
+                                <input class="sidebar-removeInput" value="Yes" readonly />
                             }
                             else
                             {
-                                <input value="No" readonly />
+                                <input class="sidebar-removeInput" value="No" readonly />
                             }
                         </div>
                     </div>
-                    <div>
+                    <div class="pure-control-group">
                         <label>
                             Password Last Updated
                         </label>
                         <div class="sidebar-text">
-                            <input value="@ServiceAccount.PassLastChanged" readonly />
+                            <input class="sidebar-removeInput" value="@ServiceAccount.PassLastChanged" readonly />
                         </div>
                     </div>
                 }

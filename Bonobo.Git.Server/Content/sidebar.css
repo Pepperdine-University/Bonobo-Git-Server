@@ -25,12 +25,13 @@
 }
 .sidebar-bordergrid.bottom {
     border-bottom: hidden;
+    padding-bottom: 0px;
 }
 
 .pure-form-aligned .pure-control-group label {
     display: inline-block;
     vertical-align: middle;
-    --sidebar-label-width: 9em;
+    --sidebar-label-width: 13em;
     width: var(--sidebar-label-width);
     margin: 0 1em 0 0
 }
@@ -56,6 +57,14 @@
 }
 .sidebar-text {
     margin-left: 1em
+}
+.pure-form input[readonly].sidebar-removeInput {
+    background: none;
+    color: black;
+    border: none;
+    padding: 0;
+    box-shadow: none;
+    border-radius: 0;
 }
 
 /*for screen size responsive sidebar*/
