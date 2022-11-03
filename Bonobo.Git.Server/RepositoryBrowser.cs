@@ -284,10 +284,33 @@ namespace Bonobo.Git.Server
                 IsTree = entry.TargetType == TreeEntryTargetType.Tree,
                 IsLink = entry.TargetType == TreeEntryTargetType.GitLink,
                 TreeName = treeName,
+                //PersonalGitUrl = GetUrls(repo.Name, "PersonalUrl"),
+                //GitUrl = GetUrls(repo.Name, "GitUrl"),
                 Path = entry.Path.Replace('\\', '/'),
                 IsImage = FileDisplayHandler.IsImage(entry.Name),
             };
         }
+
+        //string GetUrls(string Name, string type)
+        //{
+        //    string serverAddress = System.Configuration.ConfigurationManager.AppSettings["GitServerPath"]
+        //                           ?? string.Format("{0}://{1}{2}{3}/",
+        //                               Request.Url.Scheme,
+        //                               Request.Url.Host,
+        //                               (Request.Url.IsDefaultPort ? "" : (":" + Request.Url.Port)),
+        //                               Request.ApplicationPath == "/" ? "" : Request.ApplicationPath
+        //                               );
+
+        //    string GitUrl = String.Concat(serverAddress, Name, ".git");
+        //    if (User.Identity.IsAuthenticated && type == "PersonalUrl")
+        //    {
+        //        string personalUrl =
+        //             String.Concat(serverAddress.Replace("://", "://" + Uri.EscapeDataString(User.Username()) + "@"), Name, ".git");
+        //        return personalUrl;
+        //    }
+        //    return GitUrl;
+
+        //}
 
         private Commit GetCommitByName(string name, out string referenceName)
         {

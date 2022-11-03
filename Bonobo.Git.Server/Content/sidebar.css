@@ -31,7 +31,7 @@
 .pure-form-aligned .pure-control-group label {
     display: inline-block;
     vertical-align: middle;
-    --sidebar-label-width: 13em;
+    /*--sidebar-label-width: 13em;*/
     width: var(--sidebar-label-width);
     margin: 0 1em 0 0
 }

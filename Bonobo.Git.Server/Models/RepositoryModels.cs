@@ -214,6 +214,8 @@ namespace Bonobo.Git.Server.Models
         public byte[] Data { get; set; }
         public string Text { get; set; }
         public string TextBrush { get; set; }
+        public string GitUrl { get; set; }
+        public string PersonalGitUrl { get; set; }
         public Encoding Encoding { get; set; }
         public RepositoryLogoDetailModel Logo { get; set; }
     }

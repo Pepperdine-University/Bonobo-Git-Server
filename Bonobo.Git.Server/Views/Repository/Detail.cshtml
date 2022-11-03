@@ -96,33 +96,57 @@
             </div>
             <div class="sidebar-bordergrid">
                 <div class="pure-control-group">
-                    @Html.LabelFor(m => m.AllowAnonymous)
-                    @Html.CheckBoxFor(m => m.AllowAnonymous, new { disabled = "" })
+                    @if (Model.AllowAnonymous)
+                    {
+                        <label><i class="fa-regular fa-square-check" title="Yes"></i> Anonymous</label>
+                    }
+                    else
+                    {
+                        <label><i class="fa-regular fa-square" title="No"></i> Anonymous</label>
+                    }
                 </div>
-                <div class="pure-control-group">
-                    @Html.LabelFor(m => m.AllowAnonymousPush)
-                    <div class="sidebar-text">
-
+                @if (Model.AllowAnonymous)
+                {
+                    <div class="pure-control-group">
                         @{
-                            string currentGlobal = (UserConfiguration.Current.AllowAnonymousPush ? @Resources.Repository_Detail_Yes : @Resources.Repository_Detail_No);
+                            bool currentGlobal = UserConfiguration.Current.AllowAnonymousPush;
                             if (Model.AllowAnonymousPush.Equals(Bonobo.Git.Server.Data.RepositoryPushMode.Global))
                             {
-                                @Html.DisplayName($"Global: {currentGlobal}");
+                                if (currentGlobal)
+                                {
+                                    <label><i class="fa-regular fa-square-check" title="Yes"></i> Anonymous Push</label>
+                                }
+                                else
+                                {
+                                    <label><i class="fa-regular fa-square" title="No"></i> Anonymous Push</label>
+                                }
                             }
                             else
                             {
-                                @Html.DisplayEnum(Model.AllowAnonymousPush);
+                                if (Model.AllowAnonymousPush.Equals(Bonobo.Git.Server.Data.RepositoryPushMode.Yes))
+                                {
+                                    <label><i class="fa-regular fa-square-check" title="Yes"></i> Anonymous Push</label>
+                                }
+                                else
+                                {
+                                    <label><i class="fa-regular fa-square" title="No"></i> Anonymous Push</label>
+                                }
                             }
                         }
-
                     </div>
-                </div>
+                }
 
                 @if (Model.AreRegexLinksVisible)
                 {
                     <div class="pure-control-group">
-                        @Html.LabelFor(m => m.LinksUseGlobal)
-                        @Html.CheckBoxFor(m => m.LinksUseGlobal, new { disabled = "" })
+                        @if (Model.LinksUseGlobal)
+                        {
+                            <label><i class="fa-regular fa-square-check" title="Yes"></i> Use Global Linkify Settings</label>
+                        }
+                        else
+                        {
+                            <label><i class="fa-regular fa-square" title="No"></i> Use Global Linkify Settings</label>
+                        }
                     </div>
 
                     if (!Model.LinksUseGlobal)
