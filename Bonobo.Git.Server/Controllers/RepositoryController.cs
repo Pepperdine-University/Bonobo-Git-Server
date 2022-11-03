@@ -359,6 +359,8 @@ namespace Bonobo.Git.Server.Controllers
                 model.Logo = new RepositoryLogoDetailModel(repo.Logo);
                 PopulateBranchesData(browser, referenceName);
                 PopulateAddressBarData(path);
+                model.PersonalGitUrl = GetUrls(repo.Name, "PersonalUrl");
+                model.GitUrl = GetUrls(repo.Name, "GitUrl");
 
                 return View(model);
             }
