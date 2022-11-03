@@ -720,13 +720,6 @@ namespace Bonobo.Git.Server.Controllers
             return RedirectToAction("Index");
         }
 
-        // Attempt at creating see more button for description
-        //public ActionResult SeeMore(string moreText)
-        //{
-        //    ViewBag.FullDescription = moreText;
-        //    return RedirectToAction("Tree");
-        //}
-
         private void PopulateAddressBarData(string path)
         {
             ViewData["path"] = path;

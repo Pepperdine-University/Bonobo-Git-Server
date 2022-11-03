@@ -66,7 +66,7 @@ namespace Bonobo.Git.Server.Attributes
                     var slt = new SelectListItem
                     {
                         Text = item.Name,
-                        Value = u.Action("Detail", "Repository", new { id = item.Id }),
+                        Value = u.Action("Tree", "Repository", new { id = item.Id }),
                         Group = group,
                         /* This does not seem to work.
                          * If someone can figure out why we can remove the "Go to repository"

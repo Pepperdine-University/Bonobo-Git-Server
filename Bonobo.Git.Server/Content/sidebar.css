@@ -1,4 +1,5 @@
-﻿.tree-grid-layout {
+﻿/* ---------- Overall sidebar and layout ---------- */
+.tree-grid-layout {
     --sidebar-width: 320px;
     --sidebar-gutter: 30px;
     display: grid;
@@ -15,6 +16,21 @@
     display: none;
 }
 
+/* ---------- Border ---------- */
+.pure-form fieldset {
+    margin: 0;
+    padding: 0.8em 0 0.8em;
+    border: 0;
+}
+.pure-form.pure-form-aligned.detail fieldset {
+    padding: 0.8em 0.8em 0.8em 0.8em;
+    /*background-color: #E6E6E6;*/ /*hsla(210,18%,87%,1)*/
+    border-radius: 10px;
+    margin-bottom: 25px;
+    border: 4px solid #2d3e50;
+}
+
+/* ---------- Grey lines between inner sidebar groups ---------- */
 .sidebar-bordergrid {
     padding-top: 15px;
     padding-bottom: 15px;
@@ -28,30 +44,22 @@
     padding-bottom: 0px;
 }
 
+/* ---------- Inner text and label ---------- */
 .pure-form-aligned .pure-control-group label {
+    text-align: right;
+    display: inline-block;
+    vertical-align: middle;
+    width: 10em;
+    margin: 0 1em 0 0;
+}
+
+.pure-form-aligned .sidebar-bordergrid .pure-control-group label {
     display: inline-block;
     vertical-align: middle;
     /*--sidebar-label-width: 13em;*/
     width: var(--sidebar-label-width);
     margin: 0 1em 0 0
 }
-.pure-form fieldset {
-    margin: 0;
-    padding: 0.8em 0 0.8em;
-    border: 0;
-}
-.pure-form.pure-form-aligned.detail fieldset {
-    padding: 0.8em 0.8em 0.8em 0.8em;
-    /*background-color: #E6E6E6;*/ /*hsla(210,18%,87%,1)*/
-    border-radius: 10px;
-    margin-bottom: 25px;
-    border: 4px solid #2d3e50;
-}
-/*.sidebar-overflowtext {
-    display: inline-block;
-    width: calc(var(--sidebar-width) - 10em);
-    vertical-align: top;
-}*/
 .sidebar-text.description {
     /*margin-top: 0.4em;*/
 }
@@ -67,6 +75,7 @@
     border-radius: 0;
 }
 
+/* ---------- Responsive sidebar media queries ---------- */
 /*for screen size responsive sidebar*/
 /*@media (max-width: 1300px) {
     .tree-grid-layout {
