@@ -53,7 +53,7 @@ table.repositories button.copy-to-clip-button { margin-left: 0px; border-radius:
 .navigation li a:hover,
 .navigation li a:focus { background: none; color: #AECFE5; text-decoration: none; }
 .Repository .navigation .repository, .Account .navigation .users, .Team .navigation .teams, .Settings .navigation .settings { color: #AECFE5; }
-.Repository select.repositories {margin-left: 20px; }
+.Repository select.repositories { margin-left: 20px; }
 
 
 .main { min-height: 100%; position: relative; }
@@ -179,7 +179,11 @@ Tags .tag a { background-color: rgba(148, 190, 214, 1); border-radius: 5px; colo
 .commit h2 a.commit-url { display: inline-block; max-width: 90%; overflow: hidden; text-overflow: ellipsis; }
 .more-commit-info-toggler { background-color: silver; border: 1px solid #a39e9e; border-radius: 1px; color: #827a7a; display: inline-block; font-size: 14px; font-weight: bold; height: 12px; line-height: 6px; padding: 0 6px 1px; position: relative; top: -9px; vertical-align: middle; }
 
-.repositories { margin: 0 0 1em 0; }
+.repositories {
+    margin: 0 0 1em 0;
+    border-radius: 10px;
+    cursor: pointer;
+}
 h2.group { margin: 0; }
 td.description { width: 50%; }
 td.logo { width: 36px; }

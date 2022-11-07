@@ -96,42 +96,16 @@
             </div>
             <div class="sidebar-bordergrid">
                 <div class="pure-control-group">
-                    @if (Model.AllowAnonymous)
-                    {
-                        <label><i class="fa-regular fa-square-check" title="Yes"></i> Anonymous</label>
-                    }
-                    else
-                    {
-                        <label><i class="fa-regular fa-square" title="No"></i> Anonymous</label>
-                    }
+                    <label><i class="fa-regular fa-square@(Model.AllowAnonymous? "-check": "")" title="@(Model.AllowAnonymous? "Yes": "No")"></i> Anonymous</label>
                 </div>
                 @if (Model.AllowAnonymous)
                 {
                     <div class="pure-control-group">
                         @{
+                            bool global = Model.AllowAnonymousPush.Equals(Bonobo.Git.Server.Data.RepositoryPushMode.Global);
                             bool currentGlobal = UserConfiguration.Current.AllowAnonymousPush;
-                            if (Model.AllowAnonymousPush.Equals(Bonobo.Git.Server.Data.RepositoryPushMode.Global))
-                            {
-                                if (currentGlobal)
-                                {
-                                    <label><i class="fa-regular fa-square-check" title="Yes"></i> Anonymous Push</label>
-                                }
-                                else
-                                {
-                                    <label><i class="fa-regular fa-square" title="No"></i> Anonymous Push</label>
-                                }
-                            }
-                            else
-                            {
-                                if (Model.AllowAnonymousPush.Equals(Bonobo.Git.Server.Data.RepositoryPushMode.Yes))
-                                {
-                                    <label><i class="fa-regular fa-square-check" title="Yes"></i> Anonymous Push</label>
-                                }
-                                else
-                                {
-                                    <label><i class="fa-regular fa-square" title="No"></i> Anonymous Push</label>
-                                }
-                            }
+                            bool currentLocal = Model.AllowAnonymousPush.Equals(Bonobo.Git.Server.Data.RepositoryPushMode.Yes);
+                            <label><i class="fa-regular fa-square@(global? (currentGlobal? "-check": ""): (currentLocal? "-check": ""))" title="@(global? (currentGlobal? "Yes": "No"): (currentLocal? "Yes": "No"))"></i> Anonymous Push</label>
                         }
                     </div>
                 }
@@ -139,14 +113,7 @@
                 @if (Model.AreRegexLinksVisible)
                 {
                     <div class="pure-control-group">
-                        @if (Model.LinksUseGlobal)
-                        {
-                            <label><i class="fa-regular fa-square-check" title="Yes"></i> Use Global Linkify Settings</label>
-                        }
-                        else
-                        {
-                            <label><i class="fa-regular fa-square" title="No"></i> Use Global Linkify Settings</label>
-                        }
+                        <label><i class="fa-regular fa-square@(Model.LinksUseGlobal? "-check": "")" title="@(Model.LinksUseGlobal? "Yes": "No")"></i> Use Global Linkify Settings</label>
                     </div>
 
                     if (!Model.LinksUseGlobal)
@@ -154,13 +121,13 @@
                         <div class="pure-control-group">
                             @Html.LabelFor(m => m.LinksRegex)
                             <div class="sidebar-text">
-                                @Html.TextBoxFor(m => m.LinksRegex, new { @readonly = "", @class = "sidebar-removeInput" })
+                                @Html.TextBoxFor(m => m.LinksRegex, new { @readonly = "", @class = "removeVisualInput" })
                             </div>
                         </div>
                         <div class="pure-control-group">
                             @Html.LabelFor(m => m.LinksUrl)
                             <div class="sidebar-text">
-                                @Html.TextBoxFor(m => m.LinksUrl, new { @readonly = "", @class = "sidebar-removeInput" })
+                                @Html.TextBoxFor(m => m.LinksUrl, new { @readonly = "", @class = "removeVisualInput" })
                             </div>
                         </div>
                     }
@@ -169,14 +136,7 @@
                 {
                     <div class="pure-control-group">
                         @Html.LabelFor(m => m.AuditPushUser)
-                        @if (Model.AuditPushUser)
-                        {
-                            @Resources.Repository_Detail_Yes
-                        }
-                        else
-                        {
-                            @Resources.Repository_Detail_No
-                        }
+                        @(Model.AuditPushUser? @Resources.Repository_Detail_Yes: @Resources.Repository_Detail_No)
                     </div>
                 }
             </div>
@@ -189,7 +149,7 @@
                                 Component Name
                             </label>
                             <div class="sidebar-text">
-                                <input class="sidebar-removeInput" value="@ThirdParty.ComponentName" readonly/>
+                                <input class="removeVisualInput" value="@ThirdParty.ComponentName" readonly/>
                             </div>
                         </div>
                         <div class="pure-control-group">
@@ -197,7 +157,7 @@
                                 Version In Use
                             </label>
                             <div class="sidebar-text">
-                                <input class="sidebar-removeInput" value="@ThirdParty.VersionInUse" readonly />
+                                <input class="removeVisualInput" value="@ThirdParty.VersionInUse" readonly />
                             </div>
                         </div>
                         <div class="pure-control-group">
@@ -205,7 +165,7 @@
                                 Date Updated
                             </label>
                             <div class="sidebar-text">
-                                <input class="sidebar-removeInput" value="@ThirdParty.DateUpdated" readonly />
+                                <input class="removeVisualInput" value="@ThirdParty.DateUpdated" readonly />
                             </div>
                         </div>
                     }
@@ -219,7 +179,7 @@
                             Service Account Name
                         </label>
                         <div class="sidebar-text">
-                            <input class="sidebar-removeInput" value="@ServiceAccount.AccountName" readonly />
+                            <input class="removeVisualInput" value="@ServiceAccount.AccountName" readonly />
                         </div>
                     </div>
                     <div class="pure-control-group">
@@ -229,11 +189,11 @@
                         <div class="sidebar-text">
                             @if (@ServiceAccount.IsPassManager == true)
                             {
-                                <input class="sidebar-removeInput" value="Yes" readonly />
+                                <input class="removeVisualInput" value="Yes" readonly />
                             }
                             else
                             {
-                                <input class="sidebar-removeInput" value="No" readonly />
+                                <input class="removeVisualInput" value="No" readonly />
                             }
                         </div>
                     </div>
@@ -242,7 +202,7 @@
                             Password Last Updated
                         </label>
                         <div class="sidebar-text">
-                            <input class="sidebar-removeInput" value="@ServiceAccount.PassLastChanged" readonly />
+                            <input class="removeVisualInput" value="@ServiceAccount.PassLastChanged" readonly />
                         </div>
                     </div>
                 }
