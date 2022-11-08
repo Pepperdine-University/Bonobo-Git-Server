@@ -2,9 +2,11 @@
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Web.Services.Description;
 using Unity;
 
 namespace Bonobo.Git.Server.Data
@@ -46,7 +48,7 @@ namespace Bonobo.Git.Server.Data
                     AuditPushUser = repo.AuditPushUser,
                     AllowAnonymousPush = repo.AllowAnonPush,
                     Logo = repo.Logo
-                }).ToList();
+            }).ToList();
             }
         }
 
@@ -120,7 +122,8 @@ namespace Bonobo.Git.Server.Data
                     AuditPushUser = model.AuditPushUser,
                     LinksUseGlobal = model.LinksUseGlobal,
                     LinksUrl = model.LinksUrl,
-                    LinksRegex = model.LinksRegex
+                    LinksRegex = model.LinksRegex,
+                    ServiceAccounts = model.ServiceAccounts
                 };
                 database.Repositories.Add(repository);
                 AddMembers(model.Users.Select(x => x.Id), model.Administrators.Select(x => x.Id), model.Teams.Select(x => x.Id), repository, database);
@@ -162,6 +165,7 @@ namespace Bonobo.Git.Server.Data
                     repo.LinksRegex = model.LinksRegex;
                     repo.LinksUrl = model.LinksUrl;
                     repo.LinksUseGlobal = model.LinksUseGlobal;
+                    repo.ServiceAccounts = model.ServiceAccounts;
 
                     if (model.Logo != null)
                         repo.Logo = model.Logo;
@@ -190,7 +194,7 @@ namespace Bonobo.Git.Server.Data
                 Members = t.Users.Select(user => user.ToModel()).ToArray()
             };
         }
-
+       
         private RepositoryModel ConvertToModel(Repository item)
         {
             if (item == null)
@@ -213,8 +217,8 @@ namespace Bonobo.Git.Server.Data
                 Logo = item.Logo,
                 LinksRegex = item.LinksRegex,
                 LinksUrl = item.LinksUrl,
-                LinksUseGlobal = item.LinksUseGlobal
-
+                LinksUseGlobal = item.LinksUseGlobal,
+                ServiceAccounts = item.ServiceAccounts.ToList()
             };
         }
 

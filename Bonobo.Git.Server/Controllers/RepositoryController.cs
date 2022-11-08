@@ -219,6 +219,12 @@ namespace Bonobo.Git.Server.Controllers
                 model.IsCurrentUserAdministrator = RepositoryPermissionService.HasPermission(User.Id(), model.Id, RepositoryAccessLevel.Administer);
                 SetGitUrls(model);
             }
+            using (var browser = new RepositoryBrowser(Path.Combine(UserConfiguration.Current.Repositories, model.Name)))
+            {
+                string defaultReferenceName;
+                browser.BrowseTree(null, null, out defaultReferenceName);
+                RouteData.Values.Add("encodedName", defaultReferenceName);
+            }
 
             return View(model);
         }
@@ -233,6 +239,12 @@ namespace Bonobo.Git.Server.Controllers
             {
                 model.IsCurrentUserAdministrator = RepositoryPermissionService.HasPermission(User.Id(), model.Id, RepositoryAccessLevel.Administer);
                 SetGitUrls(model);
+            }
+            using (var browser = new RepositoryBrowser(Path.Combine(UserConfiguration.Current.Repositories, model.Name)))
+            {
+                string defaultReferenceName;
+                browser.BrowseTree(null, null, out defaultReferenceName);
+                RouteData.Values.Add("encodedName", defaultReferenceName);
             }
 
             return View(model);
@@ -317,7 +329,9 @@ namespace Bonobo.Git.Server.Controllers
                     Logo = new RepositoryLogoDetailModel(repo.Logo),
                     Files = files.OrderByDescending(i => i.IsTree).ThenBy(i => i.Name),
                     PersonalGitUrl = GetUrls(repo.Name, "PersonalUrl"),
-                    GitUrl = GetUrls(repo.Name, "GitUrl")
+                    GitUrl = GetUrls(repo.Name, "GitUrl"),
+                    ServiceAccounts = repo.ServiceAccounts
+                    
                 };
 
                 if (includeDetails)
@@ -748,6 +762,7 @@ namespace Bonobo.Git.Server.Controllers
                 LinksUseGlobal = model.LinksUseGlobal,
                 LinksRegex = (model.LinksUseGlobal? UserConfiguration.Current.LinksRegex: model.LinksRegex),
                 LinksUrl = (model.LinksUseGlobal ? UserConfiguration.Current.LinksUrl : model.LinksUrl),
+                ServiceAccounts = model.ServiceAccounts
             };
         }
 

@@ -1,4 +1,5 @@
 using Bonobo.Git.Server.App_GlobalResources;
+using Bonobo.Git.Server.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,6 +22,7 @@ namespace Bonobo.Git.Server.Data
         private ICollection<Team> _teams;
         private ICollection<User> _administrators;
         private ICollection<User> _users;
+        private ICollection<ServiceAccount> _serviceAccounts;
 
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -29,7 +31,7 @@ namespace Bonobo.Git.Server.Data
         public bool Anonymous { get; set; }
         public byte[] Logo { get; set; }
         public RepositoryPushMode AllowAnonymousPush { get; set; }
-
+        
         public virtual ICollection<Team> Teams
         {
             get
@@ -66,6 +68,17 @@ namespace Bonobo.Git.Server.Data
             }
         }
 
+        public virtual ICollection<ServiceAccount> ServiceAccounts
+        {
+            get
+            {
+                return _serviceAccounts ?? (_serviceAccounts = new List<ServiceAccount>());
+            }
+            set
+            {
+                _serviceAccounts = value;
+            }
+        }
         public Repository()
         {
             LinksUseGlobal = true;

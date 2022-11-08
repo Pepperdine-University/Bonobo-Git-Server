@@ -1,7 +1,9 @@
 ﻿
+using Bonobo.Git.Server.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Bonobo.Git.Server.Data.Update.Pre600ADBackend
@@ -54,6 +56,7 @@ namespace Bonobo.Git.Server.Data.Update.Pre600ADBackend
         public bool AuditPushUser { get; set; }
         public byte[] Logo { get; set; }
         public bool RemoveLogo { get; set; }
+        public List<ServiceAccount> ServiceAccounts { get; set; }
     }
 
     public class Pre600Functions

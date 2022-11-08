@@ -37,7 +37,7 @@ namespace Bonobo.Git.Server.Models
         public string LinksRegex { get; set; }
         public string LinksUrl { get; set; }
         public bool LinksUseGlobal { get; set; }
-
+        public List<ServiceAccount> ServiceAccounts { get; set; }
         public RepositoryModel()
         {
             AllowAnonymousPush = RepositoryPushMode.Global;
@@ -116,14 +116,9 @@ namespace Bonobo.Git.Server.Models
 
         [Display(ResourceType = typeof(Resources), Name = "Repository_Detail_Users")]
         public UserModel[] Users { get; set; }
-        public List<RepositoryServiceAccountModel> ServiceAccounts { get; set; }
-        public RepositoryServiceAccountModel[] ServiceAccountsTracking { get; set; } = new RepositoryServiceAccountModel[1]
-       {
-            new RepositoryServiceAccountModel()
-            {
-                AccountName = "Hello World", PassLastChanged = 0, IsPassManager = false
-            }
-       };
+        public List<ServiceAccount> ServiceAccounts { get; set; }
+
+
         public Guid[] PostedSelectedUsers { get; set; }
         public UserModel[] AllUsers { get; set; }
 
@@ -231,6 +226,7 @@ namespace Bonobo.Git.Server.Models
         public string PersonalGitUrl { get; set; }
         public RepositoryLogoDetailModel Logo { get; set; }
         public IEnumerable<RepositoryTreeDetailModel> Files { get; set; }
+        public List<ServiceAccount> ServiceAccounts { get; set; }
     }
 
     public class RepositoryCommitsModel
@@ -349,13 +345,15 @@ namespace Bonobo.Git.Server.Models
         public string[] Lines { get; set; }
     }
 
-    public class RepositoryServiceAccountModel
+/*    public class RepositoryServiceAccountModel
     {
-        public string AccountName { get; set; }
-        public bool IsPassManager { get; set; }
+        public string ServiceAccountName { get; set; }
+        public bool InPassManager { get; set; }
         public int PassLastChanged { get; set; }
-        public RepositoryDetailModel RepositoryDetail { get; set; }
+        public string Id { get; set; }
+        public string RepositoryId { get; set; }
     }
+*/
 
     public class RepositoryLogoDetailModel
     {

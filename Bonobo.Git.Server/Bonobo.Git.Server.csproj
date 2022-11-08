@@ -284,6 +284,7 @@
     <Compile Include="Data\ADCachedSearchResult.cs" />
     <Compile Include="Data\ADRepositoryRepository.cs" />
     <Compile Include="Data\ADTeamRepository.cs" />
+    <Compile Include="Data\ServiceAccount.cs" />
     <Compile Include="Data\DatabaseResetManager.cs" />
     <Compile Include="Data\INameProperty.cs" />
     <Compile Include="Data\Update\ADBackend\ADBackendPre6.0.0Models.cs" />

@@ -1,6 +1,7 @@
 using System.Data.Common;
 using Bonobo.Git.Server.Data.Mapping;
 using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace Bonobo.Git.Server.Data
 {
@@ -10,6 +11,7 @@ namespace Bonobo.Git.Server.Data
         public DbSet<Role> Roles { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<ServiceAccount> ServiceAccounts { get; set; }
 
 
         static BonoboGitServerContext()

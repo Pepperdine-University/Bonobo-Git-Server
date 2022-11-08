@@ -117,7 +117,7 @@
                                 Component Name
                             </label>
                             <div class="sidebar-text">
-                                <input class="removeVisualInput" value="@ThirdParty.ComponentName" readonly/>
+                                <input class="removeVisualInput" value="@ThirdParty.ComponentName" readonly />
                             </div>
                         </div>
                         <div class="pure-control-group">
@@ -139,41 +139,45 @@
                     }
                 </div>
             </div>
-            <div class="sidebar-bordergrid bottom">
-                @foreach (RepositoryServiceAccountModel ServiceAccount in Model.ServiceAccountsTracking)
+            <div class="sidebar-bordergrid bottom" @*id="bottomBar"*@>
+                @if (Model.ServiceAccounts.Count > 0)
                 {
-                    <div class="pure-control-group">
-                        <label>
-                            Service Account Name
-                        </label>
-                        <div class="sidebar-text">
-                            <input class="removeVisualInput" value="@ServiceAccount.AccountName" readonly />
+                    foreach (Bonobo.Git.Server.Data.ServiceAccount serviceAccount in Model.ServiceAccounts)
+                    {
+                        <div class="pure-control-group">
+                            <label>
+                                Service Account Name
+                            </label>
+                            <div class="sidebar-text">
+                                <input class="removeVisualInput" value="@serviceAccount.ServiceAccountName" readonly />
+                            </div>
                         </div>
-                    </div>
-                    <div class="pure-control-group">
-                        <label>
-                            In Password Manager
-                        </label>
-                        <div class="sidebar-text">
-                            @if (@ServiceAccount.IsPassManager == true)
-                            {
-                                <input class="removeVisualInput" value="Yes" readonly />
-                            }
-                            else
-                            {
-                                <input class="removeVisualInput" value="No" readonly />
-                            }
+                        <div class="pure-control-group">
+                            <label>
+                                In Password Manager
+                            </label>
+                            <div class="sidebar-text">
+                                @if (@serviceAccount.InPassManager == true)
+                                {
+                                    <input class="removeVisualInput" value="Yes" readonly />
+                                }
+                                else
+                                {
+                                    <input class="removeVisualInput" value="No" readonly />
+                                }
+                            </div>
                         </div>
-                    </div>
-                    <div class="pure-control-group">
-                        <label>
-                            Password Last Updated
-                        </label>
-                        <div class="sidebar-text">
-                            <input class="removeVisualInput" value="@ServiceAccount.PassLastChanged" readonly />
+                        <div class="pure-control-group">
+                            <label>
+                                Password Last Updated
+                            </label>
+                            <div class="sidebar-text">
+                                <input class="removeVisualInput" value="@serviceAccount.PassLastUpdated" readonly />
+                            </div>
                         </div>
-                    </div>
+                    }
                 }
+
             </div>
 
         </fieldset>

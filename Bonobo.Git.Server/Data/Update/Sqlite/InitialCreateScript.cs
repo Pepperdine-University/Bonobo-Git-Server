@@ -85,6 +85,16 @@ namespace Bonobo.Git.Server.Data.Update.Sqlite
                         Foreign Key ([User_Id]) References [User]([Id]),
                         Foreign Key ([Team_Id]) References [Team]([Id])
                     );
+                    
+                    CREATE TABLE IF NOT EXISTS [ServiceAccounts] (
+                        ""Id""	nvarchar(36) DEFAULT NULL,
+	                    ""ServiceAccountName""	nvarchar(36),
+	                    ""InPassManager""	BIT DEFAULT 0,
+	                    ""PassLastUpdated""	DATE DEFAULT 0,
+	                    ""RepositoryId""	nvarchar(36),
+	                    FOREIGN KEY(""RepositoryId"") REFERENCES ""Repository""(""Id""),
+	                    PRIMARY KEY(""Id"")
+                    );
 
                     ", (int)RepositoryPushMode.Global);
             }
