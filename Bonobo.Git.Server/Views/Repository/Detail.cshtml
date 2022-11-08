@@ -7,42 +7,10 @@
 {
     <div class="pure-form pure-form-aligned detail">
         <fieldset>
-            @*<div class="pure-control-group">
-            @Html.LabelFor(m => m.Name)
-            @Model.Name
-            @switch (Model.Status)
-            {
-                case RepositoryDetailStatus.Valid:
-                    break;
-                case RepositoryDetailStatus.Missing:
-                    <span class="status">(Missing)</span>
-                    break;
-                case RepositoryDetailStatus.Unknown:
-                default:
-                <span class="status">(Status Unknown)</span>
-                    break;
-            }
-        </div>*@
-            @*          <div class="pure-control-group">
-            <label>@Resources.Repository_Detail_Location</label>
-            <button class="pure-button copy-to-clip-button" data-clipboard-target=".git-url-text"><i class="fa fa-copy"></i>@Resources.Copy</button>
-            <span class="git-url-text">@Model.GitUrl</span>
-        </div>
-
-        @if (User.Identity.IsAuthenticated) {
-            <div class="pure-control-group">
-                <label>
-                    @Resources.Repository_Detail_Location_Personal
-                </label>
-                <button class="pure-button copy-to-clip-button" data-clipboard-target=".personal-url-text"><i class="fa fa-copy"></i>@Resources.Copy</button>
-                <span class="personal-url-text">@Model.PersonalGitUrl</span>
-            </div>
-        }
-            *@
             <div class="sidebar-bordergrid top">
                 <div class="pure-control-group">
                     @Html.LabelFor(m => m.Description)
-                    <div class="sidebar-text description">
+                    <div class="sidebar-text">
                         @Model.Description
                     </div>
                 </div>

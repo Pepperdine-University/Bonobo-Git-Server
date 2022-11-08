@@ -219,12 +219,6 @@ namespace Bonobo.Git.Server.Controllers
                 model.IsCurrentUserAdministrator = RepositoryPermissionService.HasPermission(User.Id(), model.Id, RepositoryAccessLevel.Administer);
                 SetGitUrls(model);
             }
-            //using (var browser = new RepositoryBrowser(Path.Combine(UserConfiguration.Current.Repositories, model.Name)))
-            //{
-            //    string defaultReferenceName;
-            //    browser.BrowseTree(null, null, out defaultReferenceName);
-            //    RouteData.Values.Add("encodedName", defaultReferenceName);
-            //}
 
             return View(model);
         }
@@ -240,12 +234,6 @@ namespace Bonobo.Git.Server.Controllers
                 model.IsCurrentUserAdministrator = RepositoryPermissionService.HasPermission(User.Id(), model.Id, RepositoryAccessLevel.Administer);
                 SetGitUrls(model);
             }
-            //using (var browser = new RepositoryBrowser(Path.Combine(UserConfiguration.Current.Repositories, model.Name)))
-            //{
-            //    string defaultReferenceName;
-            //    browser.BrowseTree(null, null, out defaultReferenceName);
-            //    RouteData.Values.Add("encodedName", defaultReferenceName);
-            //}
 
             return View(model);
         }

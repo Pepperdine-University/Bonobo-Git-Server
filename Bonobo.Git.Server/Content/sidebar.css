@@ -24,7 +24,6 @@
 }
 .pure-form.pure-form-aligned.detail fieldset {
     padding: 0.8em 0.8em 0.8em 0.8em;
-    /*background-color: #E6E6E6;*/ /*hsla(210,18%,87%,1)*/
     border-radius: 10px;
     margin-bottom: 25px;
     outline: 4px solid #2d3e50;
@@ -56,12 +55,7 @@
 .pure-form-aligned .sidebar-bordergrid .pure-control-group label {
     display: inline-block;
     vertical-align: middle;
-    /*--sidebar-label-width: 13em;*/
     width: var(--sidebar-label-width);
-    /*margin: 0 1em 0 0;*/
-}
-.sidebar-text.description {
-    /*margin-top: 0.4em;*/
 }
 .sidebar-text {
     margin-left: 1em
@@ -76,12 +70,6 @@
 }
 
 /* ---------- Responsive sidebar media queries ---------- */
-/*for screen size responsive sidebar*/
-/*@media (max-width: 1300px) {
-    .tree-grid-layout {
-        --sidebar-width: 300px;
-    }
-}*/
 @media (max-width: 900px) {
     .tree-grid-layout {
         --sidebar-width: 0px;

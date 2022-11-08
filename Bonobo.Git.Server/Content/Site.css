@@ -34,13 +34,12 @@ pre code { font-family: Consolas, monospace; }
 .pure-form em, .pure-form i.fa-info-circle { color: silver; padding-left: 0.3em; }
 .pure-form .pure-button { margin-right: 1em; }
 .pure-form.detail span { vertical-align: middle; line-height: 2em; }
-.pure-form.detail label { /*color: grey;*/ font-weight: bold;}
+.pure-form.detail label { font-weight: bold;}
 textarea.medium, input.medium { width: 30em; }
 textarea.large, input.large { width: 40em;height: 17em; }
 div.pure-control-group.checkboxlist>span { display: inline-block; }
 
 
-/*table.repositories a.detail { padding-right: 10px }*/
 table.repositories button.copy-to-clip-button { margin-left: 0px; border-radius: 5px; }
 
 .navigation { padding: 0.5em 0; text-align: right;}
@@ -88,7 +87,6 @@ tfoot td { text-align: center; border-bottom: none !important; }
 .repository-menu a:hover { text-decoration: none; }
 .Detail .repository-menu .detail, .Tree .repository-menu .browser, .Blame .repository-menu .browser, .Blob .repository-menu .browser, .Commit .repository-menu .commits, .Commits .repository-menu .commits { color: #4183c4; }
 
-/*.Repository div.detail { margin-top: 2em; }*/
 
 
 nav.branches a:hover { text-decoration: none; }
@@ -113,10 +111,8 @@ Tags .tag a { background-color: rgba(148, 190, 214, 1); border-radius: 5px; colo
 .links a:before { content: '\f0c1'; font-family: FontAwesome; margin-right: 0.25em; margin-left: 0.5em; }
 
 .Tree .pure-table tbody { font-size: 0.8em; }
-.Tree #files .path { /*width: 230px;*/ min-width: 55px }
-.Tree #files .date { /*width: 150px;*/
-    min-width: 55px
-}
+.Tree #files .path { min-width: 55px }
+.Tree #files .date { min-width: 55px }
 .breadcrumbs { padding: 7px; margin: 0; }
 .breadcrumbs em { font-weight: bold; font-style: normal; }
 .inline-form { display: inline-block; }
