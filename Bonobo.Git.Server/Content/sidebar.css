@@ -42,7 +42,11 @@
     border-bottom: hidden;
     padding-bottom: 0px;
 }
-
+.pass-info {
+    position: relative;
+    left: 50px;
+    font-size: 0.90em;
+}
 /* ---------- Inner text and label ---------- */
 .pure-form-aligned .pure-control-group label {
     text-align: right;

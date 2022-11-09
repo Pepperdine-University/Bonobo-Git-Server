@@ -116,6 +116,9 @@ namespace Bonobo.Git.Server.Models
 
         [Display(ResourceType = typeof(Resources), Name = "Repository_Detail_Users")]
         public UserModel[] Users { get; set; }
+
+        [AllowHtml]
+        [Display(ResourceType = typeof(Resources), Name = "Repository_Detail_ServiceAccounts")]
         public List<ServiceAccount> ServiceAccounts { get; set; }
 
 

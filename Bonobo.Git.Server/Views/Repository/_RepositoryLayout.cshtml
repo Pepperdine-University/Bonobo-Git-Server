@@ -17,6 +17,7 @@ else
                 <li><a href="@Url.Action("Tree", new { id = ViewBag.ID })" class="browser"><i class="fa fa-files-o"></i> @Resources.Repository_Layout_Browse</a></li>
                 <li><a href="@Url.Action("Commits", new { id = ViewBag.ID })" class="commits"><i class="fa fa-random"></i> @Resources.Repository_Layout_Commits</a></li>
                 <li><a href="@Url.Action("Tags", new { id = ViewBag.ID })" class="tags"><i class="fa fa-tag"></i> @Resources.Repository_Layout_Tags</a></li>
+                @*Dropdown Menu*@
                 <li class="dropdown pure-form">
                     <details style="display:inline-block;">
                         <summary><i class="fa fa-chevron-down"></i>@Resources.Repository_Layout_Code</summary>
@@ -26,7 +27,7 @@ else
                                 <div>
                                     @*Git URL + Copy Button*@
                                     <label>@Resources.Repository_Detail_Location</label>
-                                    <input type="text" class="git-url-text removeVisualInput" value="@Model.GitUrl" readonly/>
+                                    <input type="text" class="git-url-text removeVisualInput" value="@Model.GitUrl" readonly />
                                     <button class="pure-button copy-to-clip-button layout" data-clipboard-target=".git-url-text"><i class="fa fa-clone"></i></button>
                                 </div>
                                 @if (User.Identity.IsAuthenticated)
@@ -36,7 +37,7 @@ else
                                         <label>
                                             @Resources.Repository_Detail_Location_Personal
                                         </label>
-                                        <input type="text" class="personal-url-text removeVisualInput" value="@Model.PersonalGitUrl " readonly/>
+                                        <input type="text" class="personal-url-text removeVisualInput" value="@Model.PersonalGitUrl " readonly />
                                         <button class="pure-button copy-to-clip-button layout" data-clipboard-target=".personal-url-text"><i class="fa fa-clone"></i></button>
                                     </div>
                                 }
@@ -60,6 +61,7 @@ else
     <script>new Clipboard('.copy-to-clip-button');</script>
     <script src="https://kit.fontawesome.com/66c8834e3a.js" crossorigin="anonymous"></script>
     <script>
+        //Adds the ability to close dropdown when clicked anywhere in the page
         var details = [...document.querySelectorAll('details')];
         document.addEventListener('click', function (e) {
             if (!details.some(f => f.contains(e.target))) {

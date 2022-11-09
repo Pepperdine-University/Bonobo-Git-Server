@@ -142,39 +142,46 @@
             <div class="sidebar-bordergrid bottom" @*id="bottomBar"*@>
                 @if (Model.ServiceAccounts.Count > 0)
                 {
+                    <label>
+                        Service Accounts
+                    </label>
                     foreach (Bonobo.Git.Server.Data.ServiceAccount serviceAccount in Model.ServiceAccounts)
                     {
-                        <div class="pure-control-group">
-                            <label>
-                                Service Account Name
-                            </label>
-                            <div class="sidebar-text">
-                                <input class="removeVisualInput" value="@serviceAccount.ServiceAccountName" readonly />
-                            </div>
+                        @*<div class="pure-control-group">
+                    <label>
+                        service account name
+                    </label>
+                    <div class="sidebar-text">
+                        <input class="removevisualinput" value="@serviceaccount.serviceaccountname" readonly />
+                    </div>
+                </div>*@
+                <details style="display:inline-block;">
+                    <summary>
+                        <div class="sidebar-text">
+                            <i class="fa fa-chevron-down"></i><input class="removeVisualInput" value="@serviceAccount.ServiceAccountName" readonly />
                         </div>
+                    </summary>
+                    <div class="pass-info">
                         <div class="pure-control-group">
-                            <label>
-                                In Password Manager
-                            </label>
-                            <div class="sidebar-text">
-                                @if (@serviceAccount.InPassManager == true)
+                            <div >
+                                @if (@serviceAccount.InPassManager)
                                 {
-                                    <input class="removeVisualInput" value="Yes" readonly />
+                                    <label>In Password Manager <i  style="color:green" class="fa fa-check-square"></i></label>
                                 }
                                 else
                                 {
-                                    <input class="removeVisualInput" value="No" readonly />
+                                    <label>Not in Password Manager <i style="color:red" class="fa fa-x"></i></label>
                                 }
                             </div>
                         </div>
                         <div class="pure-control-group">
-                            <label>
-                                Password Last Updated
-                            </label>
+                            <label>Password Last Updated</label>
                             <div class="sidebar-text">
                                 <input class="removeVisualInput" value="@serviceAccount.PassLastUpdated" readonly />
                             </div>
                         </div>
+                    </div>
+                </details>
                     }
                 }
 
