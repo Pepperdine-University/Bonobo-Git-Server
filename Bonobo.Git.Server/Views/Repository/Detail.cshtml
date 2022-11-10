@@ -70,10 +70,9 @@
                 {
                     <div class="pure-control-group">
                         @{
-                            bool global = Model.AllowAnonymousPush.Equals(Bonobo.Git.Server.Data.RepositoryPushMode.Global);
-                            bool currentGlobal = UserConfiguration.Current.AllowAnonymousPush;
-                            bool currentLocal = Model.AllowAnonymousPush.Equals(Bonobo.Git.Server.Data.RepositoryPushMode.Yes);
-                            <label><i class="fa-regular fa-square@(global? (currentGlobal? "-check": ""): (currentLocal? "-check": ""))" title="@(global? (currentGlobal? "Yes": "No"): (currentLocal? "Yes": "No"))"></i> Anonymous Push</label>
+                            bool pushMode = Model.AllowAnonymousPush == Bonobo.Git.Server.Data.RepositoryPushMode.Yes 
+                                            || (Model.AllowAnonymousPush == Bonobo.Git.Server.Data.RepositoryPushMode.Global && UserConfiguration.Current.AllowAnonymousPush);
+                            <label><i class="fa-regular fa-square@(pushMode? "-check": "")" title="@(pushMode? "Yes": "No")"></i> Anonymous Push</label>
                         }
                     </div>
                 }
@@ -139,7 +138,7 @@
                     }
                 </div>
             </div>
-            <div class="sidebar-bordergrid bottom" @*id="bottomBar"*@>
+            <div class="sidebar-bordergrid bottom">
                 @if (Model.ServiceAccounts.Count > 0)
                 {
                     <label>

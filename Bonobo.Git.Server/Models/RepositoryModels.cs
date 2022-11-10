@@ -17,6 +17,7 @@ using LibGit2Sharp;
 using System.Web.Mvc;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.AccessControl;
+using Bonobo.Git.Server.Configuration;
 
 namespace Bonobo.Git.Server.Models
 {
