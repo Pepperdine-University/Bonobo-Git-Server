@@ -218,7 +218,9 @@ namespace Bonobo.Git.Server.Data
                 LinksRegex = item.LinksRegex,
                 LinksUrl = item.LinksUrl,
                 LinksUseGlobal = item.LinksUseGlobal,
-                ServiceAccounts = item.ServiceAccounts.ToList()
+                ServiceAccounts = item.ServiceAccounts.ToList(),
+                //Dependencies = item.Dependencies.ToList(),
+
             };
         }
 

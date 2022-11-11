@@ -330,7 +330,8 @@ namespace Bonobo.Git.Server.Controllers
                     Files = files.OrderByDescending(i => i.IsTree).ThenBy(i => i.Name),
                     PersonalGitUrl = GetUrls(repo.Name, "PersonalUrl"),
                     GitUrl = GetUrls(repo.Name, "GitUrl"),
-                    ServiceAccounts = repo.ServiceAccounts
+                    ServiceAccounts = repo.ServiceAccounts,
+                    Dependencies = repo.Dependencies
                     
                 };
 
@@ -762,7 +763,8 @@ namespace Bonobo.Git.Server.Controllers
                 LinksUseGlobal = model.LinksUseGlobal,
                 LinksRegex = (model.LinksUseGlobal? UserConfiguration.Current.LinksRegex: model.LinksRegex),
                 LinksUrl = (model.LinksUseGlobal ? UserConfiguration.Current.LinksUrl : model.LinksUrl),
-                ServiceAccounts = model.ServiceAccounts
+                ServiceAccounts = model.ServiceAccounts,
+                Dependencies = model.Dependencies
             };
         }
 

@@ -138,6 +138,7 @@ namespace Bonobo.Git.Server.Data.Update.ADBackendUpdate
                 newrepo.Logo = repo.Logo;
                 newrepo.RemoveLogo = repo.RemoveLogo;
                 newrepo.ServiceAccounts = repo.ServiceAccounts;
+                newrepo.Dependencies = repo.Dependencies;
 
                 var list = new List<Models.UserModel>();
                 foreach (var user in repo.Users)

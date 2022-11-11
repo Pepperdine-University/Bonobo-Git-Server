@@ -70,7 +70,7 @@
                 {
                     <div class="pure-control-group">
                         @{
-                            bool pushMode = Model.AllowAnonymousPush == Bonobo.Git.Server.Data.RepositoryPushMode.Yes 
+                            bool pushMode = Model.AllowAnonymousPush == Bonobo.Git.Server.Data.RepositoryPushMode.Yes
                                             || (Model.AllowAnonymousPush == Bonobo.Git.Server.Data.RepositoryPushMode.Global && UserConfiguration.Current.AllowAnonymousPush);
                             <label><i class="fa-regular fa-square@(pushMode? "-check": "")" title="@(pushMode? "Yes": "No")"></i> Anonymous Push</label>
                         }
@@ -107,16 +107,17 @@
                     </div>
                 }
             </div>
+@*
             <div class="sidebar-bordergrid">
                 <div>
-                    @foreach (ThirdPartyModel ThirdParty in Model.ThirdPartyComponents)
+                    @foreach (Bonobo.Git.Server.Data.Dependencies dependencies in Model.Dependencies)
                     {
                         <div class="pure-control-group">
                             <label>
                                 Component Name
                             </label>
                             <div class="sidebar-text">
-                                <input class="removeVisualInput" value="@ThirdParty.ComponentName" readonly />
+                                <input class="sidebar-removeInput" value="@dependencies.DateUpdated" readonly />
                             </div>
                         </div>
                         <div class="pure-control-group">
@@ -124,67 +125,67 @@
                                 Version In Use
                             </label>
                             <div class="sidebar-text">
-                                <input class="removeVisualInput" value="@ThirdParty.VersionInUse" readonly />
+                                <input class="sidebar-removeInput" value="@dependencies.VersionInUse" readonly />
                             </div>
                         </div>
                         <div class="pure-control-group">
                             <label>
-                                Date Updated
+                                Component Name
                             </label>
                             <div class="sidebar-text">
-                                <input class="removeVisualInput" value="@ThirdParty.DateUpdated" readonly />
+                                <input class="sidebar-removeInput" value="@dependencies.KnownDependencies.ComponentName" readonly />
                             </div>
                         </div>
                     }
                 </div>
-            </div>
-            <div class="sidebar-bordergrid bottom">
-                @if (Model.ServiceAccounts.Count > 0)
-                {
-                    <label>
-                        Service Accounts
-                    </label>
-                    foreach (Bonobo.Git.Server.Data.ServiceAccount serviceAccount in Model.ServiceAccounts)
-                    {
-                        @*<div class="pure-control-group">
-                    <label>
-                        service account name
-                    </label>
-                    <div class="sidebar-text">
-                        <input class="removevisualinput" value="@serviceaccount.serviceaccountname" readonly />
-                    </div>
-                </div>*@
-                <details style="display:inline-block;">
-                    <summary>
-                        <div class="sidebar-text">
-                            <i class="fa fa-chevron-down"></i><input class="removeVisualInput" value="@serviceAccount.ServiceAccountName" readonly />
-                        </div>
-                    </summary>
-                    <div class="pass-info">
-                        <div class="pure-control-group">
-                            <div >
-                                @if (@serviceAccount.InPassManager)
-                                {
-                                    <label>In Password Manager <i  style="color:green" class="fa fa-check-square"></i></label>
-                                }
-                                else
-                                {
-                                    <label>Not in Password Manager <i style="color:red" class="fa fa-x"></i></label>
-                                }
-                            </div>
-                        </div>
-                        <div class="pure-control-group">
-                            <label>Password Last Updated</label>
+            </div>*@
+                        <div class="sidebar-bordergrid bottom">
+                        @if (Model.ServiceAccounts.Count > 0)
+                        {
+                            <label>
+                                Service Accounts
+                            </label>
+                            foreach (Bonobo.Git.Server.Data.ServiceAccount serviceAccount in Model.ServiceAccounts)
+                            {
+                                @*<div class="pure-control-group">
+                            <label>
+                                service account name
+                            </label>
                             <div class="sidebar-text">
-                                <input class="removeVisualInput" value="@serviceAccount.PassLastUpdated" readonly />
+                                <input class="removevisualinput" value="@serviceaccount.serviceaccountname" readonly />
                             </div>
+                        </div>*@
+            <details style="display:inline-block;">
+                <summary>
+                    <div class="sidebar-text">
+                        <i class="fa fa-chevron-down"></i><input class="removeVisualInput" value="@serviceAccount.ServiceAccountName" readonly />
+                    </div>
+                </summary>
+                <div class="pass-info">
+                    <div class="pure-control-group">
+                        <div>
+                            @if (@serviceAccount.InPassManager)
+                            {
+                                <label>In Password Manager <i style="color:green" class="fa fa-check-square"></i></label>
+                            }
+                            else
+                            {
+                                <label>Not in Password Manager <i style="color:red" class="fa fa-x"></i></label>
+                            }
                         </div>
                     </div>
-                </details>
-                    }
-                }
+                    <div class="pure-control-group">
+                        <label>Password Last Updated</label>
+                        <div class="sidebar-text">
+                            <input class="removeVisualInput" value="@serviceAccount.PassLastUpdated" readonly />
+                        </div>
+                    </div>
+                </div>
+            </details>
+            }
+            }
 
-            </div>
+</div>
 
         </fieldset>
     </div>

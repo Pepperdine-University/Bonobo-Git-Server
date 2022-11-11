@@ -39,6 +39,8 @@ namespace Bonobo.Git.Server.Models
         public string LinksUrl { get; set; }
         public bool LinksUseGlobal { get; set; }
         public List<ServiceAccount> ServiceAccounts { get; set; }
+        public List<Dependencies> Dependencies { get; set; }
+
         public RepositoryModel()
         {
             AllowAnonymousPush = RepositoryPushMode.Global;
@@ -115,12 +117,14 @@ namespace Bonobo.Git.Server.Models
         public string Description { get; set; }
 
 
+
         [Display(ResourceType = typeof(Resources), Name = "Repository_Detail_Users")]
         public UserModel[] Users { get; set; }
 
         [AllowHtml]
         [Display(ResourceType = typeof(Resources), Name = "Repository_Detail_ServiceAccounts")]
         public List<ServiceAccount> ServiceAccounts { get; set; }
+        public List<Dependencies> Dependencies { get; set; }
 
 
         public Guid[] PostedSelectedUsers { get; set; }
@@ -167,18 +171,6 @@ namespace Bonobo.Git.Server.Models
         public string LinksUrl { get; set; }
         [Display(ResourceType = typeof(Resources), Name = "Repository_Detail_LinksUseGlobal")]
         public bool LinksUseGlobal { get; set; }
-
-        public ThirdPartyModel[] ThirdPartyComponents { get; set; } = new ThirdPartyModel[1]
-       {
-            new ThirdPartyModel()
-            {
-                ComponentName = "Hello World", VersionInUse = "1.0.0", DateUpdated = "10/10/1000"
-            }
-       };
-
-        //Navigation properties (1 (Repo) > Many (ThirdParyMode)
-        //Foreign key 
-        public List<ThirdPartyModel> ThirdPartyModels { get; set; }
 
     }
 
@@ -231,6 +223,7 @@ namespace Bonobo.Git.Server.Models
         public RepositoryLogoDetailModel Logo { get; set; }
         public IEnumerable<RepositoryTreeDetailModel> Files { get; set; }
         public List<ServiceAccount> ServiceAccounts { get; set; }
+        public List<Dependencies> Dependencies { get; set; }
     }
 
     public class RepositoryCommitsModel
@@ -358,6 +351,24 @@ namespace Bonobo.Git.Server.Models
         public string RepositoryId { get; set; }
     }
 */
+
+/*    public class Dependency
+    {
+        // Primary Key
+        public string Id { get; set; }
+        public string DateUpdated { get; set; }
+        public string VersionInUse { get; set; }
+        public virtual Bonobo.Git.Server.Data.Repository Repository { get; set; }
+        public Guid RepositoryId { get; set; }
+    }
+
+    public class KnownDependency
+    {
+        public int Id { get; set; }
+        public string ComponentName { get; set; }
+        public virtual Dependency Dependencies { get; set; }
+        public Guid DependenciesId { get; set; }
+    }*/
 
     public class RepositoryLogoDetailModel
     {

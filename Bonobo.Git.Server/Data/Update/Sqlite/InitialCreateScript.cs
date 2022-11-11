@@ -96,6 +96,23 @@ namespace Bonobo.Git.Server.Data.Update.Sqlite
 	                    PRIMARY KEY(""Id"")
                     );
 
+                    CREATE TABLE IF NOT EXISTS [KnownDependencies] (
+                        ""ComponentName"" VarChar(255),
+                        ""KnownDependencies_Id"" INTEGER,
+                        PRIMARY KEY(""KnownDependencies_Id"")
+                    );
+
+                    CREATE TABLE IF NOT EXISTS [Dependencies] (
+                        ""DateUpdated"" VarChar(255),
+                        ""VersionInUse"" VarChar(255),
+                        ""Id"" Char(36),
+                        ""RepositoryId"" NvarChar(36),
+                        ""KnownDependencies_Id"" INTEGER,
+                        FOREIGN KEY(""KnownDependencies_Id"") REFERENCES ""KnownDependencies""(""KnownDependencies_Id""),
+                        FOREIGN KEY(""RepositoryId"") REFERENCES ""Repository""(""Id""),
+                        PRIMARY KEY(""Id"")
+                        );
+
                     ", (int)RepositoryPushMode.Global);
             }
         }

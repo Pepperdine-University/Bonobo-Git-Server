@@ -2,6 +2,7 @@ using System.Data.Common;
 using Bonobo.Git.Server.Data.Mapping;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using Bonobo.Git.Server.Models;
 
 namespace Bonobo.Git.Server.Data
 {
@@ -12,6 +13,9 @@ namespace Bonobo.Git.Server.Data
         public DbSet<Team> Teams { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<ServiceAccount> ServiceAccounts { get; set; }
+        public DbSet<Dependencies> Dependencies { get; set; }
+        public DbSet<KnownDependencies> KnownDependencies { get; set; }
+
 
 
         static BonoboGitServerContext()

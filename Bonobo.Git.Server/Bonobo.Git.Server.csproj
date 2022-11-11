@@ -284,6 +284,8 @@
     <Compile Include="Data\ADCachedSearchResult.cs" />
     <Compile Include="Data\ADRepositoryRepository.cs" />
     <Compile Include="Data\ADTeamRepository.cs" />
+    <Compile Include="Data\Dependencies.cs" />
+    <Compile Include="Data\KnownDependencies.cs" />
     <Compile Include="Data\ServiceAccount.cs" />
     <Compile Include="Data\DatabaseResetManager.cs" />
     <Compile Include="Data\INameProperty.cs" />
@@ -321,7 +323,6 @@
     <Compile Include="Helpers\MembershipHelper.cs" />
     <Compile Include="Helpers\RepositoryCommitModelHelpers.cs" />
     <Compile Include="Models\RepositoryCommitTitle.cs" />
-    <Compile Include="Models\ThirdPartyModel.cs" />
     <Compile Include="Owin\NativeMethods.cs" />
     <Compile Include="Owin\WindowsAuthenticationDefaults.cs" />
     <Compile Include="Owin\WindowsAuthenticationExtensions.cs" />
