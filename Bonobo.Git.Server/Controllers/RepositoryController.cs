@@ -1,4 +1,4 @@
-﻿using Bonobo.Git.Server.App_GlobalResources;
+using Bonobo.Git.Server.App_GlobalResources;
 using Bonobo.Git.Server.Configuration;
 using Bonobo.Git.Server.Data;
 using Bonobo.Git.Server.Data.Update;
@@ -219,12 +219,6 @@ namespace Bonobo.Git.Server.Controllers
                 model.IsCurrentUserAdministrator = RepositoryPermissionService.HasPermission(User.Id(), model.Id, RepositoryAccessLevel.Administer);
                 SetGitUrls(model);
             }
-            using (var browser = new RepositoryBrowser(Path.Combine(UserConfiguration.Current.Repositories, model.Name)))
-            {
-                string defaultReferenceName;
-                browser.BrowseTree(null, null, out defaultReferenceName);
-                RouteData.Values.Add("encodedName", defaultReferenceName);
-            }
 
             return View(model);
         }
@@ -239,12 +233,6 @@ namespace Bonobo.Git.Server.Controllers
             {
                 model.IsCurrentUserAdministrator = RepositoryPermissionService.HasPermission(User.Id(), model.Id, RepositoryAccessLevel.Administer);
                 SetGitUrls(model);
-            }
-            using (var browser = new RepositoryBrowser(Path.Combine(UserConfiguration.Current.Repositories, model.Name)))
-            {
-                string defaultReferenceName;
-                browser.BrowseTree(null, null, out defaultReferenceName);
-                RouteData.Values.Add("encodedName", defaultReferenceName);
             }
 
             return View(model);
@@ -298,8 +286,6 @@ namespace Bonobo.Git.Server.Controllers
         [WebAuthorizeRepository]
         public ActionResult Tree(Guid id, string encodedName, string encodedPath)
         {
-            bool includeDetails = Request.IsAjaxRequest();
-
             ViewBag.ID = id;
             var name = PathEncoder.Decode(encodedName);
             var path = PathEncoder.Decode(encodedPath);
@@ -309,7 +295,7 @@ namespace Bonobo.Git.Server.Controllers
             using (var browser = new RepositoryBrowser(Path.Combine(UserConfiguration.Current.Repositories, repo.Name)))
             {
                 string referenceName;
-                var files = browser.BrowseTree(name, path, out referenceName, includeDetails).ToList();
+                var files = browser.BrowseTree(name, path, out referenceName, true).ToList();
 
                 var readme = files.FirstOrDefault(x => x.Name.Equals("readme.md", StringComparison.OrdinalIgnoreCase));
                 string readmeTxt = string.Empty;
@@ -332,19 +318,11 @@ namespace Bonobo.Git.Server.Controllers
                     GitUrl = GetUrls(repo.Name, "GitUrl"),
                     ServiceAccounts = repo.ServiceAccounts,
                     Dependencies = repo.Dependencies
-                    
                 };
 
-                if (includeDetails)
-                {
-                    return Json(model, JsonRequestBehavior.AllowGet);
-                }
-                else
-                {
                     PopulateBranchesData(browser, referenceName);
                     PopulateAddressBarData(path);
                     return View(model);
-                }
             }
         }
 

@@ -1,4 +1,4 @@
-﻿@using Bonobo.Git.Server.Extensions
+@using Bonobo.Git.Server.Extensions
 @model RepositoryTreeModel
 @{
     Layout = "~/Views/Repository/_RepositoryLayout.cshtml";
@@ -37,8 +37,12 @@
                                     @Html.ActionLink(item.Name, "Blob", new { id = ViewBag.ID, encodedName = PathEncoder.Encode(Model.Branch), encodedPath = PathEncoder.Encode(item.Path, allowSlash: true) }, new { @class = item.IsImage ? "image" : "file" })
                                 }
                             </td>
-                            <td class="message"></td>
-                            <td class="date"></td>
+                            <td class="message">
+                                @item.CommitMessage
+                            </td>
+                            <td class="date">
+                                @item.CommitDate
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -67,20 +71,6 @@
 
 @section scripts
 {
-    <script>
-        $(function () {
-            var url = '@Url.Action("Tree", ViewContext.RouteData.Values)';
-            $.ajax({ url: url, success: detailsLoaded, type: 'GET', dataType: 'json', cache: false });
-
-            function detailsLoaded(model) {
-                $("#files tbody > tr").each(function (index) {
-                    $(this).find(".message").html(model.Files[index].CommitMessage);
-                    $(this).find(".date").html(model.Files[index].CommitDateString);
-                });
-            }
-        });
-    </script>
-
     @if (!string.IsNullOrEmpty(Model.Readme)) {
         <script>hljs.configure({ tabReplace: '    ' }); hljs.initHighlightingOnLoad();</script>
     }
