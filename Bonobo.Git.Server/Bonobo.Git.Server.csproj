@@ -284,8 +284,9 @@
     <Compile Include="Data\ADCachedSearchResult.cs" />
     <Compile Include="Data\ADRepositoryRepository.cs" />
     <Compile Include="Data\ADTeamRepository.cs" />
-    <Compile Include="Data\Dependencies.cs" />
-    <Compile Include="Data\KnownDependencies.cs" />
+    <Compile Include="Data\Dependency.cs" />
+    <Compile Include="Data\KnownDependency.cs" />
+    <Compile Include="Data\Mapping\DependencyMap.cs" />
     <Compile Include="Data\ServiceAccount.cs" />
     <Compile Include="Data\DatabaseResetManager.cs" />
     <Compile Include="Data\INameProperty.cs" />
@@ -704,7 +705,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Resources.cs-CZ.resx" />
     <EmbeddedResource Include="App_GlobalResources\Resources.de-DE.resx" />
-    <EmbeddedResource Include="App_GlobalResources\Resources.es-ES.resx" />
+    <EmbeddedResource Include="App_GlobalResources\Resources.es-ES.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Resources.da-DK.resx" />
     <EmbeddedResource Include="App_GlobalResources\Resources.fr-FR.resx" />
     <EmbeddedResource Include="App_GlobalResources\Resources.ja-JP.resx" />

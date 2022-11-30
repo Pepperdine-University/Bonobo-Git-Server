@@ -57,7 +57,7 @@ namespace Bonobo.Git.Server.Data.Update.Pre600ADBackend
         public byte[] Logo { get; set; }
         public bool RemoveLogo { get; set; }
         public List<ServiceAccount> ServiceAccounts { get; set; }
-        public List<Dependencies> Dependencies { get; set; }
+        public List<Dependency> Dependencies { get; set; }
     }
 
     public class Pre600Functions

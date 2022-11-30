@@ -7,18 +7,16 @@ using System.Web;
 
 namespace Bonobo.Git.Server.Data
 {
-    public partial class Dependencies
+    public partial class Dependency
     {
         public string Id { get; set; }
         public string DateUpdated { get; set; }
         public string VersionInUse { get; set; }
-        [Required]
-        public virtual Bonobo.Git.Server.Data.Repository Repository { get; set; }
-        //[Key, ForeignKey("RepositoryId")]
+        
         public Guid RepositoryId { get; set; }
-        [Required]
-        public virtual Bonobo.Git.Server.Data.KnownDependencies KnownDependencies { get; set; }
-        //[Key, ForeignKey("KnownDependenciesId")]
-        public string KnownDependencies_Id { get; set; }
+        public virtual Repository Repository { get; set; }
+
+        public Guid KnownDependenciesId { get; set; }
+        public virtual KnownDependency KnownDependency { get; set; }
     }
 }

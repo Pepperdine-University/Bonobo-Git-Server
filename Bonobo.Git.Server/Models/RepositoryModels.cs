@@ -39,7 +39,7 @@ namespace Bonobo.Git.Server.Models
         public string LinksUrl { get; set; }
         public bool LinksUseGlobal { get; set; }
         public List<ServiceAccount> ServiceAccounts { get; set; }
-        public List<Dependencies> Dependencies { get; set; }
+        public List<Dependency> Dependencies { get; set; }
 
         public RepositoryModel()
         {
@@ -124,8 +124,10 @@ namespace Bonobo.Git.Server.Models
         [AllowHtml]
         [Display(ResourceType = typeof(Resources), Name = "Repository_Detail_ServiceAccounts")]
         public List<ServiceAccount> ServiceAccounts { get; set; }
-        public List<Dependencies> Dependencies { get; set; }
 
+        [AllowHtml]
+        [Display(ResourceType = typeof(Resources), Name = "Repository_Detail_Dependencies")]
+        public List<Dependency> Dependencies { get; set; }
 
         public Guid[] PostedSelectedUsers { get; set; }
         public UserModel[] AllUsers { get; set; }
@@ -223,7 +225,7 @@ namespace Bonobo.Git.Server.Models
         public RepositoryLogoDetailModel Logo { get; set; }
         public IEnumerable<RepositoryTreeDetailModel> Files { get; set; }
         public List<ServiceAccount> ServiceAccounts { get; set; }
-        public List<Dependencies> Dependencies { get; set; }
+        public List<Dependency> Dependencies { get; set; }
     }
 
     public class RepositoryCommitsModel

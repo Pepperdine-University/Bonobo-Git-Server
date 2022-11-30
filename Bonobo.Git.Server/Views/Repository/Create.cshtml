@@ -101,39 +101,5 @@
         <a class="pure-button" href="@Url.Action("Index")"><i class="fa fa-long-arrow-left"></i> @Resources.Repository_Back</a>
         <button type="submit" class="pure-button pure-button-primary"><i class="fa fa-save"></i> @Resources.Repository_Create_Submit</button>
     </div>
-
-
-
-@*    <div class="sidebar-bordergrid">
-        <div>
-            @foreach (Bonobo.Git.Server.Data.Dependencies dependencies in Model.Dependencies)
-            {
-                <div class="pure-control-group">
-                    <label>
-                        Component Name
-                    </label>
-                    <div class="sidebar-text">
-                        <input class="sidebar-removeInput" value="@dependencies.DateUpdated" readonly />
-                    </div>
-                </div>
-                <div class="pure-control-group">
-                    <label>
-                        Version In Use
-                    </label>
-                    <div class="sidebar-text">
-                        <input class="sidebar-removeInput" value="@dependencies.VersionInUse" readonly />
-                    </div>
-                </div>
-                <div class="pure-control-group">
-                    <label>
-                        Component Name
-                    </label>
-                    <div class="sidebar-text">
-                        <input class="sidebar-removeInput" value="@dependencies.KnownDependencies.ComponentName" readonly />
-                    </div>
-                </div>
-            }
-        </div>
-    </div>*@
 </fieldset>
 }

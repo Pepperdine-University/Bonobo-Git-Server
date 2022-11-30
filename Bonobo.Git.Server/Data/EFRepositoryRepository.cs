@@ -75,7 +75,9 @@ namespace Bonobo.Git.Server.Data
         {
             using (var db = CreateContext())
             {
-                return ConvertToModel(db.Repositories.First(i => i.Id.Equals(id)));
+                return ConvertToModel(db.Repositories.Include(r => r.Dependencies
+                                                             .Select(d => d.KnownDependency))
+                                                     .First(i => i.Id.Equals(id)));
             }
         }
 
@@ -123,7 +125,8 @@ namespace Bonobo.Git.Server.Data
                     LinksUseGlobal = model.LinksUseGlobal,
                     LinksUrl = model.LinksUrl,
                     LinksRegex = model.LinksRegex,
-                    ServiceAccounts = model.ServiceAccounts
+                    ServiceAccounts = model.ServiceAccounts,
+                    Dependencies = model.Dependencies
                 };
                 database.Repositories.Add(repository);
                 AddMembers(model.Users.Select(x => x.Id), model.Administrators.Select(x => x.Id), model.Teams.Select(x => x.Id), repository, database);
@@ -166,6 +169,7 @@ namespace Bonobo.Git.Server.Data
                     repo.LinksUrl = model.LinksUrl;
                     repo.LinksUseGlobal = model.LinksUseGlobal;
                     repo.ServiceAccounts = model.ServiceAccounts;
+                    repo.Dependencies = model.Dependencies;
 
                     if (model.Logo != null)
                         repo.Logo = model.Logo;
@@ -219,7 +223,7 @@ namespace Bonobo.Git.Server.Data
                 LinksUrl = item.LinksUrl,
                 LinksUseGlobal = item.LinksUseGlobal,
                 ServiceAccounts = item.ServiceAccounts.ToList(),
-                //Dependencies = item.Dependencies.ToList(),
+                Dependencies = item.Dependencies.ToList()
 
             };
         }

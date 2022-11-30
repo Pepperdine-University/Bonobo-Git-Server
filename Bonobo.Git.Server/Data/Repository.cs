@@ -23,7 +23,7 @@ namespace Bonobo.Git.Server.Data
         private ICollection<User> _administrators;
         private ICollection<User> _users;
         private ICollection<ServiceAccount> _serviceAccounts;
-        private ICollection<Dependencies> _dependencies;
+        private ICollection<Dependency> _dependencies;
 
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -32,7 +32,7 @@ namespace Bonobo.Git.Server.Data
         public bool Anonymous { get; set; }
         public byte[] Logo { get; set; }
         public RepositoryPushMode AllowAnonymousPush { get; set; }
-        
+
         public virtual ICollection<Team> Teams
         {
             get
@@ -80,11 +80,11 @@ namespace Bonobo.Git.Server.Data
                 _serviceAccounts = value;
             }
         }
-        public virtual ICollection<Dependencies> Dependencies
+        public virtual ICollection<Dependency> Dependencies
         {
             get
             {
-                return _dependencies ?? (_dependencies = new List<Dependencies>());
+                return _dependencies ?? (_dependencies = new List<Dependency>());
             }
             set
             {

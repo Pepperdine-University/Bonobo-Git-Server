@@ -13,8 +13,8 @@ namespace Bonobo.Git.Server.Data
         public DbSet<Team> Teams { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<ServiceAccount> ServiceAccounts { get; set; }
-        public DbSet<Dependencies> Dependencies { get; set; }
-        public DbSet<KnownDependencies> KnownDependencies { get; set; }
+        public DbSet<Dependency> Dependencies { get; set; }
+        public DbSet<KnownDependency> KnownDependencies { get; set; }
 
 
 
@@ -44,6 +44,7 @@ namespace Bonobo.Git.Server.Data
             modelBuilder.Configurations.Add(new RoleMap());
             modelBuilder.Configurations.Add(new TeamMap());
             modelBuilder.Configurations.Add(new UserMap());
+            modelBuilder.Configurations.Add(new DependencyMap());
         }
     }
 }
