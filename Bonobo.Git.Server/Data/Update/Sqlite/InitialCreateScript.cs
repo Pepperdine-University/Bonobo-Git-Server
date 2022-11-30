@@ -87,32 +87,32 @@ namespace Bonobo.Git.Server.Data.Update.Sqlite
                     );
                     
                     CREATE TABLE IF NOT EXISTS [ServiceAccounts] (
-                        ""Id""	nvarchar(36) DEFAULT NULL,
-	                    ""ServiceAccountName""	nvarchar(36),
-	                    ""InPassManager""	BIT DEFAULT 0,
-	                    ""PassLastUpdated""	DATE DEFAULT 0,
-	                    ""RepositoryId""	nvarchar(36),
-	                    FOREIGN KEY(""RepositoryId"") REFERENCES ""Repository""(""Id""),
-	                    PRIMARY KEY(""Id"")
+                        [Id] nvarchar(36) Default Null,
+	                    [ServiceAccountName] nvarchar(36),
+	                    [InPassManager]	Bit Default 0,
+	                    [PassLastUpdated] Date Default 0,
+	                    [RepositoryId] nvarchar(36),
+	                    Foreign Key([RepositoryId]) References [Repository]([Id]),
+	                    Primary Key([Id])
                     );
 
                     CREATE TABLE IF NOT EXISTS [Dependencies] (
-                        ""Id"" nvarchar(36),
-                        ""DateUpdated"" VarChar(255),
-                        ""VersionInUse"" VarChar(255),
-                        ""RepositoryId"" nvarchar(36),
-                        ""KnownDependenciesId"" nvarchar(36),
-                        PRIMARY KEY(""Id""),
-                        FOREIGN KEY(""RepositoryId"") REFERENCES ""Repository""(""Id""),
-                        FOREIGN KEY(""KnownDependenciesId"") REFERENCES ""KnownDependencies""(""Id"")
+                        [Id] nvarchar(36),
+                        [DateUpdated] VarChar(255),
+                        [VersionInUse] VarChar(255),
+                        [RepositoryId] nvarchar(36),
+                        [KnownDependenciesId] nvarchar(36),
+                        Primary Key([Id]),
+                        Foreign Key([RepositoryId]) References [Repository]([Id]),
+                        Foreign Key([KnownDependenciesId]) References [KnownDependencies][Id])
                     );
 
                     CREATE TABLE IF NOT EXISTS [KnownDependencies] (
-                        ""Id"" nvarchar(36),
-                        ""ComponentName"" VarChar(255),
-                        ""DependenciesId"" nvarchar(36),
-                        PRIMARY KEY(""Id""),
-                        FOREIGN KEY(""DependenciesId"") REFERENCES ""Dependencies""(""Id"")
+                        [Id] nvarchar(36),
+                        [ComponentName] VarChar(255),
+                        [DependenciesId] nvarchar(36),
+                        Primary Key([Id]),
+                        Foreign Key([DependenciesId]) References [Dependencies]([Id])
                     );
 
                     ", (int)RepositoryPushMode.Global);
