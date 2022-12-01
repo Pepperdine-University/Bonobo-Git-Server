@@ -100,17 +100,15 @@ namespace Bonobo.Git.Server.Data.Update.Sqlite
                         [DateUpdated] VarChar(255),
                         [VersionInUse] VarChar(255),
                         [RepositoryId] nvarchar(36),
-                        Foreign Key([RepositoryId]) References [Repository]([Id])
+                        [KnownDependenciesId] nvarchar(36),
+                        Foreign Key([RepositoryId]) References [Repository]([Id]),
+						Foreign Key([KnownDependenciesId]) References [KnownDependencies]([Id])
                     );
 					
                     CREATE TABLE IF NOT EXISTS [KnownDependencies] (
                         [Id] nvarchar(36) PRIMARY KEY,
                         [ComponentName] VarChar(255)
                     );
-					
-					ALTER TABLE [Dependencies] ADD COLUMN KnownDependenciesId INTEGER REFERENCES KnownDependencies(Id);
-					
-					ALTER TABLE [KnownDependencies] ADD COLUMN DependenciesId INTEGER REFERENCES Dependencies(Id);
 
                     ", (int)RepositoryPushMode.Global);
             }
