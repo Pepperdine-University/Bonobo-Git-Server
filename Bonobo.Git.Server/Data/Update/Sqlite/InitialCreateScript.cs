@@ -87,33 +87,30 @@ namespace Bonobo.Git.Server.Data.Update.Sqlite
                     );
                     
                     CREATE TABLE IF NOT EXISTS [ServiceAccounts] (
-                        [Id] nvarchar(36) Default Null,
+                        [Id] nvarchar(36) PRIMARY KEY,
 	                    [ServiceAccountName] nvarchar(36),
 	                    [InPassManager]	Bit Default 0,
 	                    [PassLastUpdated] Date Default 0,
 	                    [RepositoryId] nvarchar(36),
-	                    Foreign Key([RepositoryId]) References [Repository]([Id]),
-	                    Primary Key([Id])
+	                    Foreign Key([RepositoryId]) References [Repository]([Id])
                     );
 
                     CREATE TABLE IF NOT EXISTS [Dependencies] (
-                        [Id] nvarchar(36),
+                        [Id] nvarchar(36) PRIMARY KEY,
                         [DateUpdated] VarChar(255),
                         [VersionInUse] VarChar(255),
                         [RepositoryId] nvarchar(36),
-                        [KnownDependenciesId] nvarchar(36),
-                        Primary Key([Id]),
-                        Foreign Key([RepositoryId]) References [Repository]([Id]),
-                        Foreign Key([KnownDependenciesId]) References [KnownDependencies][Id])
+                        Foreign Key([RepositoryId]) References [Repository]([Id])
                     );
-
+					
                     CREATE TABLE IF NOT EXISTS [KnownDependencies] (
-                        [Id] nvarchar(36),
-                        [ComponentName] VarChar(255),
-                        [DependenciesId] nvarchar(36),
-                        Primary Key([Id]),
-                        Foreign Key([DependenciesId]) References [Dependencies]([Id])
+                        [Id] nvarchar(36) PRIMARY KEY,
+                        [ComponentName] VarChar(255)
                     );
+					
+					ALTER TABLE [Dependencies] ADD COLUMN KnownDependenciesId INTEGER REFERENCES KnownDependencies(Id);
+					
+					ALTER TABLE [KnownDependencies] ADD COLUMN DependenciesId INTEGER REFERENCES Dependencies(Id);
 
                     ", (int)RepositoryPushMode.Global);
             }
