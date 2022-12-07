@@ -8,74 +8,74 @@
 
 @if (Model == null)
 {
-    @Html.Partial("~/Views/Shared/_ItemNotFound.cshtml")
+@Html.Partial("~/Views/Shared/_ItemNotFound.cshtml")
 }
 else
 {
-    <text>
-        <h1>
-            @Html.Raw(Model.Logo.Exists ? string.Format("<img src='data:image/png;base64,{0}' class='repo-logo' />", Model.Logo.Base64Image) : "")
-            @Model.Name
-        </h1>
+<text>
+    <h1>
+        @Html.Raw(Model.Logo.Exists ? string.Format("<img src='data:image/png;base64,{0}' class='repo-logo' />", Model.Logo.Base64Image) : "")
+        @Model.Name
+    </h1>
 
     @if (ViewBag.UpdateSuccess != null && ViewBag.UpdateSuccess)
     {
-        <div class="summary-success">
-            <p>@Resources.Repository_Edit_UpdateSuccess</p>
-        </div>
+    <div class="summary-success">
+        <p>@Resources.Repository_Edit_UpdateSuccess</p>
+    </div>
     }
 
     @using (Html.BeginForm("Edit", "Repository", FormMethod.Post, new { @class = "pure-form pure-form-aligned", enctype = "multipart/form-data" }))
     {
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary(false, Resources.Repository_Edit_Fail)
-        @Html.HiddenFor(m => m.Id)
-        
-<fieldset>
-    <div class="pure-control-group">
-        @Html.LabelFor(m => m.Name)
-        @Html.TextBoxFor(m => m.Name)
-        @Html.ValidationMessageFor(m => m.Name)
-    </div>
-    <div class="pure-control-group">
-        @Html.LabelFor(m => m.Group)
-        @Html.TextBoxFor(m => m.Group, new { @class = "medium" })
-    </div>
-    <div class="pure-control-group">
-        @Html.LabelFor(m => m.Description)
-        @Html.TextAreaFor(m => m.Description, new { @class = "medium" })
-    </div>
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(false, Resources.Repository_Edit_Fail)
+    @Html.HiddenFor(m => m.Id)
 
-    <div class="pure-control-group">
-        @Html.LabelFor(m => m.Logo.PostedFile)
-        <input type="file" name="Logo.PostedFile" id="Logo_PostedFile" />
-        <sup>.png, .jpg, .jpeg, .gif</sup>
-    </div>
+    <fieldset>
+        <div class="pure-control-group">
+            @Html.LabelFor(m => m.Name)
+            @Html.TextBoxFor(m => m.Name)
+            @Html.ValidationMessageFor(m => m.Name)
+        </div>
+        <div class="pure-control-group">
+            @Html.LabelFor(m => m.Group)
+            @Html.TextBoxFor(m => m.Group, new { @class = "medium" })
+        </div>
+        <div class="pure-control-group">
+            @Html.LabelFor(m => m.Description)
+            @Html.TextAreaFor(m => m.Description, new { @class = "medium" })
+        </div>
 
-    <div class="pure-control-group">
-        @Html.LabelFor(m => m.Logo.RemoveLogo)
-        @Html.CheckBoxFor(m => m.Logo.RemoveLogo)
-    </div>
-    <div class="pure-control-group">
-        @Html.LabelFor(m => m.AllowAnonymous)
-        @Html.CheckBoxFor(m => m.AllowAnonymous, new { @onClick = "document.getElementById('AllowAnonymousPush').disabled = !this.checked" })
-        <i class="fa fa-info-circle" title="@Resources.Repository_AllowAnonymousHint"></i>
-    </div>
+        <div class="pure-control-group">
+            @Html.LabelFor(m => m.Logo.PostedFile)
+            <input type="file" name="Logo.PostedFile" id="Logo_PostedFile" />
+            <sup>.png, .jpg, .jpeg, .gif</sup>
+        </div>
 
-    <div class="pure-control-group">
-        @Html.LabelFor(m => m.AllowAnonymousPush)
-        @{
+        <div class="pure-control-group">
+            @Html.LabelFor(m => m.Logo.RemoveLogo)
+            @Html.CheckBoxFor(m => m.Logo.RemoveLogo)
+        </div>
+        <div class="pure-control-group">
+            @Html.LabelFor(m => m.AllowAnonymous)
+            @Html.CheckBoxFor(m => m.AllowAnonymous, new { @onClick = "document.getElementById('AllowAnonymousPush').disabled = !this.checked" })
+            <i class="fa fa-info-circle" title="@Resources.Repository_AllowAnonymousHint"></i>
+        </div>
+
+        <div class="pure-control-group">
+            @Html.LabelFor(m => m.AllowAnonymousPush)
+            @{
             object attribs = new { @id = "AllowAnonymousPush" };
             if (!Model.AllowAnonymous)
             {
                 attribs = new { @id = "AllowAnonymousPush", @disabled = "" };
             }
-        }
-        @Html.EnumDropDownListFor(m => m.AllowAnonymousPush, attribs)
-        <i class="fa fa-info-circle" title="@Resources.Repository_AllowAnonymousPushHint"></i>
-    </div>
+            }
+            @Html.EnumDropDownListFor(m => m.AllowAnonymousPush, attribs)
+            <i class="fa fa-info-circle" title="@Resources.Repository_AllowAnonymousPushHint"></i>
+        </div>
 
-    @if (AppSettings.IsPushAuditEnabled)
+        @if (AppSettings.IsPushAuditEnabled)
     {
         <div class="pure-control-group">
             @Html.LabelFor(m => m.AuditPushUser)
@@ -83,83 +83,151 @@ else
             <i class="fa fa-info-circle" title="@Resources.Repository_AuditPushUserHint"></i>
         </div>
     }
-    <div class="pure-control-group">
-        @Html.LabelFor(m => m.LinksUseGlobal)
-        @Html.CheckBoxFor(m => m.LinksUseGlobal, new
-        {
-       @onClick = "document.getElementById('LinksRegex').disabled = this.checked; " +
-                "document.getElementById('LinksUrl').disabled =  this.checked; " +
-                "document.getElementById('LinksRegex').disabled? document.getElementById('LinksRegex').value = '': ''; " +
-                "document.getElementById('LinksUrl').disabled? document.getElementById('LinksUrl').value = '': '';"
-   })
-    </div>
-    <div class="pure-control-group">
-        @Html.LabelFor(m => m.LinksRegex)
-        @{
+        <div class="pure-control-group">
+            @Html.LabelFor(m => m.LinksUseGlobal)
+            @Html.CheckBoxFor(m => m.LinksUseGlobal, new
+       {
+           @onClick = "document.getElementById('LinksRegex').disabled = this.checked; " +
+                 "document.getElementById('LinksUrl').disabled =  this.checked; " +
+                 "document.getElementById('LinksRegex').disabled? document.getElementById('LinksRegex').value = '': ''; " +
+                 "document.getElementById('LinksUrl').disabled? document.getElementById('LinksUrl').value = '': '';"
+       })
+        </div>
+        <div class="pure-control-group">
+            @Html.LabelFor(m => m.LinksRegex)
+            @{
             attribs = new { @class = "medium" };
             if (Model.LinksUseGlobal)
             {
                 attribs = new { @class = "medium", disabled = "" };
             }
-            @Html.TextBoxFor(m => m.LinksRegex, attribs);
-            @Html.ValidationMessageFor(m => m.LinksRegex);
+                @Html.TextBoxFor(m => m.LinksRegex, attribs);
+                @Html.ValidationMessageFor(m => m.LinksRegex);
+            }
+        </div>
+        <div class="pure-control-group">
+            @Html.LabelFor(m => m.LinksUrl)
+            @Html.TextBoxFor(m => m.LinksUrl, attribs)
+            <i class="fa fa-info-circle" title="@Resources.Settings_Global_LinksUrl_Hint"></i>
+        </div>
+        <div class="pure-control-group checkboxlist">
+            @Html.LabelFor(m => m.Users)
+            <span>
+                @Html.CheckBoxListFor(m => m.PostedSelectedUsers, m => m.AllUsers, m => m.Id, m => m.DisplayName, m => m.Users, Position.Vertical)
+            </span>
+            <i class="fa fa-info-circle" title="@Resources.Repository_UsersHint"></i>
+        </div>
+
+
+
+        <div class="pure-control-group checkboxlist">
+            @Html.LabelFor(m => m.Administrators)
+            <span>
+                @Html.CheckBoxListFor(m => m.PostedSelectedAdministrators, m => m.AllAdministrators, m => m.Id, m => m.DisplayName, m => m.Administrators, Position.Vertical)
+            </span>
+            <i class="fa fa-info-circle" title="@Resources.Repository_AdministratorsHint"></i>
+            @Html.ValidationMessageFor(m => m.Administrators)
+        </div>
+
+        <div class="pure-control-group checkboxlist">
+            @Html.LabelFor(m => m.Teams)
+            <span>
+                @Html.CheckBoxListFor(m => m.PostedSelectedTeams, m => m.AllTeams, mm => mm.Id, mm => mm.DisplayName, mm => mm.Teams, Position.Vertical)
+            </span>
+            <i class="fa fa-info-circle" title="@Resources.Repository_TeamsHint"></i>
+        </div>
+
+        @*<div class="sidebar-bordergrid">
+                <label>
+                    Dependencies
+                </label>
+                <div>
+                    @foreach (Bonobo.Git.Server.Data.Dependency dependency in Model.Dependencies)
+                    {
+                        <details style="display:inline-block;">
+                            <summary>
+                                <div class="sidebar-text">
+                                    <i class="fa fa-chevron-down"></i><input class="removeVisualInput" value="@dependency.ComponentName (@dependency.VersionInUse)" readonly />
+                                </div>
+                            </summary>
+                            <div class="pass-info">
+                                <div class="pure-control-group">
+                                    <label>
+                                        Date Last Updated
+                                    </label>
+                                    <div class="sidebar-text">
+                                        <input class="removeVisualInput" value="@dependency.DateUpdated" readonly />
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
+                    }
+                </div>
+            </div>*@
+
+        <fieldset class="pure-control-group">
+            <legend>
+                Service Accounts
+            </legend>
+            <template id="serviceAccountrow">
+                <div class="row service-account-details">
+                    <div class="row">
+                        <label> Id </label>
+                        <input id="ServiceAccounts[i].Id" name="ServiceAccounts[i].Id" readonly disabled />
+                    </div>
+                    <div class="row">
+                        <label> Service Account Name </label>
+                        <input id="ServiceAccounts[i].ServiceAccountName" name="ServiceAccounts[i].ServiceAccountName" />
+                    </div>
+                    <div class="row">
+                        <label> InPassManager </label>
+                        <input id="ServiceAccounts[i].InPassManager" name="ServiceAccounts[i].InPassManager" />
+                    </div>
+                    <div class="row">
+                        <label> PassLastUpdated </label>
+                        <input id="ServiceAccounts[i].PassLastUpdated" name="ServiceAccounts[i].PassLastUpdated" />
+                    </div>
+                    @*@Html.ActionLink(" ", "Delete", new { id = ServiceAccounts[i].Id }, new { @class = "delete", title = Resources.Grid_Delete }), style: "action"));*@
+
+                </div>
+            </template>
+
+            @if (Model != null)
+        {
+            for(int i = 0; i < Model.ServiceAccounts.Count; i++)
+            {
+
+            <div class="pure-control-group">
+                @Html.LabelFor(m => m.ServiceAccounts[i].ServiceAccountName)
+                @Html.TextBoxFor(m => m.ServiceAccounts[i].ServiceAccountName)
+                @Html.ValidationMessageFor(m => m.ServiceAccounts[i].ServiceAccountName)
+            </div>
+            <div class="pure-control-group">
+                @Html.LabelFor(m => m.ServiceAccounts[i].InPassManager)
+                @Html.CheckBoxFor(m => m.ServiceAccounts[i].InPassManager)
+                @Html.ValidationMessageFor(m => m.ServiceAccounts[i].InPassManager)
+            </div>
+            <div class="pure-control-group">
+                @Html.LabelFor(m => m.ServiceAccounts[i].PassLastUpdated)
+                @Html.TextBoxFor(m => m.ServiceAccounts[i].PassLastUpdated)
+                @Html.ValidationMessageFor(m => m.ServiceAccounts[i].PassLastUpdated)
+            </div>
+            <div class="pure-control-group" style="display:none;">
+                @Html.LabelFor(m => m.ServiceAccounts[i].Id)
+                @Html.TextBoxFor(m => m.ServiceAccounts[i].Id)
+                @Html.LabelFor(m => m.ServiceAccounts[i].RepositoryId)
+                @Html.TextBoxFor(m => m.ServiceAccounts[i].RepositoryId)
+            </div>
+            }
         }
-    </div>
-    <div class="pure-control-group">
-        @Html.LabelFor(m => m.LinksUrl)
-        @Html.TextBoxFor(m => m.LinksUrl, attribs)
-        <i class="fa fa-info-circle" title="@Resources.Settings_Global_LinksUrl_Hint"></i>
-    </div>
-    <div class="pure-control-group checkboxlist">
-        @Html.LabelFor(m => m.Users)
-        <span>
-            @Html.CheckBoxListFor(m => m.PostedSelectedUsers, m => m.AllUsers, m => m.Id, m => m.DisplayName, m => m.Users, Position.Vertical)
-        </span>
-        <i class="fa fa-info-circle" title="@Resources.Repository_UsersHint"></i>
-    </div>
+        </fieldset>
 
-
-
-    <div class="pure-control-group checkboxlist">
-        @Html.LabelFor(m => m.Administrators)
-        <span>
-            @Html.CheckBoxListFor(m => m.PostedSelectedAdministrators, m => m.AllAdministrators, m => m.Id, m => m.DisplayName, m => m.Administrators, Position.Vertical)
-        </span>
-        <i class="fa fa-info-circle" title="@Resources.Repository_AdministratorsHint"></i>
-        @Html.ValidationMessageFor(m => m.Administrators)
-    </div>
-
-    <div class="pure-control-group checkboxlist">
-        @Html.LabelFor(m => m.Teams)
-        <span>
-            @Html.CheckBoxListFor(m => m.PostedSelectedTeams, m => m.AllTeams, mm => mm.Id, mm => mm.DisplayName, mm => mm.Teams, Position.Vertical)
-        </span>
-        <i class="fa fa-info-circle" title="@Resources.Repository_TeamsHint"></i>
-    </div>
-    @for (int i = 0; i < Model.ServiceAccounts.Count; i++)
-    {
-        <div class="pure-control-group">
-            @Html.LabelFor(m => m.ServiceAccounts[i].ServiceAccountName)
-            @Html.TextBoxFor(m => m.ServiceAccounts[i].ServiceAccountName)
-            @Html.ValidationMessageFor(m => m.ServiceAccounts[i].ServiceAccountName)
+        <div class="pure-controls">
+            <a class="pure-button" href="@Url.Action("Tree", new { id = Model.Id, ServiceAccounts = Model.ServiceAccounts })"><i class="fa fa-long-arrow-left"></i> @Resources.Repository_Edit_Back</a>
+            <button type="submit" class="pure-button pure-button-primary save"><i class="fa fa-save"></i> @Resources.Repository_Edit_Submit</button>
         </div>
-        <div class="pure-control-group">
-            @Html.LabelFor(m => m.ServiceAccounts[i].InPassManager)
-            @Html.TextBoxFor(m => m.ServiceAccounts[i].InPassManager)
-            @Html.ValidationMessageFor(m => m.ServiceAccounts[i].InPassManager)
-        </div>
-        <div class="pure-control-group">
-            @Html.LabelFor(m => m.ServiceAccounts[i].PassLastUpdated)
-            @Html.TextBoxFor(m => m.ServiceAccounts[i].PassLastUpdated)
-            @Html.ValidationMessageFor(m => m.ServiceAccounts[i].PassLastUpdated)
-        </div>
-    }
+    </fieldset>
+            }
+</text>
+        }
 
-    <div class="pure-controls">
-        <a class="pure-button" href="@Url.Action("Tree", new {id = Model.Id})"><i class="fa fa-long-arrow-left"></i> @Resources.Repository_Edit_Back</a>
-        <button type="submit" class="pure-button pure-button-primary"><i class="fa fa-save"></i> @Resources.Repository_Edit_Submit</button>
-    </div>
-</fieldset>
-    }
-    </text>
-}

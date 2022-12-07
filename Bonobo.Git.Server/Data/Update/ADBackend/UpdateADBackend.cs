@@ -161,6 +161,13 @@ namespace Bonobo.Git.Server.Data.Update.ADBackendUpdate
                 }
                 newrepo.Teams = newteams.ToArray();
 
+                var accountsList = new List<ServiceAccount>();
+                foreach (var serviceAccount in repo.ServiceAccounts)
+                {
+                    accountsList.Add(serviceAccount);
+                }
+                newrepo.ServiceAccounts = accountsList.ToList();
+
                 ADBackend.Instance.Repositories.Add(newrepo);
             }
         }

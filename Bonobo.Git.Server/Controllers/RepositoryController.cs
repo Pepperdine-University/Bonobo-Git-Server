@@ -741,8 +741,7 @@ namespace Bonobo.Git.Server.Controllers
                 LinksUseGlobal = model.LinksUseGlobal,
                 LinksRegex = (model.LinksUseGlobal? UserConfiguration.Current.LinksRegex: model.LinksRegex),
                 LinksUrl = (model.LinksUseGlobal ? UserConfiguration.Current.LinksUrl : model.LinksUrl),
-                ServiceAccounts = model.ServiceAccounts,
-                Dependencies = model.Dependencies
+                ServiceAccounts = model.ServiceAccounts
             };
         }
 
@@ -777,7 +776,8 @@ namespace Bonobo.Git.Server.Controllers
                 RemoveLogo = model.Logo != null && model.Logo.RemoveLogo,
                 LinksUseGlobal = model.LinksUseGlobal,
                 LinksRegex = model.LinksRegex ?? "",
-                LinksUrl = model.LinksUrl ?? ""
+                LinksUrl = model.LinksUrl ?? "",
+                ServiceAccounts = model.ServiceAccounts
             };
         }
 

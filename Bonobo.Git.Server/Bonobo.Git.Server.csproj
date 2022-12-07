@@ -585,6 +585,7 @@
     <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
     <Content Include="Scripts\RepositoryGroupToggle.js" />
+    <Content Include="Scripts\ServiceAccountsEdit.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -652,6 +653,7 @@
     <Content Include="Views\Repository\Tags.cshtml" />
     <Content Include="Views\Repository\_Tag.cshtml" />
     <Content Include="Views\Repository\Sidebar.cshtml" />
+    <Content Include="Views\_ViewImports.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
