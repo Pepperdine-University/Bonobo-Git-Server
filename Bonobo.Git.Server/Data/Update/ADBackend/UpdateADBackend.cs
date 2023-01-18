@@ -174,6 +174,8 @@ namespace Bonobo.Git.Server.Data.Update.ADBackendUpdate
                 {
                     dependenciesList.Add(dependency);
                 }
+                newrepo.Dependencies = dependenciesList.ToList();
+
                 ADBackend.Instance.Repositories.Add(newrepo);
             }
         }

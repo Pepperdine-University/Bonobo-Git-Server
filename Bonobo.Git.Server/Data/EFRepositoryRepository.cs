@@ -241,7 +241,7 @@ namespace Bonobo.Git.Server.Data
                             if (existingDependency != null)
                             {
                                 existingDependency.RepositoryId = model.Id;
-                                existingDependency.KnownDependency = dependency.KnownDependency;
+                                //existingDependency.KnownDependency = dependency.KnownDependency;
                                 db.Entry(existingDependency).CurrentValues.SetValues(dependency);
                             }
                             else
