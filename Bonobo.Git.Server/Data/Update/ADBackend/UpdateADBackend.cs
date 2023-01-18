@@ -11,6 +11,7 @@ using Bonobo.Git.Server.Data;
 using Microsoft.VisualBasic.FileIO;
 using Newtonsoft.Json;
 using Serilog;
+using System.Data.Entity.Core.Metadata.Edm;
 
 namespace Bonobo.Git.Server.Data.Update.ADBackendUpdate
 {
@@ -168,6 +169,11 @@ namespace Bonobo.Git.Server.Data.Update.ADBackendUpdate
                 }
                 newrepo.ServiceAccounts = accountsList.ToList();
 
+                var dependenciesList = new List<Dependency>();
+                foreach (var dependency in repo.Dependencies)
+                {
+                    dependenciesList.Add(dependency);
+                }
                 ADBackend.Instance.Repositories.Add(newrepo);
             }
         }

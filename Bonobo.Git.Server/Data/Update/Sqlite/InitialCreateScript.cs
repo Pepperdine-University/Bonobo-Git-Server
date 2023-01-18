@@ -92,6 +92,7 @@ namespace Bonobo.Git.Server.Data.Update.Sqlite
 	                    [InPassManager]	Bit Default 0,
 	                    [PassLastUpdated] Date Default 0,
 	                    [RepositoryId] nvarchar(36),
+                        Primary Key([Id] Autoincrement),
 	                    Foreign Key([RepositoryId]) References [Repository]([Id])
                     );
 

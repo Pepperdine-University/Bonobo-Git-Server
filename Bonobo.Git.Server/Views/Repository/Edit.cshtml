@@ -137,34 +137,6 @@ else
             <i class="fa fa-info-circle" title="@Resources.Repository_TeamsHint"></i>
         </div>
 
-        @*<div class="sidebar-bordergrid">
-                <label>
-                    Dependencies
-                </label>
-                <div>
-                    @foreach (Bonobo.Git.Server.Data.Dependency dependency in Model.Dependencies)
-                    {
-                        <details style="display:inline-block;">
-                            <summary>
-                                <div class="sidebar-text">
-                                    <i class="fa fa-chevron-down"></i><input class="removeVisualInput" value="@dependency.ComponentName (@dependency.VersionInUse)" readonly />
-                                </div>
-                            </summary>
-                            <div class="pass-info">
-                                <div class="pure-control-group">
-                                    <label>
-                                        Date Last Updated
-                                    </label>
-                                    <div class="sidebar-text">
-                                        <input class="removeVisualInput" value="@dependency.DateUpdated" readonly />
-                                    </div>
-                                </div>
-                            </div>
-                        </details>
-                    }
-                </div>
-            </div>*@
-
         <fieldset class="pure-control-group">
             <legend>
                 Service Accounts
@@ -221,6 +193,30 @@ else
             }
         }
         </fieldset>
+        @for (int i = 0; i < Model.Dependencies.Count; i++)
+        {
+        <div class="pure-control-group">
+            @Html.LabelFor(m => m.Dependencies[i].KnownDependency.ComponentName)
+            @Html.TextBoxFor(m => m.Dependencies[i].KnownDependency.ComponentName)
+            @Html.ValidationMessageFor(m => m.Dependencies[i].KnownDependency.ComponentName)
+        </div>
+        <div class="pure-control-group">
+            @Html.LabelFor(m => m.Dependencies[i].VersionInUse)
+            @Html.TextBoxFor(m => m.Dependencies[i].VersionInUse)
+            @Html.ValidationMessageFor(m => m.Dependencies[i].VersionInUse)
+        </div>
+        <div contentEditable="true">
+            @Html.LabelFor(m => m.Dependencies[i].DateUpdated)
+            @Html.TextBoxFor(m => m.Dependencies[i].DateUpdated)
+            @Html.ValidationMessageFor(m => m.Dependencies[i].DateUpdated)
+        </div>
+
+        <div style="display:none">
+            @Html.HiddenFor(m => m.Dependencies[i].Id);
+            @Html.HiddenFor(m => m.Dependencies[i].RepositoryId); 
+            @Html.HiddenFor(m => m.Dependencies[i].KnownDependenciesId); 
+        </div>
+        }
 
         <div class="pure-controls">
             <a class="pure-button" href="@Url.Action("Tree", new { id = Model.Id, ServiceAccounts = Model.ServiceAccounts })"><i class="fa fa-long-arrow-left"></i> @Resources.Repository_Edit_Back</a>

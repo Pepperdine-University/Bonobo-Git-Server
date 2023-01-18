@@ -37,7 +37,8 @@ namespace Bonobo.Git.Server.Data
                     AuditPushUser = repo.AuditPushUser,
                     AllowAnonPush = repo.AllowAnonymousPush,
                     Logo = repo.Logo,
-                    ServiceAccounts = repo.ServiceAccounts
+                    ServiceAccounts = repo.ServiceAccounts,
+                    Dependencies = repo.Dependencies,
                 }).ToList();
 
                 return dbrepos.Select(repo => new RepositoryModel
@@ -53,7 +54,8 @@ namespace Bonobo.Git.Server.Data
                     AuditPushUser = repo.AuditPushUser,
                     AllowAnonymousPush = repo.AllowAnonPush,
                     Logo = repo.Logo,
-                    ServiceAccounts = repo.ServiceAccounts.ToList()
+                    ServiceAccounts = repo.ServiceAccounts.ToList(),
+                    Dependencies = repo.Dependencies.ToList()
                 }).ToList();
             }
         }
@@ -97,7 +99,7 @@ namespace Bonobo.Git.Server.Data
                     repo.Administrators.Clear();
                     repo.Users.Clear();
                     repo.Teams.Clear();
-                    
+
                     foreach (ServiceAccount serviceAccount in repo.ServiceAccounts.ToList())
                     {
                         db.ServiceAccounts.Remove(serviceAccount);
@@ -168,7 +170,7 @@ namespace Bonobo.Git.Server.Data
             {
                 var repo = db.Repositories
                                 .Include(r => r.ServiceAccounts)
-                                .Include(r => r.Dependencies)
+                                .Include(r => r.Dependencies.Select(d => d.KnownDependency))
                                 .FirstOrDefault(i => i.Id == model.Id);
                 
                 if (repo != null)
@@ -222,6 +224,29 @@ namespace Bonobo.Git.Server.Data
                             else
                             {
                                 repo.ServiceAccounts.Add(serviceAccount);
+                            }
+                        }
+                    }
+
+                    if (model.Dependencies != null)
+                    {
+                        foreach(var dependency in model.Dependencies.ToList())
+                        {
+                            var existingDependency = repo.Dependencies
+                                .Where(c => c.Id == dependency.Id && c.Id != "")
+                                .SingleOrDefault();
+
+                           // var existingKnownDependency = repo.Dependencies;
+
+                            if (existingDependency != null)
+                            {
+                                existingDependency.RepositoryId = model.Id;
+                                existingDependency.KnownDependency = dependency.KnownDependency;
+                                db.Entry(existingDependency).CurrentValues.SetValues(dependency);
+                            }
+                            else
+                            {
+                                repo.Dependencies.Add(dependency);
                             }
                         }
                     }
@@ -343,6 +368,17 @@ namespace Bonobo.Git.Server.Data
 
             };
         }
+
+/*        private void UpdateKnownDependencies(Repository repo, BonoboGitServerContext database)
+        //{
+            //Want to pull KnownDependecies Id
+            //var KnownDependeciesId = database.Dependencies.Where(i => )
+                public IList<RepositoryModel> UpdateKnownDependencies(Guid[] DependenciesId)
+            {
+                return GetAllRepositories().Where(repo => repo.Dependencies.Any(Dependency => DependenciesId.Contains(Dependency.KnownDependenciesId))).ToList();
+            }
+            //Set it to the value
+        }*/
 
         private void AddMembers(IEnumerable<Guid> users, IEnumerable<Guid> admins, IEnumerable<Guid> teams, Repository repo, BonoboGitServerContext database)
         {

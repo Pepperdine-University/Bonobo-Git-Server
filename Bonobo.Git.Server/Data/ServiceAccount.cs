@@ -13,7 +13,6 @@ namespace Bonobo.Git.Server.Data
         public string PassLastUpdated { get; set; }
         public int Id { get; set; } = -1;
         public Guid RepositoryId { get; set; }
-        public string UserId { get; set;}
         public virtual Repository Repository { get; set; }
     }
 }

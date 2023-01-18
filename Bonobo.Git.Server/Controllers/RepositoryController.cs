@@ -85,6 +85,7 @@ namespace Bonobo.Git.Server.Controllers
                     try
                     {
                         RepositoryRepository.Update(repoModel);
+                        
                     }
                     catch (System.Data.Entity.Infrastructure.DbUpdateException)
                     {
@@ -741,7 +742,8 @@ namespace Bonobo.Git.Server.Controllers
                 LinksUseGlobal = model.LinksUseGlobal,
                 LinksRegex = (model.LinksUseGlobal? UserConfiguration.Current.LinksRegex: model.LinksRegex),
                 LinksUrl = (model.LinksUseGlobal ? UserConfiguration.Current.LinksUrl : model.LinksUrl),
-                ServiceAccounts = model.ServiceAccounts
+                ServiceAccounts = model.ServiceAccounts,
+                Dependencies = model.Dependencies
             };
         }
 
@@ -777,7 +779,8 @@ namespace Bonobo.Git.Server.Controllers
                 LinksUseGlobal = model.LinksUseGlobal,
                 LinksRegex = model.LinksRegex ?? "",
                 LinksUrl = model.LinksUrl ?? "",
-                ServiceAccounts = model.ServiceAccounts
+                ServiceAccounts = model.ServiceAccounts,
+                Dependencies = model.Dependencies
             };
         }
 

@@ -9,7 +9,7 @@ namespace Bonobo.Git.Server.Data
 {
     public partial class Dependency
     {
-        public string Id { get; set; }
+        public string Id { get; set; } = "";
         public string DateUpdated { get; set; }
         public string VersionInUse { get; set; }
         

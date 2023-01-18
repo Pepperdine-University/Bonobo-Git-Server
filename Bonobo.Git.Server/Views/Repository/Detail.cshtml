@@ -27,10 +27,10 @@
                 <div class="sidebar-text">
                     @for (int i = 0; i < Model.Users.Length; i++)
                     {
-                        @Html.ActionLink(@Model.Users[i].DisplayName, "Detail", "Account", new { id = @Model.Users[i].Id }, new { title = @Model.Users[i].Username })
+                    @Html.ActionLink(@Model.Users[i].DisplayName, "Detail", "Account", new { id = @Model.Users[i].Id }, new { title = @Model.Users[i].Username })
                         if (i + 1 != Model.Users.Length)
                         {
-                            <text>, </text>
+                    <text>, </text>
                         }
                     }
                 </div>
@@ -40,10 +40,10 @@
                 <div class="sidebar-text">
                     @for (int i = 0; i < Model.Administrators.Length; i++)
                     {
-                        @Html.ActionLink(@Model.Administrators[i].DisplayName, "Detail", "Account", new { id = @Model.Administrators[i].Id }, new { title = @Model.Administrators[i].Username })
+                    @Html.ActionLink(@Model.Administrators[i].DisplayName, "Detail", "Account", new { id = @Model.Administrators[i].Id }, new { title = @Model.Administrators[i].Username })
                         if (i + 1 != Model.Administrators.Length)
                         {
-                            <text>, </text>
+                    <text>, </text>
                         }
                     }
                 </div>
@@ -53,10 +53,10 @@
                 <div class="sidebar-text">
                     @for (int i = 0; i < Model.Teams.Length; i++)
                     {
-                        @Html.ActionLink(@Model.Teams[i].DisplayName, "Detail", "Team", new { id = @Model.Teams[i].Id }, null)
+                    @Html.ActionLink(@Model.Teams[i].DisplayName, "Detail", "Team", new { id = @Model.Teams[i].Id }, null)
                         if (i + 1 != Model.Teams.Length)
                         {
-                            <text>, </text>
+                    <text>, </text>
                         }
                     }
                 </div>
@@ -68,83 +68,110 @@
             </div>
             @if (Model.AllowAnonymous)
             {
-                <div class="pure-control-group">
-                    @{
+            <div class="pure-control-group">
+                @{
                         bool pushMode = Model.AllowAnonymousPush == Bonobo.Git.Server.Data.RepositoryPushMode.Yes
                                         || (Model.AllowAnonymousPush == Bonobo.Git.Server.Data.RepositoryPushMode.Global && UserConfiguration.Current.AllowAnonymousPush);
-                        <label><i class="fa-regular fa-square@(pushMode? "-check": "")" title="@(pushMode? "Yes": "No")"></i> Anonymous Push</label>
-                    }
-                </div>
+                    <label><i class="fa-regular fa-square@(pushMode? "-check": "")" title="@(pushMode? "Yes": "No")"></i> Anonymous Push</label>
+                }
+            </div>
             }
 
             @if (Model.AreRegexLinksVisible)
             {
-                <div class="pure-control-group">
-                    <label><i class="fa-regular fa-square@(Model.LinksUseGlobal? "-check": "")" title="@(Model.LinksUseGlobal? "Yes": "No")"></i> Use Global Linkify Settings</label>
-                </div>
+            <div class="pure-control-group">
+                <label><i class="fa-regular fa-square@(Model.LinksUseGlobal? "-check": "")" title="@(Model.LinksUseGlobal? "Yes": "No")"></i> Use Global Linkify Settings</label>
+            </div>
 
                 if (!Model.LinksUseGlobal)
                 {
-                    <div class="pure-control-group">
-                        @Html.LabelFor(m => m.LinksRegex)
-                        <div class="sidebar-text">
-                            @Html.TextBoxFor(m => m.LinksRegex, new { @readonly = "", @class = "removeVisualInput" })
-                        </div>
-                    </div>
-                    <div class="pure-control-group">
-                        @Html.LabelFor(m => m.LinksUrl)
-                        <div class="sidebar-text">
-                            @Html.TextBoxFor(m => m.LinksUrl, new { @readonly = "", @class = "removeVisualInput" })
-                        </div>
-                    </div>
+            <div class="pure-control-group">
+                @Html.LabelFor(m => m.LinksRegex)
+                <div class="sidebar-text">
+                    @Html.TextBoxFor(m => m.LinksRegex, new { @readonly = "", @class = "removeVisualInput" })
+                </div>
+            </div>
+            <div class="pure-control-group">
+                @Html.LabelFor(m => m.LinksUrl)
+                <div class="sidebar-text">
+                    @Html.TextBoxFor(m => m.LinksUrl, new { @readonly = "", @class = "removeVisualInput" })
+                </div>
+            </div>
                 }
             }
             @if (AppSettings.IsPushAuditEnabled)
             {
-                <div class="pure-control-group">
-                    @Html.LabelFor(m => m.AuditPushUser)
-                    @(Model.AuditPushUser? @Resources.Repository_Detail_Yes: @Resources.Repository_Detail_No)
-                </div>
+            <div class="pure-control-group">
+                @Html.LabelFor(m => m.AuditPushUser)
+                @(Model.AuditPushUser? @Resources.Repository_Detail_Yes: @Resources.Repository_Detail_No)
+            </div>
             }
         </div>
         <div class="sidebar-bordergrid bottom">
             @if (@Model.ServiceAccounts.Count > 0)
             {
-                <label>
-                    Service Accounts
-                </label>
+            <label>
+                Service Accounts
+            </label>
                 foreach (Bonobo.Git.Server.Data.ServiceAccount serviceAccount in Model.ServiceAccounts)
                 {
-                    <details style="display:inline-block;">
-                        <summary>
-                            <div class="sidebar-text">
-                                <i class="fa fa-chevron-down"></i><input class="removeVisualInput" value="@serviceAccount.ServiceAccountName" readonly />
-                            </div>
-                        </summary>
-                        <div class="pass-info">
-                            <div class="pure-control-group">
-                                <div>
-                                    @if (@serviceAccount.InPassManager)
+            <details style="display:inline-block;">
+                <summary>
+                    <div class="sidebar-text">
+                        <i class="fa fa-chevron-down"></i><input class="removeVisualInput" value="@serviceAccount.ServiceAccountName" readonly />
+                    </div>
+                </summary>
+                <div class="pass-info">
+                    <div class="pure-control-group">
+                        <div>
+                            @if (@serviceAccount.InPassManager)
                                     {
-                                        <label>In Password Manager <i style="color:green" class="fa fa-check-square"></i></label>
+                            <label>In Password Manager <i style="color:green" class="fa fa-check-square"></i></label>
                                     }
                                     else
                                     {
-                                        <label>Not in Password Manager <i style="color:red" class="fa fa-x"></i></label>
+                            <label>Not in Password Manager <i style="color:red" class="fa fa-x"></i></label>
                                     }
-                                </div>
-                            </div>
-                            <div class="pure-control-group">
-                                <label>Password Last Updated</label>
-                                <div class="sidebar-text">
-                                    <input class="removeVisualInput" value="@serviceAccount.PassLastUpdated" readonly />
-                                </div>
-                            </div>
                         </div>
-                    </details>
+                    </div>
+                    <div class="pure-control-group">
+                        <label>Password Last Updated</label>
+                        <div class="sidebar-text">
+                            <input class="removeVisualInput" value="@serviceAccount.PassLastUpdated" readonly />
+                        </div>
+                    </div>
+                </div>
+            </details>
                 }
             }
 
+        </div>
+
+        <div class="sidebar-bordergrid">
+            <label>
+                Dependencies
+            </label>
+            <div>
+                @foreach (Bonobo.Git.Server.Data.Dependency dependency in Model.Dependencies)
+                {
+                <details style="display:inline-block;">
+                    <summary>
+                        <div class="sidebar-text">
+                            <i class="fa fa-chevron-down"></i><input class="removeVisualInput" value="Component Details" readonly />
+                        </div>
+                    </summary>
+                    <div class="pass-info">
+                        <div class="pure-control-group">
+                            <div class="sidebar-text">
+                                <input class="removeVisualInput" value="@dependency.KnownDependency.ComponentName @dependency.VersionInUse" readonly />
+                                <label> Date Updated: </label><input class="removeVisualInput" value="@dependency.DateUpdated" readonly />
+                            </div>
+                        </div>
+                    </div>
+                </details>
+                }
+
+            </div>
         </div>
     </fieldset>
 </div>
