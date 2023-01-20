@@ -122,12 +122,15 @@ namespace Bonobo.Git.Server.Data
                     {
                         db.ServiceAccounts.Remove(serviceAccount);
                     }
+                    foreach (Dependency dependency in repo.Dependencies.ToList())
+                    {
+                        db.Dependencies.Remove(dependency);
+                    }
                     db.Repositories.Remove(repo);
                     db.SaveChanges();
                 }
             }
         }
-
         public bool NameIsUnique(string newName, Guid ignoreRepoId)
         {
             var repo = GetRepository(newName);
@@ -205,27 +208,6 @@ namespace Bonobo.Git.Server.Data
                     repo.LinksUrl = model.LinksUrl;
                     repo.LinksUseGlobal = model.LinksUseGlobal;
 
-
-
-
-                    //foreach(var oldServiceAccount in repo.ServiceAccounts)
-                    //{
-                    //    //Check to see if account already exists
-                    //    //Model contains the clientside (newer updated service Account) 
-                    //    //Repo contains the origonal/older service account. 
-                    //    var currentServiceAccount =  model.ServiceAccounts.FirstOrDefault(i => i.Id == oldServiceAccount.Id);
-
-
-                    //    //If it exists, then get the current account and set values of current account to new properties
-                    //    SetValuesAndLastModified(currentServiceAccount, oldServiceAccount, oldServiceAccount.UserId);
-
-
-
-                    //}
-
-
-
-                    //If it does not exist, add the new Service Account to db.ServiceAccounts
                     if (model.ServiceAccounts != null)
                     {
                         foreach (var serviceAccount in model.ServiceAccounts.ToList())
@@ -254,12 +236,9 @@ namespace Bonobo.Git.Server.Data
                                 .Where(c => c.Id == dependency.Id && c.Id != "")
                                 .SingleOrDefault();
 
-                           // var existingKnownDependency = repo.Dependencies;
-
                             if (existingDependency != null)
                             {
                                 existingDependency.RepositoryId = model.Id;
-                                //existingDependency.KnownDependency = dependency.KnownDependency;
                                 db.Entry(existingDependency).CurrentValues.SetValues(dependency);
                             }
                             else
@@ -268,7 +247,6 @@ namespace Bonobo.Git.Server.Data
                             }
                         }
                     }
-                    //updateObject((ICollection<object>)repo.ServiceAccounts, model.ServiceAccounts, db);
 
                     if (model.Logo != null)
                         repo.Logo = model.Logo;
@@ -286,32 +264,6 @@ namespace Bonobo.Git.Server.Data
             }
         }
 
-        //private void updateObject(ICollection<object> currentObject, ICollection<object> newObject, BonoboGitServerContext db)
-        //{
-        //    if (newObject != null)
-        //    {
-        //        foreach (var objectX in newObject.ToList())
-        //        {
-        //            var existingObject = currentObject
-        //                .Where(c => c.Id == objectX.Id && c.Id != -1)
-        //                .SingleOrDefault();
-
-        //            if (existingObject != null)
-        //            {
-        //                existingObject.RepositoryId = newObject.Id;
-        //                db.Entry(existingObject).CurrentValues.SetValues(objectX);
-        //            }
-        //            else
-        //            {
-        //                currentObject.Add(objectX);
-        //            }
-        //        }
-        //    }
-        //}
-
-       
-
-        //get func
         private ServiceAccount GetCurrentServiceAccount(int id)
         {
             using (var db = CreateContext())
@@ -326,7 +278,6 @@ namespace Bonobo.Git.Server.Data
                 };
             }
         }
-
 
         private DbEntityEntry SetValuesAndLastModified(object currentServiceAccount, object updatedServiceAccount, string userID)
         {
@@ -346,7 +297,6 @@ namespace Bonobo.Git.Server.Data
         }
 
      
-        // might use like this
         private TeamModel TeamToTeamModel(Team t)
         {
             return new TeamModel
@@ -386,17 +336,6 @@ namespace Bonobo.Git.Server.Data
 
             };
         }
-
-/*        private void UpdateKnownDependencies(Repository repo, BonoboGitServerContext database)
-        //{
-            //Want to pull KnownDependecies Id
-            //var KnownDependeciesId = database.Dependencies.Where(i => )
-                public IList<RepositoryModel> UpdateKnownDependencies(Guid[] DependenciesId)
-            {
-                return GetAllRepositories().Where(repo => repo.Dependencies.Any(Dependency => DependenciesId.Contains(Dependency.KnownDependenciesId))).ToList();
-            }
-            //Set it to the value
-        }*/
 
         private void AddMembers(IEnumerable<Guid> users, IEnumerable<Guid> admins, IEnumerable<Guid> teams, Repository repo, BonoboGitServerContext database)
         {
