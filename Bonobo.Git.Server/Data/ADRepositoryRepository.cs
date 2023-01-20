@@ -35,6 +35,11 @@ namespace Bonobo.Git.Server.Data
             return ADBackend.Instance.Repositories.ToList();
         }
 
+        public IList<KnownDependency> GetAllKnownDependencies()
+        {
+            return new List<KnownDependency>();
+        }
+
         public RepositoryModel GetRepository(string name)
         {
             return

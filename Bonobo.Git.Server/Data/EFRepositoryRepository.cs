@@ -60,6 +60,24 @@ namespace Bonobo.Git.Server.Data
             }
         }
 
+        public IList<KnownDependency> GetAllKnownDependencies()
+        {
+            using (var db = CreateContext())
+            {
+                var dbknowndeps = db.KnownDependencies.Select(sa => new
+                {
+                    Id = sa.Id,
+                    ComponentName = sa.ComponentName
+                }).ToList();
+
+                return dbknowndeps.Select(sa => new KnownDependency
+                {
+                    Id = sa.Id,
+                    ComponentName = sa.ComponentName
+                }).ToList();
+            }
+        }
+
         public RepositoryModel GetRepository(string name)
         {
             if (name == null) throw new ArgumentNullException("name");

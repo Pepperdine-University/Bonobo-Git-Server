@@ -196,9 +196,15 @@ else
         @for (int i = 0; i < Model.Dependencies.Count; i++)
         {
         <div class="pure-control-group">
-            @Html.LabelFor(m => m.Dependencies[i].KnownDependency.ComponentName)
+            @Html.LabelFor(m => m.Dependencies[i].KnownDependency.ComponentName)        @*turn this into a dropdown, need to search all known dependencies in database*@
             @Html.TextBoxFor(m => m.Dependencies[i].KnownDependency.ComponentName)
             @Html.ValidationMessageFor(m => m.Dependencies[i].KnownDependency.ComponentName)
+            @{
+                var items = (IEnumerable<SelectListItem>)Html.ViewBag.KnownDependencies;         // need to figure out how to save the known dep id within the dependencies table, not the known dep table, and how to change selected value
+                @Html.DropDownListFor(m => m.Dependencies[i].KnownDependenciesId, items@*, new { @selectedValue = Model.Dependencies[i].KnownDependency.Id.ToString() }*@);
+                @*@Html.DropDownList("Repositories", items, Resources.Repository_Go_To_Dropdown, new { @class = "repositories", @onChange = "javascript:location.href=this.options[this.selectedIndex].value;" });*@
+                @*@Html.DropDownList("Component Name", items, Model.Dependencies[i].KnownDependency.ComponentName, new { @class = "componentNames", @onChange = "javascript:Model.Dependencies[i].KnownDependenciesId=this.options[this.selectedIndex].value;" });*@
+            }
         </div>
         <div class="pure-control-group">
             @Html.LabelFor(m => m.Dependencies[i].VersionInUse)

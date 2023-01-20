@@ -9,6 +9,7 @@ namespace Bonobo.Git.Server.Data
     public interface IRepositoryRepository
     {
         IList<RepositoryModel> GetAllRepositories();
+        IList<KnownDependency> GetAllKnownDependencies();
         IList<RepositoryModel> GetTeamRepositories(Guid[] teamsId);
         RepositoryModel GetRepository(Guid id);
         RepositoryModel GetRepository(string Name);

@@ -66,6 +66,7 @@ namespace Bonobo.Git.Server.Controllers
         {
             var model = ConvertRepositoryModel(RepositoryRepository.GetRepository(id), User);
             PopulateCheckboxListData(ref model);
+            ViewBag.KnownDependencies = PopulateKnownDependencyDropdown();
             return View(model);
         }
 
@@ -99,7 +100,25 @@ namespace Bonobo.Git.Server.Controllers
                 }
             }
             PopulateCheckboxListData(ref model);
+            ViewBag.KnownDependencies = PopulateKnownDependencyDropdown();
             return View(model);
+        }
+
+        public List<SelectListItem> PopulateKnownDependencyDropdown()
+        {
+            IList<KnownDependency> knownDepList = RepositoryRepository.GetAllKnownDependencies();
+            List<SelectListItem> items = new List<SelectListItem>();
+            foreach (var item in knownDepList)
+            {
+                var componentName = new SelectListItem
+                {
+                    Text = item.ComponentName,
+                    Value = item.Id.ToString(),
+                    //Selected = item.Id == "cdca4535-c9a8-456d-bf6c-8989311a1bb2"
+                };
+                items.Add(componentName);
+            }
+            return items;
         }
 
         private void MoveRepo(RepositoryModel oldRepo, RepositoryModel newRepo)
