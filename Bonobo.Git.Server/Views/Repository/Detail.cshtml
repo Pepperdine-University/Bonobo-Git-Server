@@ -154,16 +154,15 @@
             <div>
                 @foreach (Bonobo.Git.Server.Data.Dependency dependency in Model.Dependencies)
                 {
-                <details style="display:inline-block;">
+                <details style="display: block; overflow: hidden; white-space: nowrap;">
                     <summary>
                         <div class="sidebar-text">
-                            <i class="fa fa-chevron-down"></i><input class="removeVisualInput" value="Component Details" readonly />
+                                <i class="fa fa-chevron-down"></i><input style="text-overflow: ellipsis; width: 80% " class="removeVisualInput" value="@dependency.KnownDependency.ComponentName (@dependency.VersionInUse)" readonly />
                         </div>
                     </summary>
                     <div class="pass-info">
                         <div class="pure-control-group">
                             <div class="sidebar-text">
-                                <input class="removeVisualInput" value="@dependency.KnownDependency.ComponentName @dependency.VersionInUse" readonly />
                                 <label> Date Updated: </label><input class="removeVisualInput" value="@dependency.DateUpdated" readonly />
                             </div>
                         </div>
