@@ -211,13 +211,13 @@ else
             @Html.TextBoxFor(m => m.Dependencies[i].VersionInUse)
             @Html.ValidationMessageFor(m => m.Dependencies[i].VersionInUse)
         </div>
-        <div contentEditable="true">
+        <div class="pure-control-group">
             @Html.LabelFor(m => m.Dependencies[i].DateUpdated)
             @Html.TextBoxFor(m => m.Dependencies[i].DateUpdated)
             @Html.ValidationMessageFor(m => m.Dependencies[i].DateUpdated)
         </div>
 
-        <div style="display:none">
+        <div class="pure-control-group" style="display:none">
             @Html.HiddenFor(m => m.Dependencies[i].Id);
             @Html.HiddenFor(m => m.Dependencies[i].RepositoryId); 
             @Html.HiddenFor(m => m.Dependencies[i].KnownDependenciesId); 
