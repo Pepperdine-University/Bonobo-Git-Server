@@ -87,7 +87,7 @@ namespace Bonobo.Git.Server.Data.Update.Sqlite
                     );
                     
                     CREATE TABLE IF NOT EXISTS [ServiceAccounts] (
-                        [Id] nvarchar(36) PRIMARY KEY,
+                        [Id] INTEGER PRIMARY KEY,
 	                    [ServiceAccountName] nvarchar(36),
 	                    [InPassManager]	Bit Default 0,
 	                    [PassLastUpdated] Date Default 0,

@@ -121,6 +121,13 @@ namespace Bonobo.Git.Server.Controllers
             return items;
         }
 
+        //public ActionResult AddServiceAccount(RepositoryDetailModel model)
+        //{
+        //    db
+
+        //    return View(model);
+        //}
+
         private void MoveRepo(RepositoryModel oldRepo, RepositoryModel newRepo)
         {
             if (oldRepo.Name != newRepo.Name)

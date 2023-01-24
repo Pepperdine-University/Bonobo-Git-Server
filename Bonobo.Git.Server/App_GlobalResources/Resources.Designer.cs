@@ -1998,6 +1998,69 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Service Accounts.
+        /// </summary>
+        public static string SA {
+            get {
+                return ResourceManager.GetString("SA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Service Account.
+        /// </summary>
+        public static string SA_Add {
+            get {
+                return ResourceManager.GetString("SA_Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Service Account.
+        /// </summary>
+        public static string SA_Delete {
+            get {
+                return ResourceManager.GetString("SA_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Id.
+        /// </summary>
+        public static string SA_ID {
+            get {
+                return ResourceManager.GetString("SA_ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InPassManager.
+        /// </summary>
+        public static string SA_InPassManager {
+            get {
+                return ResourceManager.GetString("SA_InPassManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ServiceAccountName.
+        /// </summary>
+        public static string SA_Name {
+            get {
+                return ResourceManager.GetString("SA_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PassLastUpdated.
+        /// </summary>
+        public static string SA_PassLastUpdated {
+            get {
+                return ResourceManager.GetString("SA_PassLastUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search.
         /// </summary>
         public static string Search {

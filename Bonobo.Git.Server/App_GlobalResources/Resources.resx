@@ -966,4 +966,25 @@ The regular C# string formatting rules apply: To get {} in your link you need to
   <data name="Repository_Layout_Code" xml:space="preserve">
     <value>Code</value>
   </data>
+  <data name="SA" xml:space="preserve">
+    <value>Service Accounts</value>
+  </data>
+  <data name="SA_Add" xml:space="preserve">
+    <value>Add Service Account</value>
+  </data>
+  <data name="SA_Delete" xml:space="preserve">
+    <value>Delete Service Account</value>
+  </data>
+  <data name="SA_ID" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="SA_InPassManager" xml:space="preserve">
+    <value>InPassManager</value>
+  </data>
+  <data name="SA_Name" xml:space="preserve">
+    <value>ServiceAccountName</value>
+  </data>
+  <data name="SA_PassLastUpdated" xml:space="preserve">
+    <value>PassLastUpdated</value>
+  </data>
 </root>
