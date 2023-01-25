@@ -114,10 +114,17 @@ namespace Bonobo.Git.Server.Controllers
                 {
                     Text = item.ComponentName,
                     Value = item.Id.ToString(),
-                    //Selected = item.Id == "cdca4535-c9a8-456d-bf6c-8989311a1bb2"
+                    //Selected = item.Id == model.
                 };
                 items.Add(componentName);
             }
+            var addNew = new SelectListItem
+            {
+                Text = "Add New...",
+                //Value = item.Id.ToString(),
+                //Selected = item.Id == model.
+            };
+            items.Add(addNew);
             return items;
         }
 
