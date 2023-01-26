@@ -165,55 +165,52 @@ else
                         </div>
                     </div>*@
 
-                <fieldset class="pure-control-group">
-                    <legend>
-                        @Resources.SA
-                    </legend>
-                    <template id="serviceAccountrow">
-                        <div class="row service-account-details">
-                            <div class=" col pure-control-group" style="display:none;">
-                                <label> @Resources.SA_ID </label>
-                                <input id="ServiceAccounts[i].Id" name="ServiceAccounts[{i}].Id" readonly disabled />
-                            </div>
-                            <div class="col pure-control-group">
-                                <label> @Resources.SA_Name </label>
-                                <input id="ServiceAccounts[i].ServiceAccountName" name="ServiceAccounts[{i}].ServiceAccountName" />
-                                <button style="background-color: white; border: none;" type="button"><i style="color:red;" class="fa fa-minus-circle"></i></button>
-                            </div>
-                            <div class="col pure-control-group">
-                                <label> @Resources.SA_InPassManager </label>
-                                <input type="checkbox" id="ServiceAccounts[i].InPassManager" name="ServiceAccounts[{i}].InPassManager" />
-                            </div>
-                            <div class="col pure-control-group">
-                                <label> @Resources.SA_PassLastUpdated </label>
-                                <input type="datetime" id="ServiceAccounts[i].PassLastUpdated" name="ServiceAccounts[{i}].PassLastUpdated" value="1/1/1900 12:00:00 AM" />
-                            </div>
+            <fieldset class="pure-control-group">
+                <legend>
+                    @Resources.SA
+                </legend>
+                <template id="serviceAccountrow">
+                    <div class="row service-account-details" id="service-account-details" name="service-account-details">
+                        <div class=" col pure-control-group" style="display:none;">
+                            <label> @Resources.SA_ID </label>
+                            <input class="form-control" id="ServiceAccounts_{i}__.Id" name="ServiceAccounts[{i}].Id" readonly disabled />
                         </div>
-                    </template>
-                    @*@Html.ActionLink(" ", "Delete", new { id = ServiceAccounts[i].Id }, new { @class = "delete", title = Resources.Grid_Delete }), style: "action"));*@
+                        <div class="col pure-control-group">
+                            <label> @Resources.SA_Name </label>
+                            <input class="form-control" id="ServiceAccounts_{i}__.ServiceAccountName" name="ServiceAccounts[{i}].ServiceAccountName" />
+                            <button style="background-color: white; border: none;" type="button"><i style="color:red;" class="fa fa-minus-circle"></i></button>
+                        </div>
+                        <div class="col pure-control-group">
+                            <label> @Resources.SA_InPassManager </label>
+                            <input class="form-control" type="checkbox" id="ServiceAccounts_{i}__.InPassManager" name="ServiceAccounts[{i}].InPassManager" />
+                        </div>
+                        <div class="col pure-control-group">
+                            <label> @Resources.SA_PassLastUpdated </label>
+                            <input class="form-control" type="datetime" id="ServiceAccounts_{i}__.PassLastUpdated" name="ServiceAccounts[{i}].PassLastUpdated" value="1/1/1900 12:00:00 AM" />
+                        </div>
+                    </div>
+                </template>
+                @*@Html.ActionLink(" ", "Delete", new { id = ServiceAccounts[i].Id }, new { @class = "delete", title = Resources.Grid_Delete }), style: "action"));*@
 
-                    <!--</div>-->
-                    @*@{@Model.ServiceAccounts ServiceAccountList = new Model.ServiceAccounts();
-                            Bonobo.Git.Server.Data.ServiceAccount newServiceAccount = new Bonobo.Git.Server.Data.ServiceAccount();
-                            newServiceAccountList[0] = newServiceAccount;
-                        }*@
-                    @*var newServiceAccount = new Bonobo.Git.Server.Data.ServiceAccount
-                        {
-                            Id = Model.ServiceAccounts.Count,
-                            ServiceAccountName = "",
-                            InPassManager = false,
-                            PassLastUpdated = DateTime.Now
-                        };
-                        var newServiceAccounts = Model.ServiceAccounts; /*new Bonobo.Git.Server.Models.RepositoryDetailModel*/
-                        newServiceAccounts.Clear();
-                        newServiceAccounts[0] = newServiceAccount;*@
+                <!--</div>-->
+                @*@{@Model.ServiceAccounts ServiceAccountList = new Model.ServiceAccounts();
+            Bonobo.Git.Server.Data.ServiceAccount newServiceAccount = new Bonobo.Git.Server.Data.ServiceAccount();
+            newServiceAccountList[0] = newServiceAccount;
+        }*@
+                @*@{
+                    var newServiceAccount = new Bonobo.Git.Server.Data.ServiceAccount
+                    {
+                        Id = ,
+                        ServiceAccountName = ,
+                        InPassManager = ,
+                        PassLastUpdated = 
+                    };
+                    var newServiceAccounts = Model.ServiceAccounts; /*new Bonobo.Git.Server.Models.RepositoryDetailModel*/
+                    newServiceAccounts.Clear();
+                    newServiceAccounts[0] = newServiceAccount;
 
-
-
-
-
-                    @*@Model.ServiceAccounts.Append(newServiceAccount);*@
-
+                    @Model.ServiceAccounts.Append(newServiceAccount);
+                }*@
 
 
                     @if (Model != null)
@@ -221,33 +218,33 @@ else
                         for (int i = 0; i < Model.ServiceAccounts.Count; i++)
                         {
 
-                            <div class="pure-control-group">
-                                @Html.LabelFor(m => m.ServiceAccounts[i].ServiceAccountName)
-                                @Html.TextBoxFor(m => m.ServiceAccounts[i].ServiceAccountName)
-                                @Html.ValidationMessageFor(m => m.ServiceAccounts[i].ServiceAccountName)
-                                <button style="background-color: white; border: none;" type="button"><i style="color:red;" class="fa fa-minus-circle"></i></button>
-                            </div>
-                            <div class="pure-control-group">
-                                @Html.LabelFor(m => m.ServiceAccounts[i].InPassManager)
-                                @Html.CheckBoxFor(m => m.ServiceAccounts[i].InPassManager)
-                                @Html.ValidationMessageFor(m => m.ServiceAccounts[i].InPassManager)
-                            </div>
-                            <div class="pure-control-group">
-                                @Html.LabelFor(m => m.ServiceAccounts[i].PassLastUpdated)
-                                @Html.TextBoxFor(m => m.ServiceAccounts[i].PassLastUpdated)
-                                @Html.ValidationMessageFor(m => m.ServiceAccounts[i].PassLastUpdated)
-                            </div>
-                            <div class="pure-control-group" style="display:none;">
-                                @Html.LabelFor(m => m.ServiceAccounts[i].Id)
-                                @Html.TextBoxFor(m => m.ServiceAccounts[i].Id)
-                                @Html.LabelFor(m => m.ServiceAccounts[i].RepositoryId)
-                                @Html.TextBoxFor(m => m.ServiceAccounts[i].RepositoryId)
-                            </div>
+                        <div class="pure-control-group">
+                            @Html.LabelFor(m => m.ServiceAccounts[i].ServiceAccountName)
+                            @Html.TextBoxFor(m => m.ServiceAccounts[i].ServiceAccountName)
+                            @Html.ValidationMessageFor(m => m.ServiceAccounts[i].ServiceAccountName)
+                            <a href="@Url.Action("DeleteSa", new {ServiceAccounts = Model.ServiceAccounts[i] })" style="background-color: white; border: none;" type="button"><i style="color:red;" class="fa fa-minus-circle"></i></a>
+                        </div>
+                        <div class="pure-control-group">
+                            @Html.LabelFor(m => m.ServiceAccounts[i].InPassManager)
+                            @Html.CheckBoxFor(m => m.ServiceAccounts[i].InPassManager)
+                            @Html.ValidationMessageFor(m => m.ServiceAccounts[i].InPassManager)
+                        </div>
+                        <div class="pure-control-group">
+                            @Html.LabelFor(m => m.ServiceAccounts[i].PassLastUpdated)
+                            @Html.TextBoxFor(m => m.ServiceAccounts[i].PassLastUpdated)
+                            @Html.ValidationMessageFor(m => m.ServiceAccounts[i].PassLastUpdated)
+                        </div>
+                        <div class="pure-control-group" style="display:none;">
+                            @Html.LabelFor(m => m.ServiceAccounts[i].Id)
+                            @Html.TextBoxFor(m => m.ServiceAccounts[i].Id)
+                            @Html.LabelFor(m => m.ServiceAccounts[i].RepositoryId)
+                            @Html.TextBoxFor(m => m.ServiceAccounts[i].RepositoryId)
+                        </div>
 
-                        }
-                        @*<div class="pure-control-group">
-                                <button href="@Url.Action("AddServiceAccount")" onclick=" newField();" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> Add Service Account </button>
-                            </div>*@
+                    }
+                    @*<div class="pure-control-group">
+                <button href="@Url.Action("AddServiceAccount")" onclick=" newField();" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> Add Service Account </button>
+            </div>*@
 
 
 
@@ -256,7 +253,7 @@ else
                 </fieldset>
 
                 <div class="pure-control-group">
-                    <button type="button" onclick=" newField();" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.SA_Add </button>
+                    <button type="button" onclick=" newField(@Model.ServiceAccounts.Count);" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.SA_Add </button>
                 </div>
                 <fieldset class="pure-control-group" style="padding-top:10px;">
                     <legend>

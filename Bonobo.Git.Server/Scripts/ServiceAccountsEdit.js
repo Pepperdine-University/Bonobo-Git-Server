@@ -1,17 +1,26 @@
-﻿function newField() {
-    var allDetailRows = $(".service-account-details");
-    console.log("Test");
-    console.log(allDetailRows);
-    var nextDetailRowIndex = allDetailRows.length - 1;
-    console.log("Next Detail Row Index Count: ")
-    console.log(nextDetailRowIndex);
-    if (nextDetailRowIndex >= 0) {
-        setChildNameAndIdIndexes(allDetailRows.last(), "{i}", nextDetailRowIndex);
-    }
+﻿function newField(count) {
     var template = document.getElementById("serviceAccountrow");
     var newDetailRow = template.content.cloneNode(true);
- 
+
     template.parentNode.appendChild(newDetailRow);
+    var allDetailRows = $(".service-account-details");
+
+    var nextDetailRowIndex = allDetailRows.length -1;
+
+    if (nextDetailRowIndex >= 0) {
+        setChildNameAndIdIndexes(allDetailRows.last(), "{i}", nextDetailRowIndex+ count);
+    }
+   
+    //if (nextDetailRowIndex < 0) {
+    //    console.log("The index is less then 0");
+    //    console.log("Index: " + count);
+    //    //newDetailRow.find('#ServiceAccounts_{i}__.Id').attr({ name: "ServiceAccounts[{" + count + "}].InPassManager" });
+
+    //    //$('#ServiceAccounts_{i}__.ServiceAccountName').attr("name": "ServiceAccounts[{' + count + '}].ServiceAccountName', 'id': 'ServiceAccounts_{ ' + count + '}__.ServiceAccountName');
+    //    $('#ServiceAccounts_{i}__.Id').attr('id', 'test');
+    //    $('#ServiceAccounts_{i}__.Id').attr('name', 'test');
+    //    //$('#ServiceAccounts_{i}__.ServiceAccountName').attr('id', 'ServiceAccounts_{' + count + '}__.ServiceAccountName');
+    //}
     //var newDetailRow = $('@Model.ServiceAccounts newServiceAccounts = new ServiceAccounts();' +
     //    '<div class="pure-control-group">' +
     //    '@Html.LabelFor(m=> m.newServiceAccount.ServiceAccountName)' +
@@ -39,10 +48,16 @@
 }
 function setChildNameAndIdIndexes(element, placeholder, index) {
     if (element instanceof jQuery) {
+        console.log("It is an element of Jquery")
+        console.log(element)
         element = element.get(0);
+        console.log("After. ")
+        console.log(element);
     }
+
     console.log(element);
     if (element.children) {
+        console.log("Element has children ")
         Array.from(element.children).forEach((child) => {
             if (child.id) {
                 child.id = child.id.replace(placeholder, index);
@@ -53,6 +68,7 @@ function setChildNameAndIdIndexes(element, placeholder, index) {
             if (child.dataset.valmsgFor) {
                 child.dataset.valmsgFor = child.dataset.valmsgFor.replace(placeholder, index);
             }
+            console.log(index);
             setChildNameAndIdIndexes(child, placeholder, index);
         });
     }
@@ -78,10 +94,10 @@ function setChildNameAndIdIndexes(element, placeholder, index) {
 //    }*/
 //    $(".pure-button save").off('click').on('click', saveAccount);
  
-////JQuery to not make the checkboxes be automatically set to true
-//$("input[type='checkbox']").on('change', function () {
-//    $(this).val(this.checked ? "TRUE" : "FALSE");
-//})
+//JQuery to not make the checkboxes be automatically set to true
+$("input[type='checkbox']").on('change', function () {
+    $(this).val(this.checked ? "TRUE" : "FALSE");
+})
 
 //function addServiceAccountRow() {
 //    var allDetailRows = $(".service-account-details");

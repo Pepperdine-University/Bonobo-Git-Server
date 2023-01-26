@@ -128,11 +128,10 @@ namespace Bonobo.Git.Server.Controllers
             return items;
         }
 
-        //public ActionResult AddServiceAccount(RepositoryDetailModel model)
+        //public void DeleteSa(int id)
         //{
-        //    db
 
-        //    return View(model);
+
         //}
 
         private void MoveRepo(RepositoryModel oldRepo, RepositoryModel newRepo)
