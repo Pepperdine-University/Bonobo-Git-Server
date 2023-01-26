@@ -192,20 +192,13 @@ namespace Bonobo.Git.Server.Data
                 };
                 database.Repositories.Add(repository);
                 AddMembers(model.Users.Select(x => x.Id), model.Administrators.Select(x => x.Id), model.Teams.Select(x => x.Id),  repository, database);
-                using (var db = CreateContext())
-                {
-                    var repo = db.Repositories
-                                .Include(r => r.ServiceAccounts)
-                                .Include(r => r.Dependencies)
-                                .FirstOrDefault(i => i.Id == model.Id);
-                    if (model.ServiceAccounts != null)
-                    {
-                        foreach (var serviceAccount in model.ServiceAccounts.ToList())
-                        {
-                                repo.ServiceAccounts.Add(serviceAccount);
-                        }
-                    }
-                }
+                //using (var db = CreateContext())
+                //{
+                //    var repo = db.Repositories
+                //                .Include(r => r.ServiceAccounts)
+                //                .Include(r => r.Dependencies)
+                //                .FirstOrDefault(i => i.Id == model.Id);
+                //}
                 try
                 {
                     database.SaveChanges();

@@ -95,9 +95,9 @@ function setChildNameAndIdIndexes(element, placeholder, index) {
 //    $(".pure-button save").off('click').on('click', saveAccount);
  
 //JQuery to not make the checkboxes be automatically set to true
-$("input[type='checkbox']").on('change', function () {
-    $(this).val(this.checked ? "TRUE" : "FALSE");
-})
+//$("input[type='checkbox']").on('change', function () {
+//    $(this).val(this.checked ? "TRUE" : "FALSE");
+//})
 
 //function addServiceAccountRow() {
 //    var allDetailRows = $(".service-account-details");

@@ -173,20 +173,32 @@ else
                     <div class="row service-account-details" id="service-account-details" name="service-account-details">
                         <div class=" col pure-control-group" style="display:none;">
                             <label> @Resources.SA_ID </label>
-                            <input class="form-control" id="ServiceAccounts_{i}__.Id" name="ServiceAccounts[{i}].Id" readonly disabled />
+                            <input class="form-control" id="ServiceAccounts[{i}].Id" name="ServiceAccounts[{i}].Id" readonly disabled />
                         </div>
                         <div class="col pure-control-group">
                             <label> @Resources.SA_Name </label>
                             <input class="form-control" id="ServiceAccounts_{i}__.ServiceAccountName" name="ServiceAccounts[{i}].ServiceAccountName" />
+                            <span class="field-validation-valid text-danger"
+                                  data-valmsg-for="ServiceAccounts[{i}].ServiceAccountName"
+                                  data-valmsg-replace="true">
+                            </span>
                             <button style="background-color: white; border: none;" type="button"><i style="color:red;" class="fa fa-minus-circle"></i></button>
                         </div>
                         <div class="col pure-control-group">
                             <label> @Resources.SA_InPassManager </label>
                             <input class="form-control" type="checkbox" id="ServiceAccounts_{i}__.InPassManager" name="ServiceAccounts[{i}].InPassManager" />
+                            <span class="field-validation-valid text-danger"
+                                  data-valmsg-for="ServiceAccounts[{i}].InPassManager"
+                                  data-valmsg-replace="true">
+                            </span>
                         </div>
                         <div class="col pure-control-group">
                             <label> @Resources.SA_PassLastUpdated </label>
                             <input class="form-control" type="datetime" id="ServiceAccounts_{i}__.PassLastUpdated" name="ServiceAccounts[{i}].PassLastUpdated" value="1/1/1900 12:00:00 AM" />
+                            <span class="field-validation-valid text-danger"
+                                  data-valmsg-for="ServiceAccounts[{i}].PassLastUpdated"
+                                  data-valmsg-replace="true">
+                            </span>
                         </div>
                     </div>
                 </template>
