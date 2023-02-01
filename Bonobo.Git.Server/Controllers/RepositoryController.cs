@@ -86,7 +86,7 @@ namespace Bonobo.Git.Server.Controllers
                     try
                     {
                         RepositoryRepository.Update(repoModel);
-                        
+
                     }
                     catch (System.Data.Entity.Infrastructure.DbUpdateException)
                     {
@@ -307,14 +307,14 @@ namespace Bonobo.Git.Server.Controllers
             string GitUrl = String.Concat(serverAddress, Name, ".git");
             if (User.Identity.IsAuthenticated && type == "PersonalUrl")
             {
-               string personalUrl =
-                    String.Concat(serverAddress.Replace("://", "://" + Uri.EscapeDataString(User.Username()) + "@"), Name, ".git");
+                string personalUrl =
+                     String.Concat(serverAddress.Replace("://", "://" + Uri.EscapeDataString(User.Username()) + "@"), Name, ".git");
                 return personalUrl;
             }
             return GitUrl;
-           
+
         }
-        
+
 
         [WebAuthorizeRepository]
         public ActionResult Tree(Guid id, string encodedName, string encodedPath)
@@ -353,9 +353,9 @@ namespace Bonobo.Git.Server.Controllers
                     Dependencies = repo.Dependencies
                 };
 
-                    PopulateBranchesData(browser, referenceName);
-                    PopulateAddressBarData(path);
-                    return View(model);
+                PopulateBranchesData(browser, referenceName);
+                PopulateAddressBarData(path);
+                return View(model);
             }
         }
 
@@ -772,7 +772,7 @@ namespace Bonobo.Git.Server.Controllers
                 Logo = new RepositoryLogoDetailModel(model.Logo),
                 AreRegexLinksVisible = UserConfiguration.Current.AreRegexLinksVisible,
                 LinksUseGlobal = model.LinksUseGlobal,
-                LinksRegex = (model.LinksUseGlobal? UserConfiguration.Current.LinksRegex: model.LinksRegex),
+                LinksRegex = (model.LinksUseGlobal ? UserConfiguration.Current.LinksRegex : model.LinksRegex),
                 LinksUrl = (model.LinksUseGlobal ? UserConfiguration.Current.LinksUrl : model.LinksUrl),
                 ServiceAccounts = model.ServiceAccounts,
                 Dependencies = model.Dependencies
@@ -831,5 +831,40 @@ namespace Bonobo.Git.Server.Controllers
 
             fsi.Delete();
         }
+
+        /*        public ActionResult DeleteKDepnAction(string id)
+                {
+                    return View(ConvertRepositoryModel(RepositoryRepository.GetRepository(id), User));
+                    //return View();
+                }*/
+
+
+
+
+        //[HttpPost]
+        public ActionResult DeleteDepenAction(string id)
+        {
+            if (id != null)
+            {
+                var Depen = id;
+                RepositoryRepository.DeleteDepen(Depen);
+            }
+            return RedirectToAction("Edit");
+        }
+        /*        public ActionResult Delete(RepositoryDetailModel model)
+                {
+                    if (model != null)
+                    {
+                        var repo = RepositoryRepository.GetRepository(model.Id);
+                        string path = Path.Combine(UserConfiguration.Current.Repositories, repo.Name);
+                        if (Directory.Exists(path))
+                        {
+                            DeleteFileSystemInfo(new DirectoryInfo(path));
+                        }
+                        RepositoryRepository.Delete(repo.Id);
+                        TempData["DeleteSuccess"] = true;
+                    }
+                    return RedirectToAction("Index");
+                }*/
     }
 }

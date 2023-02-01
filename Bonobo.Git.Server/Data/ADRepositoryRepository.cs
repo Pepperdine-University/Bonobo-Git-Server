@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
 using Bonobo.Git.Server.Models;
 
 namespace Bonobo.Git.Server.Data
@@ -84,6 +85,11 @@ namespace Bonobo.Git.Server.Data
         public IList<RepositoryModel> GetTeamRepositories(Guid[] teamsId)
         {
             return GetAllRepositories().Where(repo => repo.Teams.Any(team => teamsId.Contains(team.Id))).ToList();
+        }
+
+        public void DeleteDepen(string id)
+        {
+
         }
     }
 }
