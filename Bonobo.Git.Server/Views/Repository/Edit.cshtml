@@ -248,10 +248,8 @@ else
                                         <input />
                                     </div>
                                 }*@
-                                //var tempId = Model.Dependencies[i].KnownDependency.Id.ToString();
                                 var DepenId = Model.Dependencies[i].Id;
                                 <a class="pure-button" href="@Url.Action("DeleteDepenAction", "Repository", new {id = @DepenId})"><i style="color:red;" class="fa fa-minus-circle"></i></a>
-                                //<a class="pure-button" href="@Url.Action("DeleteKDepenAction", "Repository", new {id = @tempId})"><i style="color:red;" class="fa fa-minus-circle"></i></a>
                             }
                         </div>
                         <div class="pure-control-group">

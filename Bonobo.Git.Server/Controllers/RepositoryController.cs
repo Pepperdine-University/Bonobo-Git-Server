@@ -832,16 +832,6 @@ namespace Bonobo.Git.Server.Controllers
             fsi.Delete();
         }
 
-        /*        public ActionResult DeleteKDepnAction(string id)
-                {
-                    return View(ConvertRepositoryModel(RepositoryRepository.GetRepository(id), User));
-                    //return View();
-                }*/
-
-
-
-
-        //[HttpPost]
         public ActionResult DeleteDepenAction(string id)
         {
             if (id != null)
@@ -851,20 +841,5 @@ namespace Bonobo.Git.Server.Controllers
             }
             return RedirectToAction("Edit");
         }
-        /*        public ActionResult Delete(RepositoryDetailModel model)
-                {
-                    if (model != null)
-                    {
-                        var repo = RepositoryRepository.GetRepository(model.Id);
-                        string path = Path.Combine(UserConfiguration.Current.Repositories, repo.Name);
-                        if (Directory.Exists(path))
-                        {
-                            DeleteFileSystemInfo(new DirectoryInfo(path));
-                        }
-                        RepositoryRepository.Delete(repo.Id);
-                        TempData["DeleteSuccess"] = true;
-                    }
-                    return RedirectToAction("Index");
-                }*/
     }
 }
