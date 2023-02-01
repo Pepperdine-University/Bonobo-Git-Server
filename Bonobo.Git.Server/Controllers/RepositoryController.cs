@@ -832,14 +832,14 @@ namespace Bonobo.Git.Server.Controllers
             fsi.Delete();
         }
 
-        public ActionResult DeleteDepenAction(string id)
+        public ActionResult DeleteDepenAction(Guid Rid, string id)
         {
             if (id != null)
             {
                 var Depen = id;
                 RepositoryRepository.DeleteDepen(Depen);
             }
-            return RedirectToAction("Edit");
+            return Redirect("/Repository/Edit/" + Rid);
         }
     }
 }
