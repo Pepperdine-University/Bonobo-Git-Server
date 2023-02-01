@@ -10,48 +10,22 @@
     if (nextDetailRowIndex >= 0) {
         setChildNameAndIdIndexes(allDetailRows.last(), "{i}", nextDetailRowIndex+ count);
     }
-   
-    //if (nextDetailRowIndex < 0) {
-    //    console.log("The index is less then 0");
-    //    console.log("Index: " + count);
-    //    //newDetailRow.find('#ServiceAccounts_{i}__.Id').attr({ name: "ServiceAccounts[{" + count + "}].InPassManager" });
-
-    //    //$('#ServiceAccounts_{i}__.ServiceAccountName').attr("name": "ServiceAccounts[{' + count + '}].ServiceAccountName', 'id': 'ServiceAccounts_{ ' + count + '}__.ServiceAccountName');
-    //    $('#ServiceAccounts_{i}__.Id').attr('id', 'test');
-    //    $('#ServiceAccounts_{i}__.Id').attr('name', 'test');
-    //    //$('#ServiceAccounts_{i}__.ServiceAccountName').attr('id', 'ServiceAccounts_{' + count + '}__.ServiceAccountName');
-    //}
-    //var newDetailRow = $('@Model.ServiceAccounts newServiceAccounts = new ServiceAccounts();' +
-    //    '<div class="pure-control-group">' +
-    //    '@Html.LabelFor(m=> m.newServiceAccount.ServiceAccountName)' +
-    //    '@Html.TextBoxFor(m=> m.newServiceAccount.ServiceAccountName)' +
-    //    '@Html.ValidationMessageFor(m=> m.newServiceAccount.ServiceAccountName) ' +
-    //    '</div >' +
-    //    '<div class="pure-control-group">' +
-    //    '@Html.LabelFor(m=> m.newServiceAccount.InPassManager)' +
-    //    '@Html.CheckBoxFor(m=> m.newServiceAccount.InPassManager)' +
-    //    '@Html.ValidationMessageFor(m=> m.newServiceAccount.InPassManager)' +
-    //    '</div>' +
-    //    '<div class="pure-control-group">' +
-    //    '@Html.LabelFor(m=> m.newServiceAccount.PassLastUpdated)' +
-    //    '@Html.TextBoxFor(m=> m.newServiceAccount.PassLastUpdated)' +
-    //    '@Html.ValidationMessageFor(m=> m.newServiceAccount.PassLastUpdated)' +
-    //    '</div>' +
-    //    '<div class="pure-control-group" style="display:none;">' +
-    //    '@Html.LabelFor(m=> m.newServiceAccount.Id)' +
-    //    '@Html.TextBoxFor(m=> m.newServiceAccount.Id)' +
-    //    '@Html.LabelFor(m=> m.newServiceAccount.RepositoryId)' +
-    //    '@Html.TextBoxFor(m=> m.newServiceAccount.RepositoryId)' +
-    //    '</div>)' +
-    //    ' @m.ServiceAccounts.Append(newServiceAccount);');
-    
 }
+function remField(id) { 
+    id = id.slice(-1);
+    id = "ServiceAccounts_" + id;
+    console.log(id);
+    var account = document.getElementById(id);
+    account.remove();
+    //Fix Id change after delete
+}
+
 function setChildNameAndIdIndexes(element, placeholder, index) {
     if (element instanceof jQuery) {
         console.log("It is an element of Jquery")
         console.log(element)
         element = element.get(0);
-        console.log("After. ")
+        console.log("After. ");
         console.log(element);
     }
 
@@ -59,6 +33,9 @@ function setChildNameAndIdIndexes(element, placeholder, index) {
     if (element.children) {
         console.log("Element has children ")
         Array.from(element.children).forEach((child) => {
+            if (element.id) {
+                element.id = element.id.replace(placeholder, index);
+            }
             if (child.id) {
                 child.id = child.id.replace(placeholder, index);
             }
@@ -93,7 +70,7 @@ function setChildNameAndIdIndexes(element, placeholder, index) {
 //        $('#hdrContractName').html('New Contract');
 //    }*/
 //    $(".pure-button save").off('click').on('click', saveAccount);
- 
+
 //JQuery to not make the checkboxes be automatically set to true
 //$("input[type='checkbox']").on('change', function () {
 //    $(this).val(this.checked ? "TRUE" : "FALSE");
@@ -113,12 +90,27 @@ function setChildNameAndIdIndexes(element, placeholder, index) {
 //    template.parentNode.appendChild(newDetailRow);
 //    $('.service-account-details').last().on('change', detailRowChanged);
 //}
+//function deleteSa() {
+//    var d1 = { id: $("#contractId").val() };
+//    $.ajax({
+//        type: "POST",
+//        url: deleteUrl,
+//        data: (d1),
+//        success: function (xhr) {
+//            successMessage('Successfully deleted object.');
+//            $("#xButton").click();
+//        },
+//        error: function (xhr) {
+//            failureMessage('Could not delete object.');
+//        }
+//    })
+//}
 
-function detailRowChanged() {
-    if (this == $('.service-account-details').last().get(0)) {
-        addServiceAccountRow();
-    }
-}
+//function detailRowChanged() {
+//    if (this == $('.service-account-details').last().get(0)) {
+//        addServiceAccountRow();
+//    }
+//}
 //function saveContract() {
 //    const d1 = getFormValues(document.querySelector('form'));
 

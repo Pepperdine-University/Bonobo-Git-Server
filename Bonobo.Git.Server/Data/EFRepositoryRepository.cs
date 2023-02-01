@@ -131,12 +131,14 @@ namespace Bonobo.Git.Server.Data
                 }
             }
         }
-        public void DeleteSa(int id)
+        public void DeleteSA(int id)
         {
             using (var db = CreateContext())
             {
                 var sa = db.ServiceAccounts.FirstOrDefault(i => i.Id == id);
                 db.ServiceAccounts.Remove(sa);
+                    //repo.ServiceAccounts.Remove(serviceAccount);
+                db.SaveChanges();
             }
         }
         public void AddTemplateSa(RepositoryDetailModel model)
@@ -192,13 +194,6 @@ namespace Bonobo.Git.Server.Data
                 };
                 database.Repositories.Add(repository);
                 AddMembers(model.Users.Select(x => x.Id), model.Administrators.Select(x => x.Id), model.Teams.Select(x => x.Id),  repository, database);
-                //using (var db = CreateContext())
-                //{
-                //    var repo = db.Repositories
-                //                .Include(r => r.ServiceAccounts)
-                //                .Include(r => r.Dependencies)
-                //                .FirstOrDefault(i => i.Id == model.Id);
-                //}
                 try
                 {
                     database.SaveChanges();

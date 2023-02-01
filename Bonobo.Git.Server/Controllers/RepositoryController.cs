@@ -128,11 +128,11 @@ namespace Bonobo.Git.Server.Controllers
             return items;
         }
 
-        //public void DeleteSa(int id)
-        //{
-
-
-        //}
+        public ActionResult DeleteSA(int id)
+        {
+            RepositoryRepository.DeleteSA(id);
+            return RedirectToAction("Edit", "Repository");
+        }
 
         private void MoveRepo(RepositoryModel oldRepo, RepositoryModel newRepo)
         {
