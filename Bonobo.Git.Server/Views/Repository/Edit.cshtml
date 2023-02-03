@@ -224,16 +224,14 @@ else
                     <legend>
                         Dependencies
                     </legend>
-
                     @for (int i = 0; i < Model.Dependencies.Count; i++)
                     {
                         <div class="pure-control-group">
                             @Html.LabelFor(m => m.Dependencies[i].KnownDependency.ComponentName)
-                            @Html.TextBoxFor(m => m.Dependencies[i].KnownDependency.ComponentName)
+                            @*@Html.TextBoxFor(m => m.Dependencies[i].KnownDependency.ComponentName)*@
                             @Html.ValidationMessageFor(m => m.Dependencies[i].KnownDependency.ComponentName)
-                            @*@Html.TextBoxFor(m => m.Dependencies[i].KnownDependency.Id)*@
                             @{
-                                @*var items = (IEnumerable<SelectListItem>)Html.ViewBag.KnownDependencies;
+                                var items = (IEnumerable<SelectListItem>)Html.ViewBag.KnownDependencies;
                                 for (int j = 0; j < items.Count(); j++)
                                 {
                                     if (items.ToList()[j].Value == Model.Dependencies[i].KnownDependency.Id.ToString())
@@ -244,12 +242,23 @@ else
                                     {
                                         items.ToList()[j].Selected = false;
                                     }
-                                    <div id="compNameNewInputField" style="display: none;">
-                                        <input />
-                                    </div>
-                                }*@
+                                }
+                                @Html.DropDownListFor(m => m.Dependencies[i].KnownDependenciesId, items, new
+                                {
+                                    @class = "dropDownKD",@*@disabled = "disabled",*@@onChange = "javascript: DisplayComponentNameNewInputField(this.options[this.selectedIndex].text, this.id)"
+});
                                 var DepenId = Model.Dependencies[i].Id;
                                 <a class="pure-button" href="@Url.Action("DeleteDepenAction", "Repository", new {Rid=Model.Id, id = @DepenId})"><i style="color:red;" class="fa fa-minus-circle"></i></a>
+                            }
+                        </div>
+                        <div class="pure-control-group">
+                            @{
+                                var labelId = "KDlabelDependencies_" + i + "__KnownDependenciesId";
+                                <label class="addNewAppear" id=@labelId style="display: none">Hello</label>
+                                var txtBoxId = "KDinputDependencies_" + i + "__KnownDependenciesId";
+                                @*<div id=@txtBoxId style="display: none;">*@
+                                <input class="pure-form addNewAppear" @*id=@($"KDinput{i}")*@ id=@txtBoxId style="display:none;" /><a class="pure-button" onclick="checkIfKDExists(@(i), @txtBoxId)"><i style="color:green;" class="fa fa-plus"></i></a>
+                                @*</div>*@
                             }
                         </div>
                         <div class="pure-control-group">
@@ -282,10 +291,63 @@ else
 }
 <script src="~/scripts/ServiceAccountsEdit.js"></script>
 <script>
-    function DisplayComponentNameNewInputField(text) {
+    function DisplayComponentNameNewInputField(text, index) {
         if (text == "Add New...") {
-            $("#compNameNewInputField").css("display", "block");
+            //$("#TxtBox" + index).css("display", "block");
+            var i = index;
+            console.log(i);
+            $("#KDinput" + index).css("display", "block");
+            $("#KDlabel" + index).css("display", "block");
+            //$(".addNewAppear").css("display", "block")
+        } else {
+            //$("#TxtBox" + index).css("display", "none");
+            $("#KDinput" + index).css("display", "none");
+            $("#KDlabel" + index).css("display", "none");
+            //$(".addNewAppear").css("display", "none")
         }
+    }
+    function checkIfKDExists(i, input) {
+        var newKDName = input.value;
+        var dropDown = document.getElementById(`Dependencies_${i}__KnownDependenciesId`);
+        var exists = 0;
+        for (j = 0; j < dropDown.options.length; j++) {
+            if (newKDName == dropDown.options[j].text) {
+                exists = 1;
+                break;
+            }
+        }
+        if (newKDName == "") {
+            alert("Please input a value, the new component name cannot be blank");
+        } else if (exists == 1) {
+            alert("The component name entered already exists, please input a component name that does not exist or select the existing one");
+        } else {
+            addKDtoDropDown(i, newKDName, dropDown);
+        }
+    }
+    function addKDtoDropDown(i, newKDName, dropDown) {
+        $.ajax({
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            url: `@Url.Action("GenerateNewGuid", "Repository")`,
+            data: { "componentName": newKDName },
+            success: function (response) {
+                var option = document.createElement("option");
+                option.text = newKDName;
+                option.value = response;
+                option.selected = true;
+                dropDown.add(option);
+            }, 
+            failure: function (response) {
+                alert("Failed to add new component name");
+            }
+        });
+        return false;
+
+        // 1. Get rid of known dependency function --
+        // 2. Get rid of partial view --
+        // 3. Add check to see if known dependency exists --
+        // 4. Add css styling to make it look good
+        // 5. Get rid of commented code
     }
 </script>
 

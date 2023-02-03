@@ -220,6 +220,33 @@ namespace Bonobo.Git.Server.Data
             }
         }
 
+        public bool CreateKnownDep(KnownDependency knownDependency)
+        {
+            using (var database = CreateContext())
+            {
+                var knownDep = new KnownDependency
+                {
+                    Id = knownDependency.Id,
+                    ComponentName = knownDependency.ComponentName,
+                };
+                database.KnownDependencies.Add(knownDep);
+                try
+                {
+                    database.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    Log.Error(ex, "Failed to create known dependency {RepoName}", knownDependency.ComponentName);
+                    return false;
+                }
+                catch (UpdateException)
+                {
+                    return false;
+                }
+                return true;
+            }
+        }
+
         public void Update(RepositoryModel model)
         {
             if (model == null) throw new ArgumentException("model");

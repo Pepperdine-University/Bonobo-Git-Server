@@ -568,6 +568,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\clipboard.min.js" />
+    <Content Include="Scripts\DependenciesEdit.js" />
     <Content Include="Scripts\highlight.pack.js" />
     <Content Include="Scripts\jquery-1.12.4.js" />
     <Content Include="Scripts\jquery-1.12.4.min.js" />
@@ -654,6 +655,7 @@
     <Content Include="Views\Repository\_Tag.cshtml" />
     <Content Include="Views\Repository\Sidebar.cshtml" />
     <Content Include="Views\_ViewImports.cshtml" />
+    <Content Include="Views\Repository\_NewKnownDependency.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
