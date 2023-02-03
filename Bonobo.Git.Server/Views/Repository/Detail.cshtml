@@ -153,12 +153,15 @@
             </label>
             <div>
                 @foreach (Bonobo.Git.Server.Data.Dependency dependency in Model.Dependencies)
-                {
+                        {
+                          var minorLength = String.Format("{0:0.00}", "565.435.22464.624");
+
+                    <p> @minorLength</p>
                 <details style="display: block; overflow: hidden; white-space: nowrap;">
                     <summary>
                         <div class="sidebar-text">
-                            <input style="text-overflow: ellipsis; width: 30% " class="removeVisualInput" value="@dependency.KnownDependency.ComponentName" readonly="">
-                            <input style="text-overflow: ellipsis; width: 40% " class="removeVisualInput" value="(@dependency.VersionInUse)" readonly="">
+                            <input style="text-overflow: ellipsis; "class="removeVisualInput" value="@dependency.KnownDependency.ComponentName" readonly="">
+                            <input style="text-overflow: ellipsis; "class="removeVisualInput" value="(@minorLength)" readonly="">
                         </div>
                     </summary>
                     <div class="pass-info">

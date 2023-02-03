@@ -133,16 +133,49 @@
                 </div>
             </div>
         </template>
-      
+
     </fieldset>
     <div class="pure-control-group">
         <button type="button" onclick=" newField(0);" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.SA_Add </button>
     </div>
 
-        <div class="pure-controls">
-            <a class="pure-button" href="@Url.Action("Index")"><i class="fa fa-long-arrow-left"></i> @Resources.Repository_Back</a>
-            <button type="submit" class="pure-button pure-button-primary"><i class="fa fa-save"></i> @Resources.Repository_Create_Submit</button>
-        </div>
+
+    <fieldset class="pure-control-group">
+        <legend>
+            @Resources.Depen
+        </legend>
+        <template id="Dependencyrow">
+            <div class="row dependency-details" id="Dependencies_{i}" name="dependency-details">
+                <div class=" col pure-control-group" style="display:none;">
+                    <label> @Resources.Depen_ID </label>
+                    <input class="form-control" id="Dependency[{i}].Id" name="Dependency[{i}].Id" readonly disabled />
+                </div>
+                <div class="col pure-control-group">
+                    <label> @Resources.Depen_VersionInUse </label>
+                    <input class="form-control" id="Dependency_{i}__.VersionInUse" name="Dependency[{i}].VersionInUse"/>
+                </div>
+                <div class="col pure-control-group">
+                    <label> @Resources.Depen_DateUpdated </label>
+                    <input class="form-control" type="datetime" id="Dependency_{i}__.DateUpdated" name="Dependency[{i}].DateUpdated"/>
+                </div>
+            </div>
+        </template>        
+
     </fieldset>
-    <script src="~/scripts/ServiceAccountsEdit.js" asp-append-version="true"></script>
+    <div class="pure-control-group">
+        <button type="button" onclick=" DepennewField(0);" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.Depen_Add </button>
+    </div>
+
+
+
+
+
+
+    <div class="pure-controls">
+        <a class="pure-button" href="@Url.Action("Index")"><i class="fa fa-long-arrow-left"></i> @Resources.Repository_Back</a>
+        <button type="submit" class="pure-button pure-button-primary"><i class="fa fa-save"></i> @Resources.Repository_Create_Submit</button>
+    </div>
+</fieldset>
+<script src="~/scripts/ServiceAccountsEdit.js" asp-append-version="true"></script>
+<script src="~/scripts/DependenciesEdit.js" asp-append-version="true"></script>
 }

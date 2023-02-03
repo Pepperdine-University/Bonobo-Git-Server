@@ -511,6 +511,60 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dependencies.
+        /// </summary>
+        public static string Depen {
+            get {
+                return ResourceManager.GetString("Depen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Dependencies.
+        /// </summary>
+        public static string Depen_Add {
+            get {
+                return ResourceManager.GetString("Depen_Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DateUpdated.
+        /// </summary>
+        public static string Depen_DateUpdated {
+            get {
+                return ResourceManager.GetString("Depen_DateUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Dependencies.
+        /// </summary>
+        public static string Depen_Delete {
+            get {
+                return ResourceManager.GetString("Depen_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Id.
+        /// </summary>
+        public static string Depen_ID {
+            get {
+                return ResourceManager.GetString("Depen_ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VersionInUse.
+        /// </summary>
+        public static string Depen_VersionInUse {
+            get {
+                return ResourceManager.GetString("Depen_VersionInUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;p&gt;A request has been received to reset your password. 
         ///                           If you did not initiate the request, then please ignore this email.&lt;/p&gt;
         ///                           &lt;p&gt;Please click the following link to reset your password:&lt;/p&gt;.
