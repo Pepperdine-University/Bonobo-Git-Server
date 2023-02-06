@@ -202,6 +202,13 @@ namespace Bonobo.Git.Server.Data
                             repo.ServiceAccounts.Add(serviceAccount);
                         }
                     }
+                    if (model.Dependencies != null)
+                    {
+                        foreach (var dependency in model.Dependencies.ToList())
+                        {
+                            repo.Dependencies.Add(dependency);
+                        }
+                    }
                 }
                 try
                 {
@@ -298,7 +305,7 @@ namespace Bonobo.Git.Server.Data
                         foreach (var dependency in model.Dependencies.ToList())
                         {
                             var existingDependency = repo.Dependencies
-                                .Where(c => c.Id == dependency.Id && c.Id != "")
+                                .Where(c => c.Id == dependency.Id && c.Id != null)
                                 .SingleOrDefault();
 
                             if (existingDependency != null)
@@ -308,6 +315,9 @@ namespace Bonobo.Git.Server.Data
                             }
                             else
                             {
+                                dependency.Id = Guid.NewGuid(); 
+                                dependency.RepositoryId = model.Id;
+                                dependency.KnownDependenciesId = new Guid("70a727e8-ee3a-41e0-9940-fe376007e7d5");
                                 repo.Dependencies.Add(dependency);
                             }
                         }
@@ -438,7 +448,7 @@ namespace Bonobo.Git.Server.Data
         {
             return GetAllRepositories().Where(repo => repo.Teams.Any(team => teamsId.Contains(team.Id))).ToList();
         }
-        public void DeleteDepen(string id)
+        public void DeleteDepen(Guid id)
         {
             using (var db = CreateContext())
             {

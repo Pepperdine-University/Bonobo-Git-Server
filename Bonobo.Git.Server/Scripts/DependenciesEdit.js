@@ -1,11 +1,11 @@
 ﻿function DepennewField(count) { //dependencyNewField || DependencyNewField
     var Depentemplate = document.getElementById("Dependencyrow");
-    console.log(Depentemplate);
+    //console.log(Depentemplate);
     var DepennewDetailRow = Depentemplate.content.cloneNode(true);
-    console.log(DepennewDetailRow);
+    //console.log(DepennewDetailRow);
 
     Depentemplate.parentNode.appendChild(DepennewDetailRow);
-    var allDetailRows = $(".dependency-details");
+    var allDetailRows = $(".Dependencies-details");
 
     var nextDetailRowIndex = allDetailRows.length - 1;
 
@@ -15,7 +15,7 @@
 }
 function DepenremField(id) {
     id = id.slice(-1);
-    id = "Dependency_" + id;
+    id = "Dependencies_" + id;
     console.log(id);
     var account = document.getElementById(id);
     account.remove();

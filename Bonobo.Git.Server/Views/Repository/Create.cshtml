@@ -142,28 +142,45 @@
 
     <fieldset class="pure-control-group">
         <legend>
-            @Resources.Depen
+            @Resources.Dependencies
         </legend>
         <template id="Dependencyrow">
-            <div class="row dependency-details" id="Dependencies_{i}" name="dependency-details">
+            <div class="row Dependencies-details" id="Dependencies_{i}" name="Dependencies-details">
                 <div class=" col pure-control-group" style="display:none;">
-                    <label> @Resources.Depen_ID </label>
-                    <input class="form-control" id="Dependency[{i}].Id" name="Dependency[{i}].Id" readonly disabled />
+                    <label> @Resources.Dependencies_ID </label>
+                    <input class="form-control" id="Dependencies[{i}].Id" name="Dependencies[{i}].Id" readonly disabled />
+                </div>
+                                <div class="col pure-control-group">
+            <label> @Resources.Known_Dependency_Name </label>
+            <input class="form-control" id="Dependencies_{i}__.ComponentName" name="Dependencies[{i}].ComponentName" />
+            <span class="field-validation-valid text-danger"
+                  data-valmsg-for="Dependencies[{i}].ComponentName"
+                  data-valmsg-replace="true">
+            </span>
+            <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_{i}" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
+        </div>
+                <div class="col pure-control-group">
+                    <label> @Resources.Dependencies_VersionInUse </label>
+                    <input class="form-control" id="Dependencies_{i}__.VersionInUse" name="Dependencies[{i}].VersionInUse" />
+                    <span class="field-validation-valid text-danger"
+                          data-valmsg-for="Dependencies[{i}].VersionInUse"
+                          data-valmsg-replace="true">
+                    </span>
                 </div>
                 <div class="col pure-control-group">
-                    <label> @Resources.Depen_VersionInUse </label>
-                    <input class="form-control" id="Dependency_{i}__.VersionInUse" name="Dependency[{i}].VersionInUse"/>
-                </div>
-                <div class="col pure-control-group">
-                    <label> @Resources.Depen_DateUpdated </label>
-                    <input class="form-control" type="datetime" id="Dependency_{i}__.DateUpdated" name="Dependency[{i}].DateUpdated"/>
+                    <label> @Resources.Dependencies_DateUpdated </label>
+                    <input class="form-control" type="datetime" id="Dependencies_{i}__.DateUpdated" name="Dependencies[{i}].DateUpdated" />
+                    <span class="field-validation-valid text-danger"
+                          data-valmsg-for="Dependencies[{i}].DateUpdated"
+                          data-valmsg-replace="true">
+                    </span>
                 </div>
             </div>
         </template>        
 
     </fieldset>
     <div class="pure-control-group">
-        <button type="button" onclick=" DepennewField(0);" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.Depen_Add </button>
+        <button type="button" onclick=" DepennewField(0);" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.Dependencies_Add </button>
     </div>
 
 

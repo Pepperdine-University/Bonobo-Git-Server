@@ -135,142 +135,178 @@ else
         <i class="fa fa-info-circle" title="@Resources.Repository_TeamsHint"></i>
     </div>
 
-            <fieldset class="pure-control-group">
-                <legend>
-                    @Resources.SA
-                </legend>
-                <template id="serviceAccountrow">
-                    <div class="row service-account-details" id="ServiceAccounts_{i}" name="service-account-details">
-                        <div class=" col pure-control-group" style="display:none;">
-                            <label> @Resources.SA_ID </label>
-                            <input class="form-control" id="ServiceAccounts[{i}].Id" name="ServiceAccounts[{i}].Id" readonly disabled />
-                        </div>
-                        <div class="col pure-control-group">
-                            <label> @Resources.SA_Name </label> @*"name" handels the backend with class form-control / {i} is replaced in javascipt by the needed index*@
-                            <input class="form-control" id="ServiceAccounts_{i}__.ServiceAccountName" name="ServiceAccounts[{i}].ServiceAccountName" />
-                            <span class="field-validation-valid text-danger"
-                                  data-valmsg-for="ServiceAccounts[{i}].ServiceAccountName"
-                                  data-valmsg-replace="true">
-                            </span>
-                            <button type="button" onclick="remField(this.id);" id=" ServiceAccountBtn_{i}" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
-                            @*<a href="@Url.Action("DeleteSa", new {ServiceAccounts = Model.ServiceAccounts[i] })" style="background-color: white; border: none;" type="button"><i style="color:red;" class="fa fa-minus-circle"></i></a>*@
-                        </div>
-                        <div class="col pure-control-group">
-                            <label> @Resources.SA_InPassManager </label>
-                            <input class="form-control" type="checkbox" id="ServiceAccounts_{i}__.InPassManager" name="ServiceAccounts[{i}].InPassManager" value="true" data-val="true" data-val-required="The InPassManager field is required."/>
-                            <span class="field-validation-valid text-danger"
-                                  data-valmsg-for="ServiceAccounts[{i}].InPassManager"
-                                  data-valmsg-replace="true">
-                            </span>
-                        </div>
-                        <div class="col pure-control-group">
-                            <label> @Resources.SA_PassLastUpdated </label>
-                            <input class="form-control" type="datetime" id="ServiceAccounts_{i}__.PassLastUpdated" name="ServiceAccounts[{i}].PassLastUpdated" value="1/1/1900 12:00:00 AM" />
-                            <span class="field-validation-valid text-danger"
-                                  data-valmsg-for="ServiceAccounts[{i}].PassLastUpdated"
-                                  data-valmsg-replace="true">
-                            </span>
-                        </div>
-                    </div>
-                </template>
-
-
-                    @if (Model != null)
-                    {
-                        for (int i = 0; i < Model.ServiceAccounts.Count; i++)
-                        {
-                            var id = "ServiceAccounts_" + i;
-                           <div id="@id">
-                               <div class="pure-control-group">
-                                   @Html.LabelFor(m => m.ServiceAccounts[i].ServiceAccountName)
-                                   @Html.TextBoxFor(m => m.ServiceAccounts[i].ServiceAccountName)
-                                   @Html.ValidationMessageFor(m => m.ServiceAccounts[i].ServiceAccountName)
-                                   @*<button type="button" onclick=" remField(@i);" style="background-color: white; border: none;" type="button"><i style="color:red;" class="fa fa-minus-circle"></i></button>*@
-
-                                   <a href="@Url.Action("DeleteSa", new { id = Model.ServiceAccounts[i].Id })" style="background-color: white; border: none;" type="button"><i style="color:red;" class="fa fa-minus-circle"></i></a>
-                               </div>
-                               <div class="pure-control-group">
-                                   @Html.LabelFor(m => m.ServiceAccounts[i].InPassManager)
-                                   @Html.CheckBoxFor(m => m.ServiceAccounts[i].InPassManager)
-                                   @Html.ValidationMessageFor(m => m.ServiceAccounts[i].InPassManager)
-                               </div>
-                               <div class="pure-control-group">
-                                   @Html.LabelFor(m => m.ServiceAccounts[i].PassLastUpdated)
-                                   @Html.TextBoxFor(m => m.ServiceAccounts[i].PassLastUpdated)
-                                   @Html.ValidationMessageFor(m => m.ServiceAccounts[i].PassLastUpdated)
-                               </div>
-                               <div class="pure-control-group" style="display:none;">
-                                   @Html.LabelFor(m => m.ServiceAccounts[i].Id)
-                                   @Html.TextBoxFor(m => m.ServiceAccounts[i].Id)
-                                   @Html.LabelFor(m => m.ServiceAccounts[i].RepositoryId)
-                                   @Html.TextBoxFor(m => m.ServiceAccounts[i].RepositoryId)
-                               </div>
-                           </div>
-                    }
-                    @*<div class="pure-control-group">
-                <button href="@Url.Action("AddServiceAccount")" onclick=" newField();" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> Add Service Account </button>
-            </div>*@
-
-
-
-                    }
-
-                </fieldset>
-
-                <div class="pure-control-group">
-                    <button type="button" onclick=" newField(@Model.ServiceAccounts.Count);" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.SA_Add </button>
+    <fieldset class="pure-control-group">
+        <legend>
+            @Resources.SA
+        </legend>
+        <template id="serviceAccountrow">
+            <div class="row service-account-details" id="ServiceAccounts_{i}" name="service-account-details">
+                <div class=" col pure-control-group" style="display:none;">
+                    <label> @Resources.SA_ID </label>
+                    <input class="form-control" id="ServiceAccounts[{i}].Id" name="ServiceAccounts[{i}].Id" readonly disabled />
                 </div>
-                <fieldset class="pure-control-group" style="padding-top:10px;">
-                    <legend>
-                        Dependencies
-                    </legend>
-                    @for (int i = 0; i < Model.Dependencies.Count; i++)
+                <div class="col pure-control-group">
+                    <label> @Resources.SA_Name </label> @*"name" handels the backend with class form-control / {i} is replaced in javascipt by the needed index*@
+                    <input class="form-control" id="ServiceAccounts_{i}__.ServiceAccountName" name="ServiceAccounts[{i}].ServiceAccountName" />
+                    <span class="field-validation-valid text-danger"
+                          data-valmsg-for="ServiceAccounts[{i}].ServiceAccountName"
+                          data-valmsg-replace="true">
+                    </span>
+                    <button type="button" onclick="remField(this.id);" id=" ServiceAccountBtn_{i}" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
+                    @*<a href="@Url.Action("DeleteSa", new {ServiceAccounts = Model.ServiceAccounts[i] })" style="background-color: white; border: none;" type="button"><i style="color:red;" class="fa fa-minus-circle"></i></a>*@
+                </div>
+                <div class="col pure-control-group">
+                    <label> @Resources.SA_InPassManager </label>
+                    <input class="form-control" type="checkbox" id="ServiceAccounts_{i}__.InPassManager" name="ServiceAccounts[{i}].InPassManager" value="true" data-val="true" data-val-required="The InPassManager field is required." />
+                    <span class="field-validation-valid text-danger"
+                          data-valmsg-for="ServiceAccounts[{i}].InPassManager"
+                          data-valmsg-replace="true">
+                    </span>
+                </div>
+                <div class="col pure-control-group">
+                    <label> @Resources.SA_PassLastUpdated </label>
+                    <input class="form-control" type="datetime" id="ServiceAccounts_{i}__.PassLastUpdated" name="ServiceAccounts[{i}].PassLastUpdated" value="1/1/1900 12:00:00 AM" />
+                    <span class="field-validation-valid text-danger"
+                          data-valmsg-for="ServiceAccounts[{i}].PassLastUpdated"
+                          data-valmsg-replace="true">
+                    </span>
+                </div>
+            </div>
+        </template>
+
+
+        @if (Model != null)
+        {
+            for (int i = 0; i < Model.ServiceAccounts.Count; i++)
+            {
+                var id = "ServiceAccounts_" + i;
+                <div id="@id">
+                    <div class="pure-control-group">
+                        @Html.LabelFor(m => m.ServiceAccounts[i].ServiceAccountName)
+                        @Html.TextBoxFor(m => m.ServiceAccounts[i].ServiceAccountName)
+                        @Html.ValidationMessageFor(m => m.ServiceAccounts[i].ServiceAccountName)
+                        @*<button type="button" onclick=" remField(@i);" style="background-color: white; border: none;" type="button"><i style="color:red;" class="fa fa-minus-circle"></i></button>*@
+
+                        <a href="@Url.Action("DeleteSa", new { id = Model.ServiceAccounts[i].Id })" style="background-color: white; border: none;" type="button"><i style="color:red;" class="fa fa-minus-circle"></i></a>
+                    </div>
+                    <div class="pure-control-group">
+                        @Html.LabelFor(m => m.ServiceAccounts[i].InPassManager)
+                        @Html.CheckBoxFor(m => m.ServiceAccounts[i].InPassManager)
+                        @Html.ValidationMessageFor(m => m.ServiceAccounts[i].InPassManager)
+                    </div>
+                    <div class="pure-control-group">
+                        @Html.LabelFor(m => m.ServiceAccounts[i].PassLastUpdated)
+                        @Html.TextBoxFor(m => m.ServiceAccounts[i].PassLastUpdated)
+                        @Html.ValidationMessageFor(m => m.ServiceAccounts[i].PassLastUpdated)
+                    </div>
+                    <div class="pure-control-group" style="display:none;">
+                        @Html.LabelFor(m => m.ServiceAccounts[i].Id)
+                        @Html.TextBoxFor(m => m.ServiceAccounts[i].Id)
+                        @Html.LabelFor(m => m.ServiceAccounts[i].RepositoryId)
+                        @Html.TextBoxFor(m => m.ServiceAccounts[i].RepositoryId)
+                    </div>
+                </div>
+            }
+            @*<div class="pure-control-group">
+                    <button href="@Url.Action("AddServiceAccount")" onclick=" newField();" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> Add Service Account </button>
+                </div>*@
+
+
+
+        }
+
+    </fieldset>
+
+    <div class="pure-control-group">
+        <button type="button" onclick=" newField(@Model.ServiceAccounts.Count);" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.SA_Add </button>
+    </div>
+    <fieldset class="pure-control-group" style="padding-top:10px;">
+        <legend>
+            Dependencies
+        </legend>
+
+        <template id="Dependencyrow">
+            <div class="row Dependencies-details" id="Dependencies_{i}" name="Dependencies-details">
+                <div class=" col pure-control-group" style="display:none;">
+                    <label> @Resources.Dependencies_ID </label>
+                    <input class="form-control" id="Dependencies[{i}].Id" name="Dependencies[{i}].Id" readonly disabled />
+                </div>
+                <div class="col pure-control-group">
+                    <label> @Resources.Known_Dependency_Name </label>
+                    <input class="form-control" id="Dependencies_{i}__.ComponentName" name="Dependencies[{i}].ComponentName" />
+                    <span class="field-validation-valid text-danger"
+                          data-valmsg-for="Dependencies[{i}].ComponentName"
+                          data-valmsg-replace="true">
+                    </span>
+                    <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_{i}" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
+                </div>
+                <div class="col pure-control-group">
+                    <label> @Resources.Dependencies_VersionInUse </label>
+                    <input class="form-control" id="Dependencies_{i}__.VersionInUse" name="Dependencies[{i}].VersionInUse" />
+                    <span class="field-validation-valid text-danger"
+                          data-valmsg-for="Dependencies[{i}].VersionInUse"
+                          data-valmsg-replace="true">
+                    </span>
+                    
+                </div>
+                <div class="col pure-control-group">
+                    <label> @Resources.Dependencies_DateUpdated </label>
+                    <input class="form-control" type="datetime" id="Dependencies_{i}__.DateUpdated" name="Dependencies[{i}].DateUpdated" />
+                    <span class="field-validation-valid text-danger"
+                          data-valmsg-for="Dependencies[{i}].DateUpdated"
+                          data-valmsg-replace="true">
+                    </span>
+                </div>
+            </div>
+        </template>
+
+        @for (int i = 0; i < Model.Dependencies.Count; i++)
+        {
+            <div class="pure-control-group">
+                @Html.LabelFor(m => m.Dependencies[i].KnownDependency.ComponentName)
+                @*@Html.TextBoxFor(m => m.Dependencies[i].KnownDependency.ComponentName)*@
+                @Html.ValidationMessageFor(m => m.Dependencies[i].KnownDependency.ComponentName)
+                @{
+                    var items = (IEnumerable<SelectListItem>)Html.ViewBag.KnownDependencies;
+                    for (int j = 0; j < items.Count(); j++)
                     {
-                        <div class="pure-control-group">
-                            @Html.LabelFor(m => m.Dependencies[i].KnownDependency.ComponentName)
-                            @*@Html.TextBoxFor(m => m.Dependencies[i].KnownDependency.ComponentName)*@
-                            @Html.ValidationMessageFor(m => m.Dependencies[i].KnownDependency.ComponentName)
-                            @{
-                                var items = (IEnumerable<SelectListItem>)Html.ViewBag.KnownDependencies;
-                                for (int j = 0; j < items.Count(); j++)
-                                {
-                                    if (items.ToList()[j].Value == Model.Dependencies[i].KnownDependency.Id.ToString())
-                                    {
-                                        items.ToList()[j].Selected = true;
-                                    }
-                                    else
-                                    {
-                                        items.ToList()[j].Selected = false;
-                                    }
-                                }
-                                @Html.DropDownListFor(m => m.Dependencies[i].KnownDependenciesId, items, new
-                                {
-                                    @class = "dropDownKD",@*@disabled = "disabled",*@@onChange = "javascript: DisplayComponentNameNewInputField(this.options[this.selectedIndex].text, this.id)"
+                        if (items.ToList()[j].Value == Model.Dependencies[i].KnownDependency.Id.ToString())
+                        {
+                            items.ToList()[j].Selected = true;
+                        }
+                        else
+                        {
+                            items.ToList()[j].Selected = false;
+                        }
+                    }
+                    @Html.DropDownListFor(m => m.Dependencies[i].KnownDependenciesId, items, new
+                    {
+                        @class = "dropDownKD",@*@disabled = "disabled",*@@onChange = "javascript: DisplayComponentNameNewInputField(this.options[this.selectedIndex].text, this.id)"
 });
-                                var DepenId = Model.Dependencies[i].Id;
-                                <a class="pure-button" href="@Url.Action("DeleteDepenAction", "Repository", new {Rid=Model.Id, id = @DepenId})"><i style="color:red;" class="fa fa-minus-circle"></i></a>
-                            }
-                        </div>
-                        <div class="pure-control-group">
-                            @{
-                                var labelId = "KDlabelDependencies_" + i + "__KnownDependenciesId";
-                                <label class="addNewAppear" id=@labelId style="display: none">Hello</label>
-                                var txtBoxId = "KDinputDependencies_" + i + "__KnownDependenciesId";
-                                @*<div id=@txtBoxId style="display: none;">*@
-                                <input class="pure-form addNewAppear" @*id=@($"KDinput{i}")*@ id=@txtBoxId style="display:none;" /><a class="pure-button" onclick="checkIfKDExists(@(i), @txtBoxId)"><i style="color:green;" class="fa fa-plus"></i></a>
-                                @*</div>*@
-                            }
-                        </div>
-                        <div class="pure-control-group">
-                            @Html.LabelFor(m => m.Dependencies[i].VersionInUse)
-                            @Html.TextBoxFor(m => m.Dependencies[i].VersionInUse)
-                            @Html.ValidationMessageFor(m => m.Dependencies[i].VersionInUse)
-                        </div>
-                        <div class="pure-control-group">
-                            @Html.LabelFor(m => m.Dependencies[i].DateUpdated)
-                            @Html.TextBoxFor(m => m.Dependencies[i].DateUpdated)
-                            @Html.ValidationMessageFor(m => m.Dependencies[i].DateUpdated)
-                        </div>
+                    var DepenId = Model.Dependencies[i].Id;
+                    <a class="pure-button" href="@Url.Action("DeleteDepenAction", "Repository", new {Rid=Model.Id, id = @DepenId})"><i style="color:red;" class="fa fa-minus-circle"></i></a>
+                }
+            </div>
+            <div class="pure-control-group">
+                @{
+                    var labelId = "KDlabelDependencies_" + i + "__KnownDependenciesId";
+                    <label class="addNewAppear" id=@labelId style="display: none">Hello</label>
+                    var txtBoxId = "KDinputDependencies_" + i + "__KnownDependenciesId";
+                    @*<div id=@txtBoxId style="display: none;">*@
+                    <input class="pure-form addNewAppear" @*id=@($"KDinput{i}")*@ id=@txtBoxId style="display:none;" /><a class="pure-button" onclick="checkIfKDExists(@(i), @txtBoxId)"><i style="color:green;" class="fa fa-plus"></i></a>
+                    @*</div>*@
+                }
+            </div>
+            <div class="pure-control-group">
+                @Html.LabelFor(m => m.Dependencies[i].VersionInUse)
+                @Html.TextBoxFor(m => m.Dependencies[i].VersionInUse)
+                @Html.ValidationMessageFor(m => m.Dependencies[i].VersionInUse)
+            </div>
+            <div class="pure-control-group">
+                @Html.LabelFor(m => m.Dependencies[i].DateUpdated)
+                @Html.TextBoxFor(m => m.Dependencies[i].DateUpdated)
+                @Html.ValidationMessageFor(m => m.Dependencies[i].DateUpdated)
+            </div>
 
             <div class="pure-control-group" style="display:none">
                 @Html.HiddenFor(m => m.Dependencies[i].Id);
@@ -280,16 +316,20 @@ else
         }
     </fieldset>
 
-                <div class="pure-controls">
-                    <a class="pure-button" href="@Url.Action("Tree", new { id = Model.Id, ServiceAccounts = Model.ServiceAccounts })"><i class="fa fa-long-arrow-left"></i> @Resources.Repository_Edit_Back</a>
-                    <button type="submit" class="pure-button pure-button-primary save"><i class="fa fa-save"></i> @Resources.Repository_Edit_Submit</button>
-                </div>
-            </fieldset>
+    <div class="pure-control-group">
+        <button type="button" onclick="DepennewField(@Model.Dependencies.Count);" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.Dependencies_Add </button>
+    </div>
+    <div class="pure-controls">
+        <a class="pure-button" href="@Url.Action("Tree", new { id = Model.Id, ServiceAccounts = Model.ServiceAccounts, Dependencies = Model.Dependencies })"><i class="fa fa-long-arrow-left"></i> @Resources.Repository_Edit_Back</a>
+        <button type="submit" class="pure-button pure-button-primary save"><i class="fa fa-save"></i> @Resources.Repository_Edit_Submit</button>
+    </div>
+</fieldset>
             
         }
     </text>
 }
 <script src="~/scripts/ServiceAccountsEdit.js"></script>
+<script src="~/scripts/DependenciesEdit.js"></script>
 <script>
     function DisplayComponentNameNewInputField(text, index) {
         if (text == "Add New...") {

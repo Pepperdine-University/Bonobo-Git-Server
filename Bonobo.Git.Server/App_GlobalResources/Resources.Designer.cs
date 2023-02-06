@@ -513,54 +513,54 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         /// <summary>
         ///   Looks up a localized string similar to Dependencies.
         /// </summary>
-        public static string Depen {
+        public static string Dependencies {
             get {
-                return ResourceManager.GetString("Depen", resourceCulture);
+                return ResourceManager.GetString("Dependencies", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Add Dependencies.
         /// </summary>
-        public static string Depen_Add {
+        public static string Dependencies_Add {
             get {
-                return ResourceManager.GetString("Depen_Add", resourceCulture);
+                return ResourceManager.GetString("Dependencies_Add", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to DateUpdated.
         /// </summary>
-        public static string Depen_DateUpdated {
+        public static string Dependencies_DateUpdated {
             get {
-                return ResourceManager.GetString("Depen_DateUpdated", resourceCulture);
+                return ResourceManager.GetString("Dependencies_DateUpdated", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Delete Dependencies.
         /// </summary>
-        public static string Depen_Delete {
+        public static string Dependencies_Delete {
             get {
-                return ResourceManager.GetString("Depen_Delete", resourceCulture);
+                return ResourceManager.GetString("Dependencies_Delete", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Id.
         /// </summary>
-        public static string Depen_ID {
+        public static string Dependencies_ID {
             get {
-                return ResourceManager.GetString("Depen_ID", resourceCulture);
+                return ResourceManager.GetString("Dependencies_ID", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to VersionInUse.
         /// </summary>
-        public static string Depen_VersionInUse {
+        public static string Dependencies_VersionInUse {
             get {
-                return ResourceManager.GetString("Depen_VersionInUse", resourceCulture);
+                return ResourceManager.GetString("Dependencies_VersionInUse", resourceCulture);
             }
         }
         
@@ -932,6 +932,15 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         public static string Item_NotFound_Text {
             get {
                 return ResourceManager.GetString("Item_NotFound_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ComponentName.
+        /// </summary>
+        public static string Known_Dependency_Name {
+            get {
+                return ResourceManager.GetString("Known_Dependency_Name", resourceCulture);
             }
         }
         

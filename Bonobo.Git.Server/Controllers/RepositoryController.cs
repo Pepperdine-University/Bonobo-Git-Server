@@ -863,7 +863,7 @@ namespace Bonobo.Git.Server.Controllers
             fsi.Delete();
         }
 
-        public ActionResult DeleteDepenAction(Guid Rid, string id)
+        public ActionResult DeleteDepenAction(Guid Rid, Guid id)
         {
             if (id != null)
             {
