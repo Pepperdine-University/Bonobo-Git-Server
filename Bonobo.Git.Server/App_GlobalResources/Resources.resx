@@ -1008,4 +1008,10 @@ The regular C# string formatting rules apply: To get {} in your link you need to
   <data name="Known_Dependency_Name" xml:space="preserve">
     <value>ComponentName</value>
   </data>
+  <data name="SA_InPassManager_False" xml:space="preserve">
+    <value>Not In Password Manager</value>
+  </data>
+  <data name="SA_InPassManager_True" xml:space="preserve">
+    <value>In Password Manager</value>
+  </data>
 </root>

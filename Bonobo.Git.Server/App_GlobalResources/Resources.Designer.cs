@@ -2106,6 +2106,24 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not In Password Manager.
+        /// </summary>
+        public static string SA_InPassManager_False {
+            get {
+                return ResourceManager.GetString("SA_InPassManager_False", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In Password Manager.
+        /// </summary>
+        public static string SA_InPassManager_True {
+            get {
+                return ResourceManager.GetString("SA_InPassManager_True", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ServiceAccountName.
         /// </summary>
         public static string SA_Name {

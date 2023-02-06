@@ -37,9 +37,6 @@ namespace Bonobo.Git.Server.Data
         {
             ADBackend.Instance.Repositories.Remove(id);
         }
-        public void DeleteSA( int id)
-        {
-        }
 
         public bool NameIsUnique(string newName, Guid ignoreRepoId)
         {

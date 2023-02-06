@@ -128,43 +128,6 @@ namespace Bonobo.Git.Server.Controllers
             return items;
         }
 
-        public string GenerateNewGuid(string componentName)
-        {
-            KnownDependency knownDep = CreateKnownDependency(componentName);
-            return knownDep.Id.ToString();
-        }
-
-        public KnownDependency CreateKnownDependency(string componentName)
-        {
-            KnownDependency newKnownDep = new KnownDependency
-            {
-                Id = Guid.NewGuid(),
-                ComponentName = componentName
-            };
-            if (RepositoryRepository.CreateKnownDep(newKnownDep) == true)
-            {
-                return newKnownDep;
-            }
-            return new KnownDependency
-            {
-                Id = Guid.Empty,
-                ComponentName = componentName
-            };
-        }
-
-        public PartialViewResult NewKnownDependency()
-        {
-            return PartialView("_NewKnownDependency", new KnownDependency());
-        }
-
-        //public void DeleteSa(int id)
-        //{
-        public ActionResult DeleteSA(int id)
-        {
-            RepositoryRepository.DeleteSA(id);
-            return RedirectToAction("Edit", "Repository");
-        }
-
         private void MoveRepo(RepositoryModel oldRepo, RepositoryModel newRepo)
         {
             if (oldRepo.Name != newRepo.Name)

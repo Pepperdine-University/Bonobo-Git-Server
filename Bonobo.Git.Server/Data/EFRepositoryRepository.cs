@@ -126,36 +126,7 @@ namespace Bonobo.Git.Server.Data
                 }
             }
         }
-        public void DeleteSA(int id)
-        {
-            using (var db = CreateContext())
-            {
-                var sa = db.ServiceAccounts.FirstOrDefault(i => i.Id == id);
-                db.ServiceAccounts.Remove(sa);
-                    //repo.ServiceAccounts.Remove(serviceAccount);
-                db.SaveChanges();
-            }
-        }
-        public void AddTemplateSa(RepositoryDetailModel model)
-        {
-            using (var db = CreateContext())
-            {
-                var repo = db.Repositories
-                                .Include(r => r.ServiceAccounts)
-                                .Include(r => r.Dependencies)
-                                .FirstOrDefault(i => i.Id == model.Id);
-                var serviceAccount = new ServiceAccount
-                {
-                    Id = model.ServiceAccounts.Count,
-                    ServiceAccountName = "",
-                    InPassManager = false,
-                    PassLastUpdated = DateTime.Now
-                };
-                repo.ServiceAccounts.Add(serviceAccount);
-                db.SaveChanges();
-            }
-        }
-
+        
         public bool NameIsUnique(string newName, Guid ignoreRepoId)
         {
             var repo = GetRepository(newName);
@@ -189,27 +160,6 @@ namespace Bonobo.Git.Server.Data
                 };
                 database.Repositories.Add(repository);
                 AddMembers(model.Users.Select(x => x.Id), model.Administrators.Select(x => x.Id), model.Teams.Select(x => x.Id), repository, database);
-                using (var db = CreateContext())
-                {
-                    var repo = db.Repositories
-                                .Include(r => r.ServiceAccounts)
-                                .Include(r => r.Dependencies)
-                                .FirstOrDefault(i => i.Id == model.Id);
-                    if (model.ServiceAccounts != null)
-                    {
-                        foreach (var serviceAccount in model.ServiceAccounts.ToList())
-                        {
-                            repo.ServiceAccounts.Add(serviceAccount);
-                        }
-                    }
-                    if (model.Dependencies != null)
-                    {
-                        foreach (var dependency in model.Dependencies.ToList())
-                        {
-                            repo.Dependencies.Add(dependency);
-                        }
-                    }
-                }
                 try
                 {
                     database.SaveChanges();
@@ -282,12 +232,13 @@ namespace Bonobo.Git.Server.Data
 
                     if (model.ServiceAccounts != null)
                     {
+                        //Update Service accounts when added with javascript
                         foreach (var serviceAccount in model.ServiceAccounts.ToList())
                         {
                             var existingServiceAccount = repo.ServiceAccounts
                                 .Where(c => c.Id == serviceAccount.Id && c.Id != -1)
                                 .SingleOrDefault();
-
+                            
                             if (existingServiceAccount != null)
                             {
                                 existingServiceAccount.RepositoryId = model.Id;
@@ -298,7 +249,14 @@ namespace Bonobo.Git.Server.Data
                                 repo.ServiceAccounts.Add(serviceAccount);
                             }
                         }
+                        //Update Service accounts when deleted with javascript
+                        foreach (var serviceAccount in repo.ServiceAccounts.Where(repoSA => model.ServiceAccounts.All(modelSA => modelSA.Id != repoSA.Id)).ToList())
+                        {
+                            var sa = db.ServiceAccounts.FirstOrDefault(i => i.Id == serviceAccount.Id);
+                            db.ServiceAccounts.Remove(sa);
+                        }
                     }
+                   
 
                     if (model.Dependencies != null)
                     {
@@ -339,37 +297,6 @@ namespace Bonobo.Git.Server.Data
             }
         }
 
-        private ServiceAccount GetCurrentServiceAccount(int id)
-        {
-            using (var db = CreateContext())
-            {
-                var sa = db.ServiceAccounts.FirstOrDefault(i => i.Id == id);
-                return new ServiceAccount
-                {
-                    Id = sa.Id,
-                    ServiceAccountName = sa.ServiceAccountName,
-                    InPassManager = sa.InPassManager,
-                    PassLastUpdated = sa.PassLastUpdated
-                };
-            }
-        }
-
-        private DbEntityEntry SetValuesAndLastModified(object currentServiceAccount, object updatedServiceAccount, string userID)
-        {
-            if (currentServiceAccount == null)
-            {
-                return null;
-            }
-
-            DbEntityEntry entry = (DbEntityEntry)currentServiceAccount;
-
-            if (entry.State == EntityState.Modified)
-            {
-                entry.CurrentValues.SetValues(updatedServiceAccount);
-            }
-
-            return entry;
-        }
 
 
         private TeamModel TeamToTeamModel(Team t)

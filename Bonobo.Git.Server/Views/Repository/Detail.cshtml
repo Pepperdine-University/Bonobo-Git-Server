@@ -126,11 +126,11 @@
                         <div>
                             @if (@serviceAccount.InPassManager)
                                     {
-                            <label>In Password Manager <i style="color:green" class="fa fa-check-square"></i></label>
+                            <label>@Resources.SA_InPassManager_True <i style="color:green" class="fa fa-check-square"></i></label>
                                     }
                                     else
                                     {
-                            <label>Not in Password Manager <i style="color:red" class="fa fa-x"></i></label>
+                        <label>@Resources.SA_InPassManager_False <i style="color:red" class="fa fa-x"></i></label>
                                     }
                         </div>
                     </div>
