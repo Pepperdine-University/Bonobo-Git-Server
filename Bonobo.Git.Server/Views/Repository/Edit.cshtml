@@ -152,7 +152,7 @@ else
                                   data-valmsg-for="ServiceAccounts[{i}].ServiceAccountName"
                                   data-valmsg-replace="true">
                             </span>
-                            <button type="button" onclick="remField(this.id);" id=" ServiceAccountBtn_{i}" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
+                            <button type="button" onclick="remField(this.id);" id=" ServiceAccountBtn_{i}" title="Remove Service Account" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
                         </div>
                         <div class="col pure-control-group">
                             <label> @Resources.SA_InPassManager </label>
@@ -186,7 +186,7 @@ else
                                    @Html.TextBoxFor(m => m.ServiceAccounts[i].ServiceAccountName)
                                    @Html.ValidationMessageFor(m => m.ServiceAccounts[i].ServiceAccountName)
                                    @{ }
-                                   <button type="button" onclick=" remField(this.id);" id="@btnId" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
+                                   <button type="button" onclick=" remField(this.id);" id="@btnId" title="Remove Service Account" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
                                </div>
                                <div class="pure-control-group">
                                    @Html.LabelFor(m => m.ServiceAccounts[i].InPassManager)
@@ -231,7 +231,7 @@ else
                           data-valmsg-for="Dependencies[{i}].ComponentName"
                           data-valmsg-replace="true">
                     </span>
-                    <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_{i}" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
+                    <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_{i}" title="Remove Dependency" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
                 </div>
                 <div class="col pure-control-group">
                     <label> @Resources.Dependencies_VersionInUse </label>
@@ -274,22 +274,23 @@ else
                     }
                     @Html.DropDownListFor(m => m.Dependencies[i].KnownDependenciesId, items, new
                     {
-                        @class = "dropDownKD",@*@disabled = "disabled",*@@onChange = "javascript: DisplayComponentNameNewInputField(this.options[this.selectedIndex].text, this.id)"
-});
+                        @class = "dropDownKD",
+                        @*@disabled = "disabled",*@
+                        @style = "width: 206.944px",
+                        @onChange = "javascript: DisplayComponentNameNewInputField(this.options[this.selectedIndex].text, this.id)"
+                    });
                     var DepenId = Model.Dependencies[i].Id;
-                    <a class="pure-button" href="@Url.Action("DeleteDepenAction", "Repository", new {Rid=Model.Id, id = @DepenId})"><i style="color:red;" class="fa fa-minus-circle"></i></a>
+                    <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_{i}" title="Remove Dependency" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
                 }
             </div>
-            <div class="pure-control-group">
+            <div class="pure-control-group" id="@($"newKD-Dependencies_{i}__KnownDependenciesId")" style="display:none;">
                 @{
-                    var labelId = "KDlabelDependencies_" + i + "__KnownDependenciesId";
-                    <label class="addNewAppear" id=@labelId style="display: none">Hello</label>
-                    var txtBoxId = "KDinputDependencies_" + i + "__KnownDependenciesId";
-                    @*<div id=@txtBoxId style="display: none;">*@
-                    <input class="pure-form addNewAppear" @*id=@($"KDinput{i}")*@ id=@txtBoxId style="display:none;" /><a class="pure-button" onclick="checkIfKDExists(@(i), @txtBoxId)"><i style="color:green;" class="fa fa-plus"></i></a>
-                    @*</div>*@
+                    var txtBoxId = "KDInputDependencies_" + i + "__KnownDependenciesId";
+                    <label class="pure-form-aligned pure-control-group"></label>
+                    <input class="pure-form valid" id=@txtBoxId type="text" />
+                    <button type="button" onclick="checkIfKDExists(@(i), @txtBoxId)" title="Add Component Name" style="background-color: white; border: none;"><i style="color:green;" class="fa fa-plus-circle"></i></button>
                 }
-            </div>
+</div>
             <div class="pure-control-group">
                 @Html.LabelFor(m => m.Dependencies[i].VersionInUse)
                 @Html.TextBoxFor(m => m.Dependencies[i].VersionInUse)
@@ -324,19 +325,21 @@ else
 <script src="~/scripts/ServiceAccountsEdit.js"></script>
 <script src="~/scripts/DependenciesEdit.js"></script>
 <script>
+    window.onload = function () {
+        $(".dropDownKD").each(function () {
+            var index = this.id;
+            if (this.value == "Add New...") {
+                $("#newKD-" + index).css("display", "inline-block");
+            } else {
+                $("#newKD-" + index).css("display", "none");
+            }
+        })
+    }
     function DisplayComponentNameNewInputField(text, index) {
         if (text == "Add New...") {
-            //$("#TxtBox" + index).css("display", "block");
-            var i = index;
-            console.log(i);
-            $("#KDinput" + index).css("display", "block");
-            $("#KDlabel" + index).css("display", "block");
-            //$(".addNewAppear").css("display", "block")
+            $("#newKD-" + index).css("display", "inline-block");
         } else {
-            //$("#TxtBox" + index).css("display", "none");
-            $("#KDinput" + index).css("display", "none");
-            $("#KDlabel" + index).css("display", "none");
-            //$(".addNewAppear").css("display", "none")
+            $("#newKD-" + index).css("display", "none");
         }
     }
     function checkIfKDExists(i, input) {
@@ -369,6 +372,9 @@ else
                 option.value = response;
                 option.selected = true;
                 dropDown.add(option);
+
+                var index = `Dependencies_${i}__KnownDependenciesId`;
+                $("#newKD-" + index).css("display", "none");
             }, 
             failure: function (response) {
                 alert("Failed to add new component name");
@@ -381,6 +387,7 @@ else
         // 3. Add check to see if known dependency exists --
         // 4. Add css styling to make it look good
         // 5. Get rid of commented code
+        // 6. Put my code into javascript file
     }
 </script>
 
