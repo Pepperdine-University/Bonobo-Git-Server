@@ -273,11 +273,16 @@ namespace Bonobo.Git.Server.Data
                             }
                             else
                             {
-                                dependency.Id = Guid.NewGuid(); 
+                                dependency.Id = Guid.NewGuid();
                                 dependency.RepositoryId = model.Id;
                                 dependency.KnownDependenciesId = new Guid("70a727e8-ee3a-41e0-9940-fe376007e7d5");
                                 repo.Dependencies.Add(dependency);
                             }
+                        }
+                        foreach (var dependency in repo.Dependencies.Where(repoDep => model.Dependencies.All(modelDep => modelDep.Id != repoDep.Id)).ToList())
+                        {
+                            var dep = db.Dependencies.FirstOrDefault(i => i.Id == dependency.Id);
+                            db.Dependencies.Remove(dep);
                         }
                     }
 

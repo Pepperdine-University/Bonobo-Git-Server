@@ -30,7 +30,7 @@ function setChildNameAndIdIndexes(element, placeholder, index) {
         console.log("It is an element of Jquery")
         console.log(element)
         element = element.get(0);
-        console.log("After. ")
+        console.log("After. ");
         console.log(element);
     }
 

@@ -107,7 +107,7 @@
             </div>
             }
         </div>
-        <div class="sidebar-bordergrid bottom">
+        <div class="sidebar-bordergrid">
             @if (@Model.ServiceAccounts.Count > 0)
             {
             <label>
@@ -115,7 +115,7 @@
             </label>
                 foreach (Bonobo.Git.Server.Data.ServiceAccount serviceAccount in Model.ServiceAccounts)
                 {
-            <details style="display:inline-block;">
+            <details style="display:block;">
                 <summary>
                     <div class="sidebar-text">
                         <i class="fa fa-chevron-down"></i><input class="removeVisualInput" value="@serviceAccount.ServiceAccountName" readonly />
@@ -147,31 +147,53 @@
 
         </div>
 
-        <div class="sidebar-bordergrid">
+        <div class="sidebar-bordergrid bottom">
             <label>
                 Dependencies
             </label>
-            <div>
+            @*<div>
                 @foreach (Bonobo.Git.Server.Data.Dependency dependency in Model.Dependencies)
-                        {
-                          var minorLength = String.Format("{0:0.00}", "565.435.22464.624");
+                {
+                    var minorLength = String.Format("{0:0.00}", "565.435.22464.624");
 
                     <p> @minorLength</p>
-                <details style="display: block; overflow: hidden; white-space: nowrap;">
-                    <summary>
-                        <div class="sidebar-text">
-                            <input style="text-overflow: ellipsis; "class="removeVisualInput" value="@dependency.KnownDependency.ComponentName" readonly="">
-                            <input style="text-overflow: ellipsis; "class="removeVisualInput" value="(@minorLength)" readonly="">
-                        </div>
-                    </summary>
-                    <div class="pass-info">
-                        <div class="pure-control-group">
+                    <details style="display: block; overflow: hidden; white-space: nowrap;">
+                        <summary>
                             <div class="sidebar-text">
-                                <label> Date Updated: </label><input class="removeVisualInput" value="@dependency.DateUpdated" readonly />
+                                <i class="fa fa-chevron-down"></i><input style="text-overflow: ellipsis; " class="removeVisualInput" value="@dependency.KnownDependency.ComponentName" readonly="">
+                                <input style="text-overflow: ellipsis; " class="removeVisualInput" value="(@minorLength)" readonly="">
+                            </div>
+                        </summary>
+                        <div class="pass-info">
+                            <div class="pure-control-group">
+                                <div class="sidebar-text">
+                                    <label> Date Updated: </label><input class="removeVisualInput" value="@dependency.DateUpdated" readonly />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </details>
+                    </details>
+                }
+
+            </div>*@
+            <div>
+                @foreach (Bonobo.Git.Server.Data.Dependency dependency in Model.Dependencies)
+                {
+                    <details style="display: inline-block; overflow: hidden; white-space: nowrap;">
+                        <summary>
+                            <div class="sidebar-text">
+                                <i class="fa fa-chevron-down"></i><label for="@dependency.Id" type="text" style="display:inline; font-size: 100%; padding-right:5px; font-weight:normal; " class="removeVisualInput" readonly> @dependency.KnownDependency.ComponentName</label><input style="text-overflow: ellipsis; " class="removeVisualInput" value="(@dependency.VersionInUse)" readonly="">
+                                <input type="text" id="@dependency.Id" style="display:none;" class="removeVisualInput" value="@dependency.KnownDependency.ComponentName" readonly>
+                            </div>
+                        </summary>
+                        <div class="pass-info">
+                            <div class="pure-control-group">
+                                <label> Date Last Updated</label>
+                                <div class="sidebar-text">
+                                    <input class="removeVisualInput" value="@dependency.DateUpdated" readonly />
+                                </div>
+                            </div>
+                        </div>
+                    </details>
                 }
 
             </div>
