@@ -205,8 +205,8 @@ else
                                    @Html.TextBoxFor(m => m.ServiceAccounts[i].RepositoryId)
                                </div>
                            </div>
-                    }
-                    }
+                                           }
+                                       }
 
     </fieldset>
 
@@ -229,9 +229,22 @@ else
                     <div style="display:none;"> <input id="Dependencies_{i}__KnownDependency_ComponentName" name="Dependencies[{i}].KnownDependency.ComponentName" type="text"></div>
                     <span class="field-validation-valid" data-valmsg-for="Dependencies[{i}].KnownDependency.ComponentName" data-valmsg-replace="true"></span>
                     <select class="dropDownKD valid" data-val="true" data-val-required="The KnownDependenciesId field is required." id="Dependencies_{i}__KnownDependenciesId" name="Dependencies[{i}].KnownDependenciesId" onchange="javascript: DisplayComponentNameNewInputField(this.options[this.selectedIndex].text, this.id)" style="width: 206.944px" aria-required="true" aria-invalid="false">
-                        
-                        <option>Add New...</option>
-                    </select>                    
+                        @{
+                            var itemsTemplate = (IEnumerable<SelectListItem>)Html.ViewBag.KnownDependencies;
+                            <option></option>
+                            foreach (var kd in itemsTemplate)
+                            {
+                                <option value="@kd.Value">@kd.Text</option>
+                            }
+                        }
+                    </select>
+                    <div class="pure-control-group" id="newKD-Dependencies_{i}__KnownDependenciesId" style="display: none;">
+                        @*@{var txtBoxIdTemplate = "KDInputDependencies_" + i + "__KnownDependenciesId"}*@
+                            <label class="pure-form-aligned pure-control-group"></label>
+                            <input class="pure-form valid" id="KDInputDependencies_{i}__KnownDependenciesId" type="text">
+                            <button type="button" id="{i}" onclick="checkIfKDExists(this.id, 'KDInputDependencies_'+ this.id +'__KnownDependenciesId')" title="Add Component Name" style="background-color: white; border: none;"><i style="color:green;" class="fa fa-plus-circle"></i></button>
+
+                    </div>
                     <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_{i}" title="Remove Dependency" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
                 </div>
                 <div class="col pure-control-group">
@@ -326,6 +339,73 @@ else
 <script src="~/scripts/ServiceAccountsEdit.js"></script>
 <script src="~/scripts/DependenciesEdit.js"></script>
 <script>
-    //In DependenciesEdit.js
+    window.onload = function () {
+    $(".dropDownKD").each(function () {
+        var index = this.id;
+        if (this.value == "Add New...") {
+            $("#newKD-" + index).css("display", "inline-block");
+        } else {
+            $("#newKD-" + index).css("display", "none");
+        }
+    })
+}
+function DisplayComponentNameNewInputField(text, index) {
+    if (text == "Add New...") {
+        $("#newKD-" + index).css("display", "inline-block");
+    } else {
+        $("#newKD-" + index).css("display", "none");
+    }
+}
+    function checkIfKDExists(i, input) {
+        //var txtBoxId = "KDInputDependencies_" + i + "__KnownDependenciesId";
+        var inputTemplate = document.getElementById("KDInputDependencies_" + i + "__KnownDependenciesId");
+        console.log(input);
+        var newKDName = inputTemplate.value;
+    var dropDown = document.getElementById(`Dependencies_${i}__KnownDependenciesId`);
+    var exists = 0;
+    for (j = 0; j < dropDown.options.length; j++) {
+        if (newKDName == dropDown.options[j].text) {
+            exists = 1;
+            break;
+        }
+    }
+    if (newKDName == "") {
+        alert("Please input a value, the new component name cannot be blank");
+    } else if (exists == 1) {
+        alert("The component name entered already exists, please input a component name that does not exist or select the existing one");
+    } else {
+        addKDtoDropDown(i, newKDName, dropDown);
+    }
+}
+function addKDtoDropDown(i, newKDName, dropDown) {
+    $.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: `@Url.Action("GenerateNewGuid", "Repository")`,
+        data: { "componentName": newKDName },
+        success: function (response) {
+            var option = document.createElement("option");
+            option.text = newKDName;
+            option.value = response;
+            option.selected = true;
+            //option.selected = "selected";
+            dropDown.add(option);
+
+            var index = `Dependencies_${i}__KnownDependenciesId`;
+            $("#newKD-" + index).css("display", "none");
+        },
+        failure: function (response) {
+            alert("Failed to add new component name");
+        }
+    });
+    return false;
+
+    // 1. Get rid of known dependency function --
+    // 2. Get rid of partial view --
+    // 3. Add check to see if known dependency exists --
+    // 4. Add css styling to make it look good
+    // 5. Get rid of commented code
+    // 6. Put my code into javascript file
+}
 </script>
 

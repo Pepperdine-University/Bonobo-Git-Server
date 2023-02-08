@@ -52,73 +52,13 @@ function setDepenChildNameAndIdIndexes(element, placeholder, index) {
             if (child.dataset.valmsgFor) {
                 child.dataset.valmsgFor = child.dataset.valmsgFor.replace(placeholder, index);
             }
+            if (child.onclick) {
+                child.onclick = child.onclick.replace(placeholder, index);
+            }
 
             console.log(index);
             setChildNameAndIdIndexes(child, placeholder, index);
         });
     }
-    window.onload = function () {
-        $(".dropDownKD").each(function () {
-            var index = this.id;
-            if (this.value == "Add New...") {
-                $("#newKD-" + index).css("display", "inline-block");
-            } else {
-                $("#newKD-" + index).css("display", "none");
-            }
-        })
-    }
-    function DisplayComponentNameNewInputField(text, index) {
-        if (text == "Add New...") {
-            $("#newKD-" + index).css("display", "inline-block");
-        } else {
-            $("#newKD-" + index).css("display", "none");
-        }
-    }
-    function checkIfKDExists(i, input) {
-        var newKDName = input.value;
-        var dropDown = document.getElementById(`Dependencies_${i}__KnownDependenciesId`);
-        var exists = 0;
-        for (j = 0; j < dropDown.options.length; j++) {
-            if (newKDName == dropDown.options[j].text) {
-                exists = 1;
-                break;
-            }
-        }
-        if (newKDName == "") {
-            alert("Please input a value, the new component name cannot be blank");
-        } else if (exists == 1) {
-            alert("The component name entered already exists, please input a component name that does not exist or select the existing one");
-        } else {
-            addKDtoDropDown(i, newKDName, dropDown);
-        }
-    }
-    function addKDtoDropDown(i, newKDName, dropDown) {
-        $.ajax({
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            url: `@Url.Action("GenerateNewGuid", "Repository")`,
-            data: { "componentName": newKDName },
-            success: function (response) {
-                var option = document.createElement("option");
-                option.text = newKDName;
-                option.value = response;
-                option.selected = true;
-                dropDown.add(option);
-
-                var index = `Dependencies_${i}__KnownDependenciesId`;
-                $("#newKD-" + index).css("display", "none");
-            },
-            failure: function (response) {
-                alert("Failed to add new component name");
-            }
-        });
-        return false;
-
-        // 1. Get rid of known dependency function --
-        // 2. Get rid of partial view --
-        // 3. Add check to see if known dependency exists --
-        // 4. Add css styling to make it look good
-        // 5. Get rid of commented code
-        // 6. Put my code into javascript file
-    }
 }
+
