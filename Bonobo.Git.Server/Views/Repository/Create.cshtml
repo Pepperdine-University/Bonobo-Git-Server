@@ -139,25 +139,26 @@
     </div>
 
 
-    <fieldset class="pure-control-group">
+    <fieldset class="pure-control-group" style="padding-top:10px;">
         <legend>
             @Resources.Dependencies
         </legend>
+
         <template id="Dependencyrow">
             <div class="row Dependencies-details" id="Dependencies_{i}" name="Dependencies-details">
                 <div class=" col pure-control-group" style="display:none;">
                     <label> @Resources.Dependencies_ID </label>
                     <input class="form-control" id="Dependencies[{i}].Id" name="Dependencies[{i}].Id" readonly disabled />
                 </div>
-                                <div class="col pure-control-group">
-            <label> @Resources.Known_Dependency_Name </label>
-            <input class="form-control" id="Dependencies_{i}__.ComponentName" name="Dependencies[{i}].ComponentName" />
-            <span class="field-validation-valid text-danger"
-                  data-valmsg-for="Dependencies[{i}].ComponentName"
-                  data-valmsg-replace="true">
-            </span>
-            <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_{i}" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
-        </div>
+                <div class="pure-control-group">
+                    <label for="Dependencies_{i}__KnownDependency_ComponentName">ComponentName</label>
+                    <div style="display:none;"> <input id="Dependencies_{i}__KnownDependency_ComponentName" name="Dependencies[{i}].KnownDependency.ComponentName" type="text"></div>
+                    <span class="field-validation-valid" data-valmsg-for="Dependencies[{i}].KnownDependency.ComponentName" data-valmsg-replace="true"></span>
+                    <select class="dropDownKD valid" data-val="true" data-val-required="The KnownDependenciesId field is required." id="Dependencies_{i}__KnownDependenciesId" name="Dependencies[{i}].KnownDependenciesId" onchange="javascript: DisplayComponentNameNewInputField(this.options[this.selectedIndex].text, this.id)" style="width: 206.944px" aria-required="true" aria-invalid="false">
+                        <option>Add New...</option>
+                    </select>
+                    <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_{i}" title="Remove Dependency" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
+                </div>
                 <div class="col pure-control-group">
                     <label> @Resources.Dependencies_VersionInUse </label>
                     <input class="form-control" id="Dependencies_{i}__.VersionInUse" name="Dependencies[{i}].VersionInUse" />
@@ -165,6 +166,7 @@
                           data-valmsg-for="Dependencies[{i}].VersionInUse"
                           data-valmsg-replace="true">
                     </span>
+
                 </div>
                 <div class="col pure-control-group">
                     <label> @Resources.Dependencies_DateUpdated </label>
@@ -175,23 +177,17 @@
                     </span>
                 </div>
             </div>
-        </template>        
-
+        </template>
+        </fieldset>
+        <div class="pure-control-group">
+            <button type="button" onclick="DepennewField(0);" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.Dependencies_Add </button>
+        </div>
+       
+        <div class="pure-controls">
+            <a class="pure-button" href="@Url.Action("Index")"><i class="fa fa-long-arrow-left"></i> @Resources.Repository_Back</a>
+            <button type="submit" class="pure-button pure-button-primary"><i class="fa fa-save"></i> @Resources.Repository_Create_Submit</button>
+        </div>
     </fieldset>
-    <div class="pure-control-group">
-        <button type="button" onclick=" DepennewField(0);" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.Dependencies_Add </button>
-    </div>
-
-
-
-
-
-
-    <div class="pure-controls">
-        <a class="pure-button" href="@Url.Action("Index")"><i class="fa fa-long-arrow-left"></i> @Resources.Repository_Back</a>
-        <button type="submit" class="pure-button pure-button-primary"><i class="fa fa-save"></i> @Resources.Repository_Create_Submit</button>
-    </div>
-</fieldset>
 <script src="~/scripts/ServiceAccountsEdit.js" asp-append-version="true"></script>
 <script src="~/scripts/DependenciesEdit.js" asp-append-version="true"></script>
 }
