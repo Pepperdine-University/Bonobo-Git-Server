@@ -228,7 +228,7 @@ else
                     <label for="Dependencies_{i}__KnownDependency_ComponentName">ComponentName</label>
                     <div style="display:none;"> <input id="Dependencies_{i}__KnownDependency_ComponentName" name="Dependencies[{i}].KnownDependency.ComponentName" type="text"></div>
                     <span class="field-validation-valid" data-valmsg-for="Dependencies[{i}].KnownDependency.ComponentName" data-valmsg-replace="true"></span>
-                    <select class="dropDownKD valid" data-val="true" data-val-required="The KnownDependenciesId field is required." id="Dependencies_{i}__KnownDependenciesId" name="Dependencies[{i}].KnownDependenciesId" onchange="javascript: DisplayComponentNameNewInputField(this.options[this.selectedIndex].text, this.id)" style="width: 206.944px" aria-required="true" aria-invalid="false">
+                    <select class="dropDownKD valid" data-val="true" data-val-required="The KnownDependenciesId field is required." id="Dependencies_{i}__KnownDependenciesId" name="Dependencies[{i}].KnownDependenciesId" onchange="javascript: DisplayComponentNameNewInputField(this.options[this.selectedIndex].text, this.id, this.options[this.selectedIndex].value)" style="width: 206.944px" aria-required="true" aria-invalid="false">
                         @{
                             var itemsTemplate = (IEnumerable<SelectListItem>)Html.ViewBag.KnownDependencies;
                             <option></option>
@@ -238,7 +238,8 @@ else
                             }
                         }
                     </select>
-                    <div class="pure-control-group" id="newKD-Dependencies_{i}__KnownDependenciesId" style="display: none;">
+@*                   <input style="display: none;" id="Dependencies_{i}__KnownDependency_Id"  name="Dependencies[{i}].KnownDependency.Id"/>
+*@                    <div class="pure-control-group" id="newKD-Dependencies_{i}__KnownDependenciesId" style="display: none;">
                         @*@{var txtBoxIdTemplate = "KDInputDependencies_" + i + "__KnownDependenciesId"}*@
                             <label class="pure-form-aligned pure-control-group"></label>
                             <input class="pure-form valid" id="KDInputDependencies_{i}__KnownDependenciesId" type="text">
@@ -266,60 +267,64 @@ else
                 </div>
             </div>
         </template>
+        
 
         @for (int i = 0; i < Model.Dependencies.Count; i++)
         {
-            <div class="pure-control-group">
-                @Html.LabelFor(m => m.Dependencies[i].KnownDependency.ComponentName)
-                <div style="display:none;"> @Html.TextBoxFor(m => m.Dependencies[i].KnownDependency.ComponentName)</div>
-                @Html.ValidationMessageFor(m => m.Dependencies[i].KnownDependency.ComponentName)
-                @{
-                    var items = (IEnumerable<SelectListItem>)Html.ViewBag.KnownDependencies;
-                    for (int j = 0; j < items.Count(); j++)
-                    {
-                        if (items.ToList()[j].Value == Model.Dependencies[i].KnownDependency.Id.ToString())
+            <div class="row Dependencies-details" id="Dependencies_@i" name="Dependencies-details">
+                <div class="pure-control-group">
+                    @Html.LabelFor(m => m.Dependencies[i].KnownDependency.ComponentName)
+                    <div style="display:none;"> @Html.TextBoxFor(m => m.Dependencies[i].KnownDependency.ComponentName)</div>
+                    @Html.ValidationMessageFor(m => m.Dependencies[i].KnownDependency.ComponentName)
+    @*                <div style="display:none;"> @Html.TextBoxFor(m => m.Dependencies[i].KnownDependency.Id)</div>
+    *@                @{
+                        var items = (IEnumerable<SelectListItem>)Html.ViewBag.KnownDependencies;
+                        for (int j = 0; j < items.Count(); j++)
                         {
-                            items.ToList()[j].Selected = true;
+                            if (items.ToList()[j].Value == Model.Dependencies[i].KnownDependency.Id.ToString())
+                            {
+                                items.ToList()[j].Selected = true;
+                            }
+                            else
+                            {
+                                items.ToList()[j].Selected = false;
+                            }
                         }
-                        else
+                        @Html.DropDownListFor(m => m.Dependencies[i].KnownDependenciesId, items, new
                         {
-                            items.ToList()[j].Selected = false;
-                        }
+                            @class = "dropDownKD",
+                            @*@disabled = "disabled",*@
+    @style = "width: 206.944px",
+    @onChange = "javascript: DisplayComponentNameNewInputField(this.options[this.selectedIndex].text, this.id)"
+    });
+                        var DepenId = Model.Dependencies[i].Id;
+                        <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_@i" title="Remove Dependency" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
                     }
-                    @Html.DropDownListFor(m => m.Dependencies[i].KnownDependenciesId, items, new
-                    {
-                        @class = "dropDownKD",
-                        @*@disabled = "disabled",*@
-                        @style = "width: 206.944px",
-                        @onChange = "javascript: DisplayComponentNameNewInputField(this.options[this.selectedIndex].text, this.id)"
-                    });
-                    var DepenId = Model.Dependencies[i].Id;
-                    <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_{i}" title="Remove Dependency" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
-                }
-            </div>
-            <div class="pure-control-group" id="@($"newKD-Dependencies_{i}__KnownDependenciesId")" style="display:none;">
-                @{
-                    var txtBoxId = "KDInputDependencies_" + i + "__KnownDependenciesId";
-                    <label class="pure-form-aligned pure-control-group"></label>
-                    <input class="pure-form valid" id=@txtBoxId type="text" />
-                    <button type="button" onclick="checkIfKDExists(@(i), @txtBoxId)" title="Add Component Name" style="background-color: white; border: none;"><i style="color:green;" class="fa fa-plus-circle"></i></button>
-                }
-            </div>
-            <div class="pure-control-group">
-                @Html.LabelFor(m => m.Dependencies[i].VersionInUse)
-                @Html.TextBoxFor(m => m.Dependencies[i].VersionInUse)
-                @Html.ValidationMessageFor(m => m.Dependencies[i].VersionInUse)
-            </div>
-            <div class="pure-control-group">
-                @Html.LabelFor(m => m.Dependencies[i].DateUpdated)
-                @Html.TextBoxFor(m => m.Dependencies[i].DateUpdated)
-                @Html.ValidationMessageFor(m => m.Dependencies[i].DateUpdated)
-            </div>
+                </div>
+                <div class="pure-control-group" id="@($"newKD-Dependencies_{i}__KnownDependenciesId")" style="display:none;">
+                    @{
+                        var txtBoxId = "KDInputDependencies_" + i + "__KnownDependenciesId";
+                        <label class="pure-form-aligned pure-control-group"></label>
+                        <input class="pure-form valid" id=@txtBoxId type="text" />
+                        <button type="button" onclick="checkIfKDExists(@(i), @txtBoxId)" title="Add Component Name" style="background-color: white; border: none;"><i style="color:green;" class="fa fa-plus-circle"></i></button>
+                    }
+                </div>
+                <div class="pure-control-group">
+                    @Html.LabelFor(m => m.Dependencies[i].VersionInUse)
+                    @Html.TextBoxFor(m => m.Dependencies[i].VersionInUse)
+                    @Html.ValidationMessageFor(m => m.Dependencies[i].VersionInUse)
+                </div>
+                <div class="pure-control-group">
+                    @Html.LabelFor(m => m.Dependencies[i].DateUpdated)
+                    @Html.TextBoxFor(m => m.Dependencies[i].DateUpdated)
+                    @Html.ValidationMessageFor(m => m.Dependencies[i].DateUpdated)
+                </div>
 
-            <div class="pure-control-group" style="display:none">
-                @Html.HiddenFor(m => m.Dependencies[i].Id);
-                @Html.HiddenFor(m => m.Dependencies[i].RepositoryId);
-                @Html.HiddenFor(m => m.Dependencies[i].KnownDependenciesId);
+                <div class="pure-control-group" style="display:none">
+                    @Html.HiddenFor(m => m.Dependencies[i].Id);
+                    @Html.HiddenFor(m => m.Dependencies[i].RepositoryId);
+                    @Html.HiddenFor(m => m.Dependencies[i].KnownDependenciesId);
+                </div>
             </div>
         }
     </fieldset>
@@ -349,11 +354,13 @@ else
         }
     })
 }
-function DisplayComponentNameNewInputField(text, index) {
+function DisplayComponentNameNewInputField(text, index, val) {
     if (text == "Add New...") {
         $("#newKD-" + index).css("display", "inline-block");
     } else {
         $("#newKD-" + index).css("display", "none");
+        //var i = index.split("_")[1];
+        //$(`#Dependencies_${i}__KnownDependency_Id`).val(val);
     }
 }
     function checkIfKDExists(i, input) {
@@ -393,6 +400,7 @@ function addKDtoDropDown(i, newKDName, dropDown) {
 
             var index = `Dependencies_${i}__KnownDependenciesId`;
             $("#newKD-" + index).css("display", "none");
+            //$(`#Dependencies_${i}__KnownDependency_Id`).val(response);
         },
         failure: function (response) {
             alert("Failed to add new component name");
