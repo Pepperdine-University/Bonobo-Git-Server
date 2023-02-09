@@ -10,7 +10,7 @@
     var nextDetailRowIndex = allDetailRows.length - 1;
 
     if (nextDetailRowIndex >= 0) {
-        setChildNameAndIdIndexes(allDetailRows.last(), "{i}", nextDetailRowIndex + count);
+        setChildNameAndIdIndexes(allDetailRows.last(), "{i}", nextDetailRowIndex );
     }
 }
 function DepenremField(id) {
@@ -20,7 +20,7 @@ function DepenremField(id) {
     var account = document.getElementById(idStr);
     account.remove();
 
-    let i = 1;
+    let i = 0;
     $(".Dependencies-details").each(function () {
         setChildNameAndIdIndexes(this, (i >= id ? i + 1 : i), i);
         i++;

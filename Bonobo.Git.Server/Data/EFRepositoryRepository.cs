@@ -1,4 +1,5 @@
 ﻿using Bonobo.Git.Server.Models;
+using LibGit2Sharp;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -155,34 +156,18 @@ namespace Bonobo.Git.Server.Data
                     LinksUseGlobal = model.LinksUseGlobal,
                     LinksUrl = model.LinksUrl,
                     LinksRegex = model.LinksRegex,
-                    ServiceAccounts = model.ServiceAccounts,
-                    Dependencies = model.Dependencies
+                    ServiceAccounts = model.ServiceAccounts
                 };
                 database.Repositories.Add(repository);
                 AddMembers(model.Users.Select(x => x.Id), model.Administrators.Select(x => x.Id), model.Teams.Select(x => x.Id), repository, database);
-                using (var db = CreateContext())
+                if (model.Dependencies != null)
                 {
-                    var repo = db.Repositories
-                                .Include(r => r.ServiceAccounts)
-                                .Include(r => r.Dependencies)
-                                .FirstOrDefault(i => i.Id == model.Id);
-                    if (model.ServiceAccounts != null)
+                    foreach (var dependency in model.Dependencies.ToList())
                     {
-                        foreach (var serviceAccount in model.ServiceAccounts.ToList())
-                        {
-                            repo.ServiceAccounts.Add(serviceAccount);
-                        }
-                    }
-                    if (model.Dependencies != null)
-                    {
-                        foreach (var dependency in model.Dependencies.ToList())
-                        {
-                            dependency.Id = Guid.NewGuid();
-                            dependency.RepositoryId = model.Id;
-                            dependency.KnownDependenciesId = new Guid("80a727e8-ee3a-41e0-9940-fe376007e7d5");
-
-                            repo.Dependencies.Add(dependency);
-                        }
+                        dependency.KnownDependency = database.KnownDependencies.FirstOrDefault(i => i.Id == dependency.KnownDependenciesId);
+                        dependency.Id = Guid.NewGuid();
+                        dependency.RepositoryId = model.Id;
+                        repository.Dependencies.Add(dependency);
                     }
                 }
                 try
@@ -281,7 +266,6 @@ namespace Bonobo.Git.Server.Data
                             db.ServiceAccounts.Remove(sa);
                         }
                     }
-                   
 
                     if (model.Dependencies != null)
                     {

@@ -183,6 +183,7 @@ namespace Bonobo.Git.Server.Controllers
                 Administrators = new UserModel[] { MembershipService.GetUserModel(User.Id()) },
             };
             PopulateCheckboxListData(ref model);
+            ViewBag.KnownDependencies = PopulateKnownDependencyDropdown();
             return View(model);
         }
 
@@ -232,6 +233,7 @@ namespace Bonobo.Git.Server.Controllers
                 }
             }
             PopulateCheckboxListData(ref model);
+            ViewBag.KnownDependencies = PopulateKnownDependencyDropdown();
             return View(model);
         }
 

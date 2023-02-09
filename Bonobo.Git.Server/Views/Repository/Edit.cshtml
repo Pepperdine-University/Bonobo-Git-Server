@@ -231,12 +231,15 @@ else
                     <select class="dropDownKD valid" data-val="true" data-val-required="The KnownDependenciesId field is required." id="Dependencies_{i}__KnownDependenciesId" name="Dependencies[{i}].KnownDependenciesId" onchange="javascript: DisplayComponentNameNewInputField(this.options[this.selectedIndex].text, this.id, this.options[this.selectedIndex].value)" style="width: 206.944px" aria-required="true" aria-invalid="false">
                         @{
                             var itemsTemplate = (IEnumerable<SelectListItem>)Html.ViewBag.KnownDependencies;
-                            <option></option>
-                            foreach (var kd in itemsTemplate)
+                            if (itemsTemplate != null)
                             {
+                            <option></option>
+                                foreach (var kd in itemsTemplate)
+                                {
                                 <option value="@kd.Value">@kd.Text</option>
+                                    }
+                                }
                             }
-                        }
                     </select>
 @*                   <input style="display: none;" id="Dependencies_{i}__KnownDependency_Id"  name="Dependencies[{i}].KnownDependency.Id"/>
 *@                    <div class="pure-control-group" id="newKD-Dependencies_{i}__KnownDependenciesId" style="display: none;">
