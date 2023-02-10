@@ -98,7 +98,7 @@ namespace Bonobo.Git.Server.Data.Update.Sqlite
 
                     CREATE TABLE IF NOT EXISTS [Dependencies] (
                         [Id] nvarchar(36) PRIMARY KEY,
-                        [DateUpdated] VarChar(255),
+                        [DateUpdated]  Date Default 0,
                         [VersionInUse] VarChar(255),
                         [RepositoryId] nvarchar(36),
                         [KnownDependenciesId] nvarchar(36),

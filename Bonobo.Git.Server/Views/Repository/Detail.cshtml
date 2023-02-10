@@ -158,7 +158,11 @@
                     <details style="display: inline-block; overflow: hidden; white-space: nowrap;">
                         <summary>
                             <div class="sidebar-text">
-                                <i class="fa fa-chevron-down"></i><label for="@dependency.Id" type="text" style="display:inline; font-size: 100%; padding-right:5px; font-weight:normal; " class="removeVisualInput" readonly> @dependency.KnownDependency.ComponentName</label><input style="text-overflow: ellipsis; " class="removeVisualInput" value="(@(dependency.VersionInUse != null? float.Parse(dependency.VersionInUse).ToString("0.00"): ""))" readonly="">
+                                @{
+                                    string[] VersionInUseFormat = dependency.VersionInUse.Split('.');
+                                    string VersionInUseFormat2 = (VersionInUseFormat.Length == 1 ? VersionInUseFormat[0] : $"{VersionInUseFormat[0]}.{VersionInUseFormat[1]}");
+                                }
+                                <i class="fa fa-chevron-down"></i><label for="@dependency.Id" type="text" style="display:inline; font-size: 100%; padding-right:5px; font-weight:normal; " class="removeVisualInput" readonly> @dependency.KnownDependency.ComponentName</label><input style="text-overflow: ellipsis; " class="removeVisualInput" value="@VersionInUseFormat2" readonly="">
                                 <input type="text" id="@dependency.Id" style="display:none;" class="removeVisualInput" value="@dependency.KnownDependency.ComponentName" readonly>
                             </div>
                         </summary>

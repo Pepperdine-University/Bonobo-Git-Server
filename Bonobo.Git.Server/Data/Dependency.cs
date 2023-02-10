@@ -10,7 +10,7 @@ namespace Bonobo.Git.Server.Data
     public partial class Dependency
     {
         public Guid Id { get; set; }
-        public string DateUpdated { get; set; }
+        public DateTime? DateUpdated { get; set; }
         public string VersionInUse { get; set; }
         
         public Guid RepositoryId { get; set; }
