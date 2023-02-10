@@ -31,147 +31,147 @@ else
             @Html.ValidationSummary(false, Resources.Repository_Edit_Fail)
             @Html.HiddenFor(m => m.Id)
 
-<fieldset>
-    <div class="pure-control-group">
-        @Html.LabelFor(m => m.Name)
-        @Html.TextBoxFor(m => m.Name)
-        @Html.ValidationMessageFor(m => m.Name)
-    </div>
-    <div class="pure-control-group">
-        @Html.LabelFor(m => m.Group)
-        @Html.TextBoxFor(m => m.Group, new { @class = "medium" })
-    </div>
-    <div class="pure-control-group">
-        @Html.LabelFor(m => m.Description)
-        @Html.TextAreaFor(m => m.Description, new { @class = "medium" })
-    </div>
+            <fieldset>
+                <div class="pure-control-group">
+                    @Html.LabelFor(m => m.Name)
+                    @Html.TextBoxFor(m => m.Name)
+                    @Html.ValidationMessageFor(m => m.Name)
+                </div>
+                <div class="pure-control-group">
+                    @Html.LabelFor(m => m.Group)
+                    @Html.TextBoxFor(m => m.Group, new { @class = "medium" })
+                </div>
+                <div class="pure-control-group">
+                    @Html.LabelFor(m => m.Description)
+                    @Html.TextAreaFor(m => m.Description, new { @class = "medium" })
+                </div>
 
-    <div class="pure-control-group">
-        @Html.LabelFor(m => m.Logo.PostedFile)
-        <input type="file" name="Logo.PostedFile" id="Logo_PostedFile" />
-        <sup>.png, .jpg, .jpeg, .gif</sup>
-    </div>
+                <div class="pure-control-group">
+                    @Html.LabelFor(m => m.Logo.PostedFile)
+                    <input type="file" name="Logo.PostedFile" id="Logo_PostedFile" />
+                    <sup>.png, .jpg, .jpeg, .gif</sup>
+                </div>
 
-    <div class="pure-control-group">
-        @Html.LabelFor(m => m.Logo.RemoveLogo)
-        @Html.CheckBoxFor(m => m.Logo.RemoveLogo)
-    </div>
-    <div class="pure-control-group">
-        @Html.LabelFor(m => m.AllowAnonymous)
-        @Html.CheckBoxFor(m => m.AllowAnonymous, new { @onClick = "document.getElementById('AllowAnonymousPush').disabled = !this.checked" })
-        <i class="fa fa-info-circle" title="@Resources.Repository_AllowAnonymousHint"></i>
-    </div>
+                <div class="pure-control-group">
+                    @Html.LabelFor(m => m.Logo.RemoveLogo)
+                    @Html.CheckBoxFor(m => m.Logo.RemoveLogo)
+                </div>
+                <div class="pure-control-group">
+                    @Html.LabelFor(m => m.AllowAnonymous)
+                    @Html.CheckBoxFor(m => m.AllowAnonymous, new { @onClick = "document.getElementById('AllowAnonymousPush').disabled = !this.checked" })
+                    <i class="fa fa-info-circle" title="@Resources.Repository_AllowAnonymousHint"></i>
+                </div>
 
-    <div class="pure-control-group">
-        @Html.LabelFor(m => m.AllowAnonymousPush)
-        @{
-            object attribs = new { @id = "AllowAnonymousPush" };
-            if (!Model.AllowAnonymous)
-            {
-                attribs = new { @id = "AllowAnonymousPush", @disabled = "" };
-            }
-        }
-        @Html.EnumDropDownListFor(m => m.AllowAnonymousPush, attribs)
-        <i class="fa fa-info-circle" title="@Resources.Repository_AllowAnonymousPushHint"></i>
-    </div>
+                <div class="pure-control-group">
+                    @Html.LabelFor(m => m.AllowAnonymousPush)
+                    @{
+                        object attribs = new { @id = "AllowAnonymousPush" };
+                        if (!Model.AllowAnonymous)
+                        {
+                            attribs = new { @id = "AllowAnonymousPush", @disabled = "" };
+                        }
+                    }
+                    @Html.EnumDropDownListFor(m => m.AllowAnonymousPush, attribs)
+                    <i class="fa fa-info-circle" title="@Resources.Repository_AllowAnonymousPushHint"></i>
+                </div>
 
-    @if (AppSettings.IsPushAuditEnabled)
-    {
-        <div class="pure-control-group">
-            @Html.LabelFor(m => m.AuditPushUser)
-            @Html.CheckBoxFor(m => m.AuditPushUser)
-            <i class="fa fa-info-circle" title="@Resources.Repository_AuditPushUserHint"></i>
-        </div>
-    }
-    <div class="pure-control-group">
-        @Html.LabelFor(m => m.LinksUseGlobal)
-        @Html.CheckBoxFor(m => m.LinksUseGlobal, new
-   {
-       @onClick = "document.getElementById('LinksRegex').disabled = this.checked; " +
-"document.getElementById('LinksUrl').disabled =  this.checked; " +
-"document.getElementById('LinksRegex').disabled? document.getElementById('LinksRegex').value = '': ''; " +
-"document.getElementById('LinksUrl').disabled? document.getElementById('LinksUrl').value = '': '';"
-   })
-    </div>
-    <div class="pure-control-group">
-        @Html.LabelFor(m => m.LinksRegex)
-        @{
-            attribs = new { @class = "medium" };
-            if (Model.LinksUseGlobal)
-            {
-                attribs = new { @class = "medium", disabled = "" };
-            }
-            @Html.TextBoxFor(m => m.LinksRegex, attribs);
-            @Html.ValidationMessageFor(m => m.LinksRegex);
-        }
-    </div>
-    <div class="pure-control-group">
-        @Html.LabelFor(m => m.LinksUrl)
-        @Html.TextBoxFor(m => m.LinksUrl, attribs)
-        <i class="fa fa-info-circle" title="@Resources.Settings_Global_LinksUrl_Hint"></i>
-    </div>
-    <div class="pure-control-group checkboxlist">
-        @Html.LabelFor(m => m.Users)
-        <span>
-            @Html.CheckBoxListFor(m => m.PostedSelectedUsers, m => m.AllUsers, m => m.Id, m => m.DisplayName, m => m.Users, Position.Vertical)
-        </span>
-        <i class="fa fa-info-circle" title="@Resources.Repository_UsersHint"></i>
-    </div>
-
-    <div class="pure-control-group checkboxlist">
-        @Html.LabelFor(m => m.Administrators)
-        <span>
-            @Html.CheckBoxListFor(m => m.PostedSelectedAdministrators, m => m.AllAdministrators, m => m.Id, m => m.DisplayName, m => m.Administrators, Position.Vertical)
-        </span>
-        <i class="fa fa-info-circle" title="@Resources.Repository_AdministratorsHint"></i>
-        @Html.ValidationMessageFor(m => m.Administrators)
-    </div>
-
-    <div class="pure-control-group checkboxlist">
-        @Html.LabelFor(m => m.Teams)
-        <span>
-            @Html.CheckBoxListFor(m => m.PostedSelectedTeams, m => m.AllTeams, mm => mm.Id, mm => mm.DisplayName, mm => mm.Teams, Position.Vertical)
-        </span>
-        <i class="fa fa-info-circle" title="@Resources.Repository_TeamsHint"></i>
-    </div>
-
-            <fieldset class="pure-control-group">
-                <legend>
-                    @Resources.SA
-                </legend>
-                <template id="serviceAccountrow">
-                    <div class="row service-account-details" id="ServiceAccounts_{i}" name="service-account-details">
-                        <div class=" col pure-control-group" style="display:none;">
-                            <label> @Resources.SA_ID </label>
-                            <input class="form-control" id="ServiceAccounts[{i}].Id" name="ServiceAccounts[{i}].Id" readonly disabled />
-                        </div>
-                        <div class="col pure-control-group">
-                            <label> @Resources.SA_Name </label> 
-                            <input class="form-control" id="ServiceAccounts_{i}__.ServiceAccountName" name="ServiceAccounts[{i}].ServiceAccountName" />
-                            <span class="field-validation-valid text-danger"
-                                  data-valmsg-for="ServiceAccounts[{i}].ServiceAccountName"
-                                  data-valmsg-replace="true">
-                            </span>
-                            <button type="button" onclick="remField(this.id);" id=" ServiceAccountBtn_{i}" title="Remove Service Account" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
-                        </div>
-                        <div class="col pure-control-group">
-                            <label> @Resources.SA_InPassManager </label>
-                            <input class="form-control" type="checkbox" id="ServiceAccounts_{i}__.InPassManager" name="ServiceAccounts[{i}].InPassManager" value="true" data-val="true" data-val-required="The InPassManager field is required."/>
-                            <span class="field-validation-valid text-danger"
-                                  data-valmsg-for="ServiceAccounts[{i}].InPassManager"
-                                  data-valmsg-replace="true">
-                            </span>
-                        </div>
-                        <div class="col pure-control-group">
-                            <label> @Resources.SA_PassLastUpdated </label>
-                            <input class="form-control" type="datetime" id="ServiceAccounts_{i}__.PassLastUpdated" name="ServiceAccounts[{i}].PassLastUpdated" value="1/1/1900 12:00:00 AM" />
-                            <span class="field-validation-valid text-danger"
-                                  data-valmsg-for="ServiceAccounts[{i}].PassLastUpdated"
-                                  data-valmsg-replace="true">
-                            </span>
-                        </div>
+                @if (AppSettings.IsPushAuditEnabled)
+                {
+                    <div class="pure-control-group">
+                        @Html.LabelFor(m => m.AuditPushUser)
+                        @Html.CheckBoxFor(m => m.AuditPushUser)
+                        <i class="fa fa-info-circle" title="@Resources.Repository_AuditPushUserHint"></i>
                     </div>
-                </template>
+                }
+                <div class="pure-control-group">
+                    @Html.LabelFor(m => m.LinksUseGlobal)
+                    @Html.CheckBoxFor(m => m.LinksUseGlobal, new
+               {
+                   @onClick = "document.getElementById('LinksRegex').disabled = this.checked; " +
+            "document.getElementById('LinksUrl').disabled =  this.checked; " +
+            "document.getElementById('LinksRegex').disabled? document.getElementById('LinksRegex').value = '': ''; " +
+            "document.getElementById('LinksUrl').disabled? document.getElementById('LinksUrl').value = '': '';"
+               })
+                </div>
+                <div class="pure-control-group">
+                    @Html.LabelFor(m => m.LinksRegex)
+                    @{
+                        attribs = new { @class = "medium" };
+                        if (Model.LinksUseGlobal)
+                        {
+                            attribs = new { @class = "medium", disabled = "" };
+                        }
+                        @Html.TextBoxFor(m => m.LinksRegex, attribs);
+                        @Html.ValidationMessageFor(m => m.LinksRegex);
+                    }
+                </div>
+                <div class="pure-control-group">
+                    @Html.LabelFor(m => m.LinksUrl)
+                    @Html.TextBoxFor(m => m.LinksUrl, attribs)
+                    <i class="fa fa-info-circle" title="@Resources.Settings_Global_LinksUrl_Hint"></i>
+                </div>
+                <div class="pure-control-group checkboxlist">
+                    @Html.LabelFor(m => m.Users)
+                    <span>
+                        @Html.CheckBoxListFor(m => m.PostedSelectedUsers, m => m.AllUsers, m => m.Id, m => m.DisplayName, m => m.Users, Position.Vertical)
+                    </span>
+                    <i class="fa fa-info-circle" title="@Resources.Repository_UsersHint"></i>
+                </div>
+
+                <div class="pure-control-group checkboxlist">
+                    @Html.LabelFor(m => m.Administrators)
+                    <span>
+                        @Html.CheckBoxListFor(m => m.PostedSelectedAdministrators, m => m.AllAdministrators, m => m.Id, m => m.DisplayName, m => m.Administrators, Position.Vertical)
+                    </span>
+                    <i class="fa fa-info-circle" title="@Resources.Repository_AdministratorsHint"></i>
+                    @Html.ValidationMessageFor(m => m.Administrators)
+                </div>
+
+                <div class="pure-control-group checkboxlist">
+                    @Html.LabelFor(m => m.Teams)
+                    <span>
+                        @Html.CheckBoxListFor(m => m.PostedSelectedTeams, m => m.AllTeams, mm => mm.Id, mm => mm.DisplayName, mm => mm.Teams, Position.Vertical)
+                    </span>
+                    <i class="fa fa-info-circle" title="@Resources.Repository_TeamsHint"></i>
+                </div>
+
+                <fieldset class="pure-control-group">
+                    <legend>
+                        @Resources.SA
+                    </legend>
+                    <template id="serviceAccountrow">
+                        <div class="row service-account-details" id="ServiceAccounts_{i}" name="service-account-details">
+                            <div class=" col pure-control-group" style="display:none;">
+                                <label> @Resources.SA_ID </label>
+                                <input class="form-control" id="ServiceAccounts[{i}].Id" name="ServiceAccounts[{i}].Id" readonly disabled />
+                            </div>
+                            <div class="col pure-control-group">
+                                <label> @Resources.SA_Name </label>
+                                <input class="form-control" id="ServiceAccounts_{i}__.ServiceAccountName" name="ServiceAccounts[{i}].ServiceAccountName" />
+                                <span class="field-validation-valid text-danger"
+                                      data-valmsg-for="ServiceAccounts[{i}].ServiceAccountName"
+                                      data-valmsg-replace="true">
+                                </span>
+                                <button type="button" onclick="remField(this.id);" id=" ServiceAccountBtn_{i}" title="Remove Service Account" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
+                            </div>
+                            <div class="col pure-control-group">
+                                <label> @Resources.SA_InPassManager </label>
+                                <input class="form-control" type="checkbox" id="ServiceAccounts_{i}__.InPassManager" name="ServiceAccounts[{i}].InPassManager" value="true" data-val="true" data-val-required="The InPassManager field is required." />
+                                <span class="field-validation-valid text-danger"
+                                      data-valmsg-for="ServiceAccounts[{i}].InPassManager"
+                                      data-valmsg-replace="true">
+                                </span>
+                            </div>
+                            <div class="col pure-control-group">
+                                <label> @Resources.SA_PassLastUpdated </label>
+                                <input class="form-control" type="datetime" id="ServiceAccounts_{i}__.PassLastUpdated" name="ServiceAccounts[{i}].PassLastUpdated" value="1/1/1900 12:00:00 AM" />
+                                <span class="field-validation-valid text-danger"
+                                      data-valmsg-for="ServiceAccounts[{i}].PassLastUpdated"
+                                      data-valmsg-replace="true">
+                                </span>
+                            </div>
+                        </div>
+                    </template>
 
 
                     @if (Model != null)
@@ -180,191 +180,179 @@ else
                         {
                             var id = "ServiceAccounts_" + i;
                             var btnId = "ServiceAccountBtn_" + i;
-                           <div class="service-account-details" id="@id">
-                               <div class="pure-control-group">
-                                   @Html.LabelFor(m => m.ServiceAccounts[i].ServiceAccountName)
-                                   @Html.TextBoxFor(m => m.ServiceAccounts[i].ServiceAccountName)
-                                   @Html.ValidationMessageFor(m => m.ServiceAccounts[i].ServiceAccountName)
-                                   @{ }
-                                   <button type="button" onclick=" remField(this.id);" id="@btnId" title="Remove Service Account" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
-                               </div>
-                               <div class="pure-control-group">
-                                   @Html.LabelFor(m => m.ServiceAccounts[i].InPassManager)
-                                   @Html.CheckBoxFor(m => m.ServiceAccounts[i].InPassManager)
-                                   @Html.ValidationMessageFor(m => m.ServiceAccounts[i].InPassManager)
-                               </div>
-                               <div class="pure-control-group">
-                                   @Html.LabelFor(m => m.ServiceAccounts[i].PassLastUpdated)
-                                   @Html.TextBoxFor(m => m.ServiceAccounts[i].PassLastUpdated)
-                                   @Html.ValidationMessageFor(m => m.ServiceAccounts[i].PassLastUpdated)
-                               </div>
-                               <div class="pure-control-group" style="display:none;">
-                                   @Html.LabelFor(m => m.ServiceAccounts[i].Id)
-                                   @Html.TextBoxFor(m => m.ServiceAccounts[i].Id)
-                                   @Html.LabelFor(m => m.ServiceAccounts[i].RepositoryId)
-                                   @Html.TextBoxFor(m => m.ServiceAccounts[i].RepositoryId)
-                               </div>
-                           </div>
-                                           }
-                                       }
+                            <div class="service-account-details" id="@id">
+                                <div class="pure-control-group">
+                                    @Html.LabelFor(m => m.ServiceAccounts[i].ServiceAccountName)
+                                    @Html.TextBoxFor(m => m.ServiceAccounts[i].ServiceAccountName)
+                                    @Html.ValidationMessageFor(m => m.ServiceAccounts[i].ServiceAccountName)
+                                    @{ }
+                                    <button type="button" onclick=" remField(this.id);" id="@btnId" title="Remove Service Account" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
+                                </div>
+                                <div class="pure-control-group">
+                                    @Html.LabelFor(m => m.ServiceAccounts[i].InPassManager)
+                                    @Html.CheckBoxFor(m => m.ServiceAccounts[i].InPassManager)
+                                    @Html.ValidationMessageFor(m => m.ServiceAccounts[i].InPassManager)
+                                </div>
+                                <div class="pure-control-group">
+                                    @Html.LabelFor(m => m.ServiceAccounts[i].PassLastUpdated)
+                                    @Html.TextBoxFor(m => m.ServiceAccounts[i].PassLastUpdated)
+                                    @Html.ValidationMessageFor(m => m.ServiceAccounts[i].PassLastUpdated)
+                                </div>
+                                <div class="pure-control-group" style="display:none;">
+                                    @Html.LabelFor(m => m.ServiceAccounts[i].Id)
+                                    @Html.TextBoxFor(m => m.ServiceAccounts[i].Id)
+                                    @Html.LabelFor(m => m.ServiceAccounts[i].RepositoryId)
+                                    @Html.TextBoxFor(m => m.ServiceAccounts[i].RepositoryId)
+                                </div>
+                            </div>
+                        }
+                    }
 
-    </fieldset>
+                </fieldset>
 
-    <div class="pure-control-group">
-        <button type="button" onclick=" newField(@Model.ServiceAccounts.Count);" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.SA_Add </button>
-    </div>
-    <fieldset class="pure-control-group" style="padding-top:10px;">
-        <legend>
-            Dependencies
-        </legend>
-
-        <template id="Dependencyrow">
-            <div class="row Dependencies-details" id="Dependencies_{i}" name="Dependencies-details">
-                <div class=" col pure-control-group" style="display:none;">
-                    <label> @Resources.Dependencies_ID </label>
-                    <input class="form-control" id="Dependencies[{i}].Id" name="Dependencies[{i}].Id" readonly disabled />
-                </div>
                 <div class="pure-control-group">
-                    <label for="Dependencies_{i}__KnownDependency_ComponentName">ComponentName</label>
-                    <div style="display:none;"> <input id="Dependencies_{i}__KnownDependency_ComponentName" name="Dependencies[{i}].KnownDependency.ComponentName" type="text"></div>
-                    <span class="field-validation-valid" data-valmsg-for="Dependencies[{i}].KnownDependency.ComponentName" data-valmsg-replace="true"></span>
-                    <select class="dropDownKD valid" data-val="true" data-val-required="The KnownDependenciesId field is required." id="Dependencies_{i}__KnownDependenciesId" name="Dependencies[{i}].KnownDependenciesId" onchange="javascript: DisplayComponentNameNewInputField(this.options[this.selectedIndex].text, this.id, this.options[this.selectedIndex].value)" style="width: 206.944px" aria-required="true" aria-invalid="false">
-                        @{
-                            var itemsTemplate = (IEnumerable<SelectListItem>)Html.ViewBag.KnownDependencies;
-                            if (itemsTemplate != null)
-                            {
-                                <option></option>
-                                foreach (var kd in itemsTemplate)
-                                {
-                                    <option value="@kd.Value">@kd.Text</option>
+                    <button type="button" onclick=" newField(@Model.ServiceAccounts.Count);" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.SA_Add </button>
+                </div>
+                <fieldset class="pure-control-group" style="padding-top:10px;">
+                    <legend>
+                        Dependencies
+                    </legend>
+
+                    <template id="Dependencyrow">
+                        <div class="row Dependencies-details" id="Dependencies_{i}" name="Dependencies-details">
+                            <div class=" col pure-control-group" style="display:none;">
+                                <label> @Resources.Dependencies_ID </label>
+                                <input class="form-control" id="Dependencies[{i}].Id" name="Dependencies[{i}].Id" readonly disabled />
+                            </div>
+                            <div class="pure-control-group">
+                                <label for="Dependencies_{i}__KnownDependency_ComponentName">ComponentName</label>
+                                <div style="display:none;"> <input id="Dependencies_{i}__KnownDependency_ComponentName" name="Dependencies[{i}].KnownDependency.ComponentName" type="text"></div>
+                                <span class="field-validation-valid" data-valmsg-for="Dependencies[{i}].KnownDependency.ComponentName" data-valmsg-replace="true"></span>
+                                <select class="dropDownKD valid" data-val="true" data-val-required="The KnownDependenciesId field is required." id="Dependencies_{i}__KnownDependenciesId" name="Dependencies[{i}].KnownDependenciesId" onchange="javascript: DisplayComponentNameNewInputField(this.options[this.selectedIndex].text, this.id)" style="width: 206.944px" aria-required="true" aria-invalid="false">
+                                    @{
+                                        var itemsTemplate = (IEnumerable<SelectListItem>)Html.ViewBag.KnownDependencies;
+                                        if (itemsTemplate != null)
+                                        {
+                                            <option></option>
+                                            foreach (var kd in itemsTemplate)
+                                            {
+                                                <option value="@kd.Value">@kd.Text</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                                <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_{i}" title="Remove Dependency" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
+                            </div>
+                            <div class="pure-control-group" id="newKD-Dependencies_{i}__KnownDependenciesId" style="display: none;">
+                                <label class="pure-form-aligned pure-control-group"></label>
+                                <input class="pure-form valid" id="KDInputDependencies_{i}__KnownDependenciesId" type="text">
+                                <button type="button" id="{i}" onclick="checkIfKDExists(this.id)" title="Add Component Name" style="background-color: white; border: none;"><i style="color:green;" class="fa fa-plus-circle"></i></button>
+                            </div>
+                            <div class="col pure-control-group">
+                                <label> @Resources.Dependencies_VersionInUse </label>
+                                <input class="form-control" id="Dependencies_{i}__.VersionInUse" name="Dependencies[{i}].VersionInUse" />
+                                <span class="field-validation-valid text-danger"
+                                      data-valmsg-for="Dependencies[{i}].VersionInUse"
+                                      data-valmsg-replace="true">
+                                </span>
+
+                            </div>
+                            <div class="col pure-control-group">
+                                <label> @Resources.Dependencies_DateUpdated </label>
+                                <input class="form-control" type="datetime" id="Dependencies_{i}__.DateUpdated" name="Dependencies[{i}].DateUpdated" />
+                                <span class="field-validation-valid text-danger"
+                                      data-valmsg-for="Dependencies[{i}].DateUpdated"
+                                      data-valmsg-replace="true">
+                                </span>
+                            </div>
+                        </div>
+                    </template>
+
+
+                    @for (int i = 0; i < Model.Dependencies.Count; i++)
+                    {
+                        <div class="row Dependencies-details" id="Dependencies_@i" name="Dependencies-details">
+                            <div class="pure-control-group">
+                                @Html.LabelFor(m => m.Dependencies[i].KnownDependency.ComponentName)
+                                <div style="display:none;"> @Html.TextBoxFor(m => m.Dependencies[i].KnownDependency.ComponentName)</div>
+                                @Html.ValidationMessageFor(m => m.Dependencies[i].KnownDependency.ComponentName)
+                                @{
+                                    var items = (IEnumerable<SelectListItem>)Html.ViewBag.KnownDependencies;
+                                    for (int j = 0; j < items.Count(); j++)
+                                    {
+                                        if (items.ToList()[j].Value == Model.Dependencies[i].KnownDependency.Id.ToString())
+                                        {
+                                            items.ToList()[j].Selected = true;
+                                        }
+                                        else
+                                        {
+                                            items.ToList()[j].Selected = false;
+                                        }
+                                    }
+                                    @Html.DropDownListFor(m => m.Dependencies[i].KnownDependenciesId, items, new
+                                    {
+                                        @class = "dropDownKD",
+                                        @disabled = "disabled",
+                                        @style = "width: 206.944px; color: #6B6B6B;",
+                                        @onChange = "javascript: DisplayComponentNameNewInputField(this.options[this.selectedIndex].text, this.id)"
+                                    });
+                                    var DepenId = Model.Dependencies[i].Id;
+                                    <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_@i" title="Remove Dependency" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
                                 }
-                            }
-                        }
-                    </select>
-                    <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_{i}" title="Remove Dependency" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
-                </div>
-                <div class="pure-control-group" id="newKD-Dependencies_{i}__KnownDependenciesId" style="display: none;">
-                    <label class="pure-form-aligned pure-control-group"></label>
-                    <input class="pure-form valid" id="KDInputDependencies_{i}__KnownDependenciesId" type="text">
-                    <button type="button" id="{i}" onclick="checkIfKDExists(this.id, 'KDInputDependencies_'+ this.id +'__KnownDependenciesId')" title="Add Component Name" style="background-color: white; border: none;"><i style="color:green;" class="fa fa-plus-circle"></i></button>
+                            </div>
+                            <div class="pure-control-group" id="@($"newKD-Dependencies_{i}__KnownDependenciesId")" style="display:none;">
+                                @{
+                                    var txtBoxId = "KDInputDependencies_" + i + "__KnownDependenciesId";
+                                    <label class="pure-form-aligned pure-control-group"></label>
+                                    <input class="pure-form valid" id=@txtBoxId type="text" />
+                                    <button type="button" onclick="checkIfKDExists(@(i))" title="Add Component Name" style="background-color: white; border: none;"><i style="color:green;" class="fa fa-plus-circle"></i></button>
+                                }
+                            </div>
+                            <div class="pure-control-group">
+                                @Html.LabelFor(m => m.Dependencies[i].VersionInUse)
+                                @Html.TextBoxFor(m => m.Dependencies[i].VersionInUse)
+                                @Html.ValidationMessageFor(m => m.Dependencies[i].VersionInUse)
+                            </div>
+                            <div class="pure-control-group">
+                                @Html.LabelFor(m => m.Dependencies[i].DateUpdated)
+                                @Html.TextBoxFor(m => m.Dependencies[i].DateUpdated)
+                                @Html.ValidationMessageFor(m => m.Dependencies[i].DateUpdated)
+                            </div>
 
-                </div>
-                <div class="col pure-control-group">
-                    <label> @Resources.Dependencies_VersionInUse </label>
-                    <input class="form-control" id="Dependencies_{i}__.VersionInUse" name="Dependencies[{i}].VersionInUse" />
-                    <span class="field-validation-valid text-danger"
-                          data-valmsg-for="Dependencies[{i}].VersionInUse"
-                          data-valmsg-replace="true">
-                    </span>
-
-                </div>
-                <div class="col pure-control-group">
-                    <label> @Resources.Dependencies_DateUpdated </label>
-                    <input class="form-control" type="datetime" id="Dependencies_{i}__.DateUpdated" name="Dependencies[{i}].DateUpdated" />
-                    <span class="field-validation-valid text-danger"
-                          data-valmsg-for="Dependencies[{i}].DateUpdated"
-                          data-valmsg-replace="true">
-                    </span>
-                </div>
-            </div>
-        </template>
-        
-
-        @for (int i = 0; i < Model.Dependencies.Count; i++)
-        {
-            <div class="row Dependencies-details" id="Dependencies_@i" name="Dependencies-details">
-                <div class="pure-control-group">
-                    @Html.LabelFor(m => m.Dependencies[i].KnownDependency.ComponentName)
-                    <div style="display:none;"> @Html.TextBoxFor(m => m.Dependencies[i].KnownDependency.ComponentName)</div>
-                    @Html.ValidationMessageFor(m => m.Dependencies[i].KnownDependency.ComponentName)
-                    @{
-                        var items = (IEnumerable<SelectListItem>)Html.ViewBag.KnownDependencies;
-                        for (int j = 0; j < items.Count(); j++)
-                        {
-                            if (items.ToList()[j].Value == Model.Dependencies[i].KnownDependency.Id.ToString())
-                            {
-                                items.ToList()[j].Selected = true;
-                            }
-                            else
-                            {
-                                items.ToList()[j].Selected = false;
-                            }
-                        }
-                        @Html.DropDownListFor(m => m.Dependencies[i].KnownDependenciesId, items, new
-                        {
-                            @class = "dropDownKD",
-                            @disabled = "disabled",
-                            @style = "width: 206.944px; color: #6B6B6B;",
-                            @onChange = "javascript: DisplayComponentNameNewInputField(this.options[this.selectedIndex].text, this.id)"
-                        });
-                        var DepenId = Model.Dependencies[i].Id;
-                        <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_@i" title="Remove Dependency" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
+                            <div class="pure-control-group" style="display:none">
+                                @Html.HiddenFor(m => m.Dependencies[i].Id);
+                                @Html.HiddenFor(m => m.Dependencies[i].RepositoryId);
+                                @Html.HiddenFor(m => m.Dependencies[i].KnownDependenciesId);
+                            </div>
+                        </div>
                     }
-                </div>
-                <div class="pure-control-group" id="@($"newKD-Dependencies_{i}__KnownDependenciesId")" style="display:none;">
-                    @{
-                        var txtBoxId = "KDInputDependencies_" + i + "__KnownDependenciesId";
-                        <label class="pure-form-aligned pure-control-group"></label>
-                        <input class="pure-form valid" id=@txtBoxId type="text" />
-                        <button type="button" onclick="checkIfKDExists(@(i), @txtBoxId)" title="Add Component Name" style="background-color: white; border: none;"><i style="color:green;" class="fa fa-plus-circle"></i></button>
-                    }
-                </div>
-                <div class="pure-control-group">
-                    @Html.LabelFor(m => m.Dependencies[i].VersionInUse)
-                    @Html.TextBoxFor(m => m.Dependencies[i].VersionInUse)
-                    @Html.ValidationMessageFor(m => m.Dependencies[i].VersionInUse)
-                </div>
-                <div class="pure-control-group">
-                    @Html.LabelFor(m => m.Dependencies[i].DateUpdated)
-                    @Html.TextBoxFor(m => m.Dependencies[i].DateUpdated)
-                    @Html.ValidationMessageFor(m => m.Dependencies[i].DateUpdated)
-                </div>
+                </fieldset>
 
-                <div class="pure-control-group" style="display:none">
-                    @Html.HiddenFor(m => m.Dependencies[i].Id);
-                    @Html.HiddenFor(m => m.Dependencies[i].RepositoryId);
-                    @Html.HiddenFor(m => m.Dependencies[i].KnownDependenciesId);
+                <div class="pure-control-group">
+                    <button type="button" onclick="DepennewField(@Model.Dependencies.Count);" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.Dependencies_Add </button>
                 </div>
-            </div>
-        }
-    </fieldset>
+                <div class="pure-controls">
+                    <a class="pure-button" href="@Url.Action("Tree", new { id = Model.Id, ServiceAccounts = Model.ServiceAccounts, Dependencies = Model.Dependencies })"><i class="fa fa-long-arrow-left"></i> @Resources.Repository_Edit_Back</a>
+                    <button type="submit" class="pure-button pure-button-primary save"><i class="fa fa-save"></i> @Resources.Repository_Edit_Submit</button>
+                </div>
+            </fieldset>
 
-    <div class="pure-control-group">
-        <button type="button" onclick="DepennewField(@Model.Dependencies.Count);" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.Dependencies_Add </button>
-    </div>
-    <div class="pure-controls">
-        <a class="pure-button" href="@Url.Action("Tree", new { id = Model.Id, ServiceAccounts = Model.ServiceAccounts, Dependencies = Model.Dependencies })"><i class="fa fa-long-arrow-left"></i> @Resources.Repository_Edit_Back</a>
-        <button type="submit" class="pure-button pure-button-primary save"><i class="fa fa-save"></i> @Resources.Repository_Edit_Submit</button>
-    </div>
-</fieldset>
-            
         }
     </text>
 }
 <script src="~/scripts/ServiceAccountsEdit.js"></script>
 <script src="~/scripts/DependenciesEdit.js"></script>
 <script>
-    window.onload = function () {
-    $(".dropDownKD").each(function () {
-        var index = this.id;
-        if (this.value == "Add New...") {
-            $("#newKD-" + index).css("display", "inline-block");
-        } else {
-            $("#newKD-" + index).css("display", "none");
-        }
-    })
-}
-function DisplayComponentNameNewInputField(text, index, val) {
+function DisplayComponentNameNewInputField(text, index) {
     if (text == "Add New...") {
         $("#newKD-" + index).css("display", "inline-block");
     } else {
         $("#newKD-" + index).css("display", "none");
     }
 }
-    function checkIfKDExists(i, input) {
-        var inputTemplate = document.getElementById("KDInputDependencies_" + i + "__KnownDependenciesId");
-        console.log(input);
-        var newKDName = inputTemplate.value;
+function checkIfKDExists(i) {
+    var inputTemplate = document.getElementById("KDInputDependencies_" + i + "__KnownDependenciesId");
+    var newKDName = inputTemplate.value;
     var dropDown = document.getElementById(`Dependencies_${i}__KnownDependenciesId`);
     var exists = 0;
     for (j = 0; j < dropDown.options.length; j++) {
@@ -404,4 +392,5 @@ function addKDtoDropDown(i, newKDName, dropDown) {
     return false;
 }
 </script>
+
 
