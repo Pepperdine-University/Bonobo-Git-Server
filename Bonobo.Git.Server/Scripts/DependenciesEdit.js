@@ -1,8 +1,6 @@
-﻿function DepennewField(count) { //dependencyNewField || DependencyNewField
+﻿function DepennewField(count) { 
     var Depentemplate = document.getElementById("Dependencyrow");
-    //console.log(Depentemplate);
     var DepennewDetailRow = Depentemplate.content.cloneNode(true);
-    //console.log(DepennewDetailRow);
 
     Depentemplate.parentNode.appendChild(DepennewDetailRow);
     var allDetailRows = $(".Dependencies-details");

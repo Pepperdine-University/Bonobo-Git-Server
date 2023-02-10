@@ -114,7 +114,6 @@ namespace Bonobo.Git.Server.Controllers
                 {
                     Text = item.ComponentName,
                     Value = item.Id.ToString(),
-                    //Selected = item.Id == model.
                 };
                 items.Add(componentName);
             }
@@ -122,8 +121,6 @@ namespace Bonobo.Git.Server.Controllers
             {
                 Text = "Add New...",
                 Value = null
-                //Value = "cdca4535-c9a8-456d-bf6c-8989311a1bb2",
-                //Selected = item.Id == model.
             };
             items.Add(addNew);
             return items;

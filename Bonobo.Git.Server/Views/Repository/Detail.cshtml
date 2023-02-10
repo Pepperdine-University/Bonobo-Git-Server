@@ -152,37 +152,13 @@
             <label>
                 Dependencies
             </label>
-            @*<div>
-                @foreach (Bonobo.Git.Server.Data.Dependency dependency in Model.Dependencies)
-                {
-                    var minorLength = String.Format("{0:0.00}", "565.435.22464.624");
-
-                    <p> @minorLength</p>
-                    <details style="display: block; overflow: hidden; white-space: nowrap;">
-                        <summary>
-                            <div class="sidebar-text">
-                                <i class="fa fa-chevron-down"></i><input style="text-overflow: ellipsis; " class="removeVisualInput" value="@dependency.KnownDependency.ComponentName" readonly="">
-                                <input style="text-overflow: ellipsis; " class="removeVisualInput" value="(@minorLength)" readonly="">
-                            </div>
-                        </summary>
-                        <div class="pass-info">
-                            <div class="pure-control-group">
-                                <div class="sidebar-text">
-                                    <label> Date Updated: </label><input class="removeVisualInput" value="@dependency.DateUpdated" readonly />
-                                </div>
-                            </div>
-                        </div>
-                    </details>
-                }
-
-            </div>*@
             <div>
                 @foreach (Bonobo.Git.Server.Data.Dependency dependency in Model.Dependencies)
                 {
                     <details style="display: inline-block; overflow: hidden; white-space: nowrap;">
                         <summary>
                             <div class="sidebar-text">
-                                <i class="fa fa-chevron-down"></i><label for="@dependency.Id" type="text" style="display:inline; font-size: 100%; padding-right:5px; font-weight:normal; " class="removeVisualInput" readonly> @dependency.KnownDependency.ComponentName</label><input style="text-overflow: ellipsis; " class="removeVisualInput" value="(@dependency.VersionInUse)" readonly="">
+                                <i class="fa fa-chevron-down"></i><label for="@dependency.Id" type="text" style="display:inline; font-size: 100%; padding-right:5px; font-weight:normal; " class="removeVisualInput" readonly> @dependency.KnownDependency.ComponentName</label><input style="text-overflow: ellipsis; " class="removeVisualInput" value="(@(dependency.VersionInUse != null? float.Parse(dependency.VersionInUse).ToString("0.00"): ""))" readonly="">
                                 <input type="text" id="@dependency.Id" style="display:none;" class="removeVisualInput" value="@dependency.KnownDependency.ComponentName" readonly>
                             </div>
                         </summary>
