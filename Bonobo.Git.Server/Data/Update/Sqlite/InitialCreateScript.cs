@@ -87,12 +87,12 @@ namespace Bonobo.Git.Server.Data.Update.Sqlite
                     );
                     
                     CREATE TABLE IF NOT EXISTS [ServiceAccounts] (
-                        [Id] INTEGER PRIMARY KEY,
+                        [Id] nvarchar(36) PRIMARY KEY,
 	                    [ServiceAccountName] nvarchar(36),
 	                    [InPassManager]	Bit Default 0,
 	                    [PassLastUpdated] Date Default 0,
 	                    [RepositoryId] nvarchar(36),
-                        Primary Key([Id] Autoincrement),
+                        Primary Key([Id]),
 	                    Foreign Key([RepositoryId]) References [Repository]([Id])
                     );
 

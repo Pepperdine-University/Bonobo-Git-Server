@@ -110,7 +110,7 @@
         <div class="sidebar-bordergrid">
 
             <label>
-                Service Accounts
+                @Resources.SA
             </label>
             @if (@Model.ServiceAccounts.Count > 0)
             {
@@ -150,7 +150,7 @@
 
         <div class="sidebar-bordergrid bottom">
             <label>
-                Dependencies
+                @Resources.Dependencies
             </label>
             <div>
                 @foreach (Bonobo.Git.Server.Data.Dependency dependency in Model.Dependencies)

@@ -246,7 +246,7 @@ namespace Bonobo.Git.Server.Data
                         foreach (var serviceAccount in model.ServiceAccounts.ToList())
                         {
                             var existingServiceAccount = repo.ServiceAccounts
-                                .Where(c => c.Id == serviceAccount.Id && c.Id != -1)
+                                .Where(c => c.Id == serviceAccount.Id && c.Id != Guid.Parse("94cab580-0018-4a00-9bb4-bed27234ff22"))
                                 .SingleOrDefault();
                             
                             if (existingServiceAccount != null)
@@ -256,6 +256,8 @@ namespace Bonobo.Git.Server.Data
                             }
                             else
                             {
+                                serviceAccount.Id = Guid.NewGuid();
+                                serviceAccount.RepositoryId = model.Id;
                                 repo.ServiceAccounts.Add(serviceAccount);
                             }
                         }
