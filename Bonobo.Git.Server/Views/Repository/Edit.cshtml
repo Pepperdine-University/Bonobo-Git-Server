@@ -384,6 +384,7 @@ function addKDtoDropDown(i, newKDName, dropDown) {
 
             var index = `Dependencies_${i}__KnownDependenciesId`;
             $("#newKD-" + index).css("display", "none");
+
         },
         failure: function (response) {
             alert("Failed to add new component name");

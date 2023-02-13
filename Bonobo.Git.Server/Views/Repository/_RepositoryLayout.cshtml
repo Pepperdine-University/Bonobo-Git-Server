@@ -28,7 +28,7 @@ else
                                     @*Git URL + Copy Button*@
                                     <label>@Resources.Repository_Detail_Location</label>
                                     <input type="text" class="git-url-text removeVisualInput" value="@Model.GitUrl" readonly />
-                                    <button class="pure-button copy-to-clip-button layout" data-clipboard-target=".git-url-text"><i class="fa fa-clone"></i></button>
+                                    <button title="@Resources.Repository_Git_Url_Copy" class="pure-button copy-to-clip-button layout" data-clipboard-target=".git-url-text"><i class="fa fa-clone"></i></button>
                                 </div>
                                 @if (User.Identity.IsAuthenticated)
                                 {
@@ -38,7 +38,7 @@ else
                                             @Resources.Repository_Detail_Location_Personal
                                         </label>
                                         <input type="text" class="personal-url-text removeVisualInput" value="@Model.PersonalGitUrl " readonly />
-                                        <button class="pure-button copy-to-clip-button layout" data-clipboard-target=".personal-url-text"><i class="fa fa-clone"></i></button>
+                                        <button title="@Resources.Repository_Personal_Git_Url_Copy" class="pure-button copy-to-clip-button layout" data-clipboard-target=".personal-url-text"><i class="fa fa-clone"></i></button>
                                     </div>
                                 }
                                 <div id="dropbuttons">

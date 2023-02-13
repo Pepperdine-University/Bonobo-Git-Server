@@ -170,6 +170,15 @@ namespace Bonobo.Git.Server.Data
                         repository.Dependencies.Add(dependency);
                     }
                 }
+                if (model.ServiceAccounts != null)
+                {
+                    foreach (var serviceAccount in model.ServiceAccounts.ToList())
+                    {
+                        serviceAccount.Id = Guid.NewGuid();
+                        serviceAccount.RepositoryId = model.Id;
+                        repository.ServiceAccounts.Add(serviceAccount);
+                    }
+                }
                 try
                 {
                     database.SaveChanges();
