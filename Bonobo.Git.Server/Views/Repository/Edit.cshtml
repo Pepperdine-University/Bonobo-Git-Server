@@ -369,21 +369,33 @@ function checkIfKDExists(i) {
         addKDtoDropDown(i, newKDName, dropDown);
     }
 }
-function addKDtoDropDown(i, newKDName, dropDown) {
+    function addKDtoDropDown(i, newKDName, dropDown) {
+    //Ajax call to the controller to add knowndependencies 
     $.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
         url: `@Url.Action("GenerateNewGuid", "Repository")`,
         data: { "componentName": newKDName },
         success: function (response) {
+            //adding new option to list
             var option = document.createElement("option");
             option.text = newKDName;
             option.value = response;
             option.selected = true;
             dropDown.add(option);
+            //console.log("test: " + $(`#Dependencies_${i}__KnownDependenciesId option[value=${response}]`));
+            $(`#Dependencies_${i}__KnownDependenciesId option[value=${response}]`).css("display", "none");
+            //adding add new to the bottom of the option list by removing it and adding it again
+            $(`#KDInputDependencies_${i}__KnownDependenciesId`).val("");
+            $(`#newKD-Dependencies_${i}__KnownDependenciesId`).css("display", "none");
+            $(`#Dependencies_${i}__KnownDependenciesId option[value='-1']`).remove();
 
-            var index = `Dependencies_${i}__KnownDependenciesId`;
-            $("#newKD-" + index).css("display", "none");
+            var option2 = document.createElement("option");
+            option2.text = "Add New...";
+            option2.remove();
+            option2.value = "-1";
+            option2.selected = false;
+            dropDown.add(option2);
 
         },
         failure: function (response) {

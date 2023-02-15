@@ -120,7 +120,7 @@ namespace Bonobo.Git.Server.Controllers
             var addNew = new SelectListItem
             {
                 Text = "Add New...",
-                Value = null
+                Value = "-1"
             };
             items.Add(addNew);
             return items;
@@ -848,16 +848,6 @@ namespace Bonobo.Git.Server.Controllers
             }
 
             fsi.Delete();
-        }
-
-        public ActionResult DeleteDepenAction(Guid Rid, Guid id)
-        {
-            if (id != null)
-            {
-                var Depen = id;
-                RepositoryRepository.DeleteDepen(Depen);
-            }
-            return Redirect("/Repository/Edit/" + Rid);
         }
     }
 }

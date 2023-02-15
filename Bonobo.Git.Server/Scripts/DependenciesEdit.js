@@ -1,4 +1,5 @@
-﻿function DepennewField(count) { 
+﻿//dynamically creates a new empty dependency field
+function DepennewField(count) { 
     var Depentemplate = document.getElementById("Dependencyrow");
     var DepennewDetailRow = Depentemplate.content.cloneNode(true);
 
@@ -11,6 +12,7 @@
         setChildNameAndIdIndexes(allDetailRows.last(), "{i}", nextDetailRowIndex );
     }
 }
+//dynamically deletes a dependency field when the delete button is clicked
 function DepenremField(id) {
     id = id.slice(-1);
     idStr = "Dependencies_" + id;
@@ -24,19 +26,13 @@ function DepenremField(id) {
         i++;
     })
 }
-
+//function that recurivly updates indicies by replacing the place holder with the correct value
 function setDepenChildNameAndIdIndexes(element, placeholder, index) {
     if (element instanceof jQuery) {
-        console.log("It is an element of Jquery")
-        console.log(element)
         element = element.get(0);
-        console.log("After. ");
-        console.log(element);
     }
-
-    console.log(element);
+;
     if (element.children) {
-        console.log("Element has children ")
         Array.from(element.children).forEach((child) => {
             if (element.id) {
                 element.id = element.id.replace(placeholder, index);
@@ -50,11 +46,6 @@ function setDepenChildNameAndIdIndexes(element, placeholder, index) {
             if (child.dataset.valmsgFor) {
                 child.dataset.valmsgFor = child.dataset.valmsgFor.replace(placeholder, index);
             }
-            if (child.onclick) {
-                child.onclick = child.onclick.replace(placeholder, index);
-            }
-
-            console.log(index);
             setChildNameAndIdIndexes(child, placeholder, index);
         });
     }

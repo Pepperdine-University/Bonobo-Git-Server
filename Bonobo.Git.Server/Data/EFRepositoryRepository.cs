@@ -113,7 +113,7 @@ namespace Bonobo.Git.Server.Data
                     repo.Administrators.Clear();
                     repo.Users.Clear();
                     repo.Teams.Clear();
-
+                    //removes service accounts and dependencies from repo when deleting repo
                     foreach (ServiceAccount serviceAccount in repo.ServiceAccounts.ToList())
                     {
                         db.ServiceAccounts.Remove(serviceAccount);
@@ -160,6 +160,7 @@ namespace Bonobo.Git.Server.Data
                 };
                 database.Repositories.Add(repository);
                 AddMembers(model.Users.Select(x => x.Id), model.Administrators.Select(x => x.Id), model.Teams.Select(x => x.Id), repository, database);
+                //Adds service accounts to model when creating new repository with a randomly generated Guid id
                 if (model.Dependencies != null)
                 {
                     foreach (var dependency in model.Dependencies.ToList())
@@ -170,6 +171,7 @@ namespace Bonobo.Git.Server.Data
                         repository.Dependencies.Add(dependency);
                     }
                 }
+                //Adds service accounts to model when creating new repository  with a randomly generated Guid id
                 if (model.ServiceAccounts != null)
                 {
                     foreach (var serviceAccount in model.ServiceAccounts.ToList())
@@ -251,7 +253,7 @@ namespace Bonobo.Git.Server.Data
 
                     if (model.ServiceAccounts != null)
                     {
-                        //Update Service accounts when added with javascript
+                        //Update Service accounts in database when added with javascript
                         foreach (var serviceAccount in model.ServiceAccounts.ToList())
                         {
                             var existingServiceAccount = repo.ServiceAccounts
@@ -270,7 +272,7 @@ namespace Bonobo.Git.Server.Data
                                 repo.ServiceAccounts.Add(serviceAccount);
                             }
                         }
-                        //Update Service accounts when deleted with javascript
+                        //Updates Service accounts in database when deleted with javascript
                         foreach (var serviceAccount in repo.ServiceAccounts.Where(repoSA => model.ServiceAccounts.All(modelSA => modelSA.Id != repoSA.Id)).ToList())
                         {
                             var sa = db.ServiceAccounts.FirstOrDefault(i => i.Id == serviceAccount.Id);
@@ -280,6 +282,7 @@ namespace Bonobo.Git.Server.Data
 
                     if (model.Dependencies != null)
                     {
+                        //Updates Dependencies in database when added with javascript
                         foreach (var dependency in model.Dependencies.ToList())
                         {
                             dependency.KnownDependency = db.KnownDependencies.FirstOrDefault(i => i.Id == dependency.KnownDependenciesId);
@@ -299,6 +302,7 @@ namespace Bonobo.Git.Server.Data
                                 repo.Dependencies.Add(dependency);
                             }
                         }
+                        //Updates Dependencies in database when deleted with javascript
                         foreach (var dependency in repo.Dependencies.Where(repoDep => model.Dependencies.All(modelDep => modelDep.Id != repoDep.Id)).ToList())
                         {
                             var dep = db.Dependencies.FirstOrDefault(i => i.Id == dependency.Id);
