@@ -44,6 +44,7 @@ function setChildNameAndIdIndexes(element, placeholder, index) {
             if (child.dataset.valmsgFor) {
                 child.dataset.valmsgFor = child.dataset.valmsgFor.replace(placeholder, index);
             }
+            //Recursive call on children
             setChildNameAndIdIndexes(child, placeholder, index);
         });
     }

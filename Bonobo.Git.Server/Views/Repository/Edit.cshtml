@@ -384,7 +384,7 @@ function checkIfKDExists(i) {
             option.selected = true;
             dropDown.add(option);
             //console.log("test: " + $(`#Dependencies_${i}__KnownDependenciesId option[value=${response}]`));
-            $(`#Dependencies_${i}__KnownDependenciesId option[value=${response}]`).css("display", "none");
+            //$(`#Dependencies_${i}__KnownDependenciesId option[value=${response}]`).css("display", "none");
             //adding add new to the bottom of the option list by removing it and adding it again
             $(`#KDInputDependencies_${i}__KnownDependenciesId`).val("");
             $(`#newKD-Dependencies_${i}__KnownDependenciesId`).css("display", "none");
