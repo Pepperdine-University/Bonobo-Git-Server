@@ -79,25 +79,18 @@
 
             @if (Model.AreRegexLinksVisible)
             {
-            <div class="pure-control-group">
-                <label><i class="fa-regular fa-square@(Model.LinksUseGlobal? "-check": "")" title="@(Model.LinksUseGlobal? "Yes": "No")"></i> Use Global Linkify Settings</label>
-            </div>
-
-                if (!Model.LinksUseGlobal)
-                {
-            <div class="pure-control-group">
-                @Html.LabelFor(m => m.LinksRegex)
-                <div class="sidebar-text">
-                    @Html.TextBoxFor(m => m.LinksRegex, new { @readonly = "", @class = "removeVisualInput" })
+                <div class="pure-control-group">
+                    @Html.LabelFor(m => m.LinksRegex)
+                    <div class="sidebar-text">
+                        @Html.TextBoxFor(m => m.LinksRegex, new { @readonly = "", @class = "removeVisualInput" })
+                    </div>
                 </div>
-            </div>
-            <div class="pure-control-group">
-                @Html.LabelFor(m => m.LinksUrl)
-                <div class="sidebar-text">
-                    @Html.TextBoxFor(m => m.LinksUrl, new { @readonly = "", @class = "removeVisualInput" })
+                <div class="pure-control-group">
+                    @Html.LabelFor(m => m.LinksUrl)
+                    <div class="sidebar-text">
+                        @Html.TextBoxFor(m => m.LinksUrl, new { @readonly = "", @class = "removeVisualInput" })
+                    </div>
                 </div>
-            </div>
-                }
             }
             @if (AppSettings.IsPushAuditEnabled)
             {
