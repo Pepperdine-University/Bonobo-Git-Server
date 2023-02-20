@@ -156,7 +156,7 @@
                                     if (dependency.VersionInUse != null)
                                     {
                                         string[] VersionInUseFormat = dependency.VersionInUse.Split('.');
-                                        VersionInUseFormat2 = (VersionInUseFormat.Length == 1 ? VersionInUseFormat[0] : $"{VersionInUseFormat[0]}.{VersionInUseFormat[1]}");
+                                        VersionInUseFormat2 = (VersionInUseFormat.Length == 1 ? VersionInUseFormat[(0)] : $"({VersionInUseFormat[0]}.{VersionInUseFormat[1]})");
                                     }
                                 }
                                 <i class="fa fa-chevron-down"></i><label for="@dependency.Id" type="text" style="display:inline; font-size: 100%; padding-right:5px; font-weight:normal; " class="removeVisualInput" readonly> @dependency.KnownDependency.ComponentName</label><input style="text-overflow: ellipsis; " class="removeVisualInput" value="@VersionInUseFormat2" readonly="">
