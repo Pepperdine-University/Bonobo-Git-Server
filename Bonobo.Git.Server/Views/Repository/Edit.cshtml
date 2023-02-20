@@ -307,7 +307,6 @@ else
                                 @onChange = "javascript: DisplayComponentNameNewInputField(this.options[this.selectedIndex].text, this.id)"
                             });
                             var DepenId = Model.Dependencies[i].Id;
-                            <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_@i" title="Remove Dependency" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
                         }
                     <td class="pure-control-group" id="@($"newKD-Dependencies_{i}__KnownDependenciesId")" style="display:none;">
                         @{
@@ -324,6 +323,7 @@ else
                     <th class="pure-control-group">
                         @Html.TextBoxFor(m => m.Dependencies[i].DateUpdated)
                         @Html.ValidationMessageFor(m => m.Dependencies[i].DateUpdated)
+                        <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_@i" title="Remove Dependency" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
                     </th>
 
                     <div class="pure-control-group" style="display:none">
