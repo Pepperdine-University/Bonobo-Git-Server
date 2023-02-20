@@ -1,4 +1,7 @@
 ﻿//dynamically creates a new empty service account field
+
+   $(".datepicker").datepicker();
+
 function newField() {
     var table = document.getElementById("service-account-table");
     var row = table.insertRow();
@@ -25,7 +28,7 @@ function newField() {
                         </span>
                     </th>
                     <th class="col col2 pure-control-group">
-                        <input class="form-control" type="datetime" id="ServiceAccounts_{i}__.PassLastUpdated" name="ServiceAccounts[{i}].PassLastUpdated" value="1/1/1900 12:00:00 AM" />
+                        <input class="form-control datepicker" type="date" id="ServiceAccounts_{i}__.PassLastUpdated" name="ServiceAccounts[{i}].PassLastUpdated" value="1/1/1900" />
                         <span class="field-validation-valid text-danger"
                               data-valmsg-for="ServiceAccounts[{i}].PassLastUpdated"
                               data-valmsg-replace="true">
