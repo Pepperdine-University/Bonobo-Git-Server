@@ -1,7 +1,4 @@
 ﻿//dynamically creates a new empty service account field
-
-   $(".datepicker").datepicker();
-
 function newField() {
     var table = document.getElementById("service-account-table");
     var row = table.insertRow();
