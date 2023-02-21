@@ -280,12 +280,12 @@ else
                                 }
                             }
                             @Html.DropDownListFor(m => m.Dependencies[i].KnownDependenciesId, items, new
-                            {
-                                @class = "dropDownKD",
-                                @disabled = "disabled",
-                                @style = "width: 206.944px; color: #6B6B6B;",
-                                @onChange = "javascript: DisplayComponentNameNewInputField(this.options[this.selectedIndex].text, this.id)"
-                            });
+                       {
+                           @class = "dropDownKD",
+                           @disabled = "disabled",
+                           @style = "width: 206.944px; color: #6B6B6B;",
+                           @onChange = "javascript: DisplayComponentNameNewInputField(this.options[this.selectedIndex].text, this.id)"
+                       });
                             var DepenId = Model.Dependencies[i].Id;
                         }
                     <td class="pure-control-group" id="@($"newKD-Dependencies_{i}__KnownDependenciesId")" style="display:none;">
@@ -302,9 +302,14 @@ else
                     </th>
                     <th class="pure-control-group">
                         @{var depId = "Dependencies_" + i + "__.DateUpdated";
-                            var dateValue = Model.Dependencies[i].DateUpdated.ToString().Split('/');
-                            var formattedDate = dateValue[2].Substring(0, 4) + "-" + (dateValue[0].Length == 1 ? "0" + dateValue[0] : dateValue[0]) + "-" + (dateValue[1].Length == 1 ? "0" + dateValue[1] : dateValue[1]);}
-                        <input class="form-control" type="date" id="@depId" name="Dependencies[@i].DateUpdated" value="@formattedDate" />
+                            var formattedDate = "1900-01-01";
+                            if (Model.ServiceAccounts[i].PassLastUpdated != null)
+                            {
+                                var dateValue = Model.Dependencies[i].DateUpdated.ToString().Split('/');
+                                formattedDate = dateValue[2].Substring(0, 4) + "-" + (dateValue[0].Length == 1 ? "0" + dateValue[0] : dateValue[0]) + "-" + (dateValue[1].Length == 1 ? "0" + dateValue[1] : dateValue[1]);
+                            }
+                        }
+                            <input class="form-control" type="date" id="@depId" name="Dependencies[@i].DateUpdated" value="@formattedDate" />
                         @Html.ValidationMessageFor(m => m.Dependencies[i].DateUpdated)
                         <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_@i" title="Remove Dependency" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
                     </th>
