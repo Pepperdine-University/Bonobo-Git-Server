@@ -25,7 +25,7 @@ function newField() {
                         </span>
                     </th>
                     <th class="col col2 pure-control-group">
-                        <input class="form-control datepicker" type="date" id="ServiceAccounts_{i}__.PassLastUpdated" name="ServiceAccounts[{i}].PassLastUpdated" value="1/1/1900" />
+                        <input class="form-control datepicker" type="date" id="ServiceAccounts_{i}__.PassLastUpdated" name="ServiceAccounts[{i}].PassLastUpdated"  />
                         <span class="field-validation-valid text-danger"
                               data-valmsg-for="ServiceAccounts[{i}].PassLastUpdated"
                               data-valmsg-replace="true">

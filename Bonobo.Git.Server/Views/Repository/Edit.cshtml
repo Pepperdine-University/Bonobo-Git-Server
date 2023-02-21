@@ -171,10 +171,15 @@ else
             <th class="col pure-control-group">
                 @*@Html.LabelFor(m => m.ServiceAccounts[i].PassLastUpdated)*@
                 @*@Html.TextBoxFor(m => m.ServiceAccounts[i].PassLastUpdated)*@
-                @{var saId = "ServiceAccounts_" + i + "__.PassLastUpdated"; 
-                  var dateValue = Model.ServiceAccounts[i].PassLastUpdated.ToString().Split('/'); 
-                  var formattedDate = dateValue[2].Substring(0, 4) + "-" + (dateValue[0].Length==1?"0"+ dateValue[0]: dateValue[0]) + "-" + (dateValue[1].Length == 1 ? "0" + dateValue[1] : dateValue[1]);}
+                @{var saId = "ServiceAccounts_" + i + "__.PassLastUpdated";
+                    var formattedDate = "1900-01-01";
+                    if (Model.ServiceAccounts[i].PassLastUpdated != null)
+                    {
+                        var dateValue = Model.ServiceAccounts[i].PassLastUpdated.ToString().Split('/');
+                        formattedDate = dateValue[2].Substring(0, 4) + "-" + (dateValue[0].Length == 1 ? "0" + dateValue[0] : dateValue[0]) + "-" + (dateValue[1].Length == 1 ? "0" + dateValue[1] : dateValue[1]);
+                    }
                 <input class="form-control" type="date" id="@saId" name="ServiceAccounts[@i].PassLastUpdated" value="@formattedDate" onfocus="console.log(this.value)" />
+                  }
                 @Html.ValidationMessageFor(m => m.ServiceAccounts[i].PassLastUpdated)
                 <button type="button" onclick=" remField(this.id);" id="@btnId" title="Remove Service Account" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
             </th>
@@ -202,10 +207,10 @@ else
         <template id="Dependencyrow">
             <table class="pure-table">
                 <tr class="row Dependencies-details" id="Dependencies_{i}" name="Dependencies-details">
-                    <div class=" col pure-control-group" style="display:none;">
+                    <th class=" col pure-control-group" style="display:none;">
                         <label> @Resources.Dependencies_ID </label>
                         <input class="form-control" id="Dependencies[{i}].Id" name="Dependencies[{i}].Id" readonly disabled />
-                    </div>
+                    </th>
                     <th class="pure-control-group">
                         <div style="display:none;"> <input id="Dependencies_{i}__KnownDependency_ComponentName" name="Dependencies[{i}].KnownDependency.ComponentName" type="text"></div>
                         <span class="field-validation-valid" data-valmsg-for="Dependencies[{i}].KnownDependency.ComponentName" data-valmsg-replace="true"></span>
@@ -223,11 +228,11 @@ else
                             }
                         </select>
                     </th>
-                    <div class="pure-control-group" id="newKD-Dependencies_{i}__KnownDependenciesId" style="display: none;">
+                    <th class="pure-control-group" id="newKD-Dependencies_{i}__KnownDependenciesId" style="display: none;">
                         <label class="pure-form-aligned pure-control-group"></label>
                         <input class="pure-form valid" id="KDInputDependencies_{i}__KnownDependenciesId" type="text">
                         <button type="button" id="{i}" onclick="checkIfKDExists(this.id)" title="Add Component Name" style="background-color: white; border: none;"><i style="color:green;" class="fa fa-plus-circle"></i></button>
-                    </div>
+                    </th>
                     <th class="col pure-control-group">
                         <input class="form-control" id="Dependencies_{i}__.VersionInUse" name="Dependencies[{i}].VersionInUse" />
                         <span class="field-validation-valid text-danger"
@@ -304,11 +309,11 @@ else
                         <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_@i" title="Remove Dependency" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
                     </th>
 
-                    <div class="pure-control-group" style="display:none">
+                    <th class="pure-control-group" style="display:none">
                         @Html.HiddenFor(m => m.Dependencies[i].Id);
                         @Html.HiddenFor(m => m.Dependencies[i].RepositoryId);
                         @Html.HiddenFor(m => m.Dependencies[i].KnownDependenciesId);
-                    </div>
+                    </th>
                 </tr>
             }
 
