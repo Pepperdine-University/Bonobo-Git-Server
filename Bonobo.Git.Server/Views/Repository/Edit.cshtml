@@ -303,7 +303,7 @@ else
                     <th class="pure-control-group">
                         @{var depId = "Dependencies_" + i + "__.DateUpdated";
                             var formattedDate = "1900-01-01";
-                            if (Model.ServiceAccounts[i].PassLastUpdated != null)
+                            if (Model.Dependencies[i].DateUpdated != null)
                             {
                                 var dateValue = Model.Dependencies[i].DateUpdated.ToString().Split('/');
                                 formattedDate = dateValue[2].Substring(0, 4) + "-" + (dateValue[0].Length == 1 ? "0" + dateValue[0] : dateValue[0]) + "-" + (dateValue[1].Length == 1 ? "0" + dateValue[1] : dateValue[1]);
