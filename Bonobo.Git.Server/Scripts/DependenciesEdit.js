@@ -1,13 +1,14 @@
 ﻿//dynamically creates a new empty dependency field
 function DepennewField(count) { 
-    var Depentemplate = document.getElementById("Dependencyrow");
-    var DepennewDetailRow = Depentemplate.content.cloneNode(true);
-
-    Depentemplate.parentNode.appendChild(DepennewDetailRow);
+    var table = document.getElementById("dependencies-table");
+    var row = table.insertRow();
+    row.classList.add("row");
+    row.classList.add("Dependencies-details");
+    row.id = "Dependencies_{i}";
+    row.name = "Dependencies-details";
+    row.innerHTML = document.getElementById("Dependencyrow").innerHTML;
     var allDetailRows = $(".Dependencies-details");
-
     var nextDetailRowIndex = allDetailRows.length - 1;
-
     if (nextDetailRowIndex >= 0) {
         setChildNameAndIdIndexes(allDetailRows.last(), "{i}", nextDetailRowIndex );
     }
