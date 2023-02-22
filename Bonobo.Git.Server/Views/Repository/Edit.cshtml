@@ -219,12 +219,22 @@ else
                                 if (itemsTemplate != null)
                                 {
                                     <option></option>
-                                    foreach (var kd in itemsTemplate)
+                                    foreach (var kd in itemsTemplate) //To keep similar style, use this way and not for(); There is an easy way to optimize O(1) hash-set
                                     {
-                                        <option value="@kd.Value">@kd.Text</option>
+                                        foreach (var dependencies in Model.Dependencies) //Do a look up table
+                                        {
+                                            if (dependencies.KnownDependenciesId.ToString() != kd.Value)
+                                            {
+                                                <option value="@kd.Value">@kd.Text</option>
+                                            }
+                                            else
+                                            {
+                                                <option disabled value="@kd.Value">@kd.Text</option>
+                                                }
+                                            }
+                                        }
                                     }
                                 }
-                            }
                         </select>
                     </th>
                     <th class="pure-control-group" id="newKD-Dependencies_{i}__KnownDependenciesId" style="display: none;">
@@ -265,11 +275,11 @@ else
                         <div style="display:none;"> @Html.TextBoxFor(m => m.Dependencies[i].KnownDependency.ComponentName)</div>
                         @Html.ValidationMessageFor(m => m.Dependencies[i].KnownDependency.ComponentName)
                         @{
-                            var items = (IEnumerable<SelectListItem>)Model.KnownDependencies;
+                            var items = (IEnumerable<SelectListItem>)Model.KnownDependencies; //Getting all the KD in the model
                             
-                            for (int j = 0; j < items.Count(); j++)
+                            for (int j = 0; j < items.Count(); j++) //looping through all the KD
                             {
-                                if (items.ToList()[j].Value == Model.Dependencies[i].KnownDependency.Id.ToString())
+                                if (items.ToList()[j].Value == Model.Dependencies[i].KnownDependency.Id.ToString()) //current value 
                                 {
                                     items.ToList()[j].Selected = true;
                                 }
