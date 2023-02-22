@@ -529,7 +529,7 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DateUpdated.
+        ///   Looks up a localized string similar to Date Updated.
         /// </summary>
         public static string Dependencies_DateUpdated {
             get {
@@ -556,7 +556,7 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to VersionInUse.
+        ///   Looks up a localized string similar to Version In Use.
         /// </summary>
         public static string Dependencies_VersionInUse {
             get {

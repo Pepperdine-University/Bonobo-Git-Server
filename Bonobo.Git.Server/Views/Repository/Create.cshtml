@@ -114,54 +114,60 @@
         <legend>
             @Resources.Dependencies
         </legend>
-
-        <template id="Dependencyrow">
-            <div class="row Dependencies-details" id="Dependencies_{i}" name="Dependencies-details">
-                <div class=" col pure-control-group" style="display:none;">
-                    <label> @Resources.Dependencies_ID </label>
-                    <input class="form-control" id="Dependencies[{i}].Id" name="Dependencies[{i}].Id" readonly disabled />
-                </div>
-                <div class="pure-control-group">
-                    <label for="Dependencies_{i}__KnownDependency_ComponentName">ComponentName</label>
-                    <div style="display:none;"> <input id="Dependencies_{i}__KnownDependency_ComponentName" name="Dependencies[{i}].KnownDependency.ComponentName" type="text"></div>
-                    <span class="field-validation-valid" data-valmsg-for="Dependencies[{i}].KnownDependency.ComponentName" data-valmsg-replace="true"></span>
-                    <select class="dropDownKD valid" data-val="true" data-val-required="The KnownDependenciesId field is required." id="Dependencies_{i}__KnownDependenciesId" name="Dependencies[{i}].KnownDependenciesId" onchange="javascript: DisplayComponentNameNewInputField(this.options[this.selectedIndex].text, this.id)" style="width: 206.944px" aria-required="true" aria-invalid="false">
-                        @{
-                            var itemsTemplate = (IEnumerable<SelectListItem>)Html.ViewBag.KnownDependencies;
-                            <option></option>
-                            foreach (var kd in itemsTemplate)
-                            {
-                                <option value="@kd.Value">@kd.Text</option>
+            <table class="pure-table" id="dependencies-table">
+                <tr>
+                    <th>@Resources.Account_Create_Name</th>
+                    <th>@Resources.Dependencies_VersionInUse</th>
+                    <th>@Resources.Dependencies_DateUpdated</th>
+                </tr>
+            </table>
+            <template id="Dependencyrow">
+                <tr class="row Dependencies-details" id="Dependencies_{i}" name="Dependencies-details">
+                    <th class=" col pure-control-group" style="display:none;">
+                        <label> @Resources.Dependencies_ID </label>
+                        <input class="form-control" id="Dependencies[{i}].Id" name="Dependencies[{i}].Id" readonly disabled />
+                    </th>
+                    <th class="pure-control-group">
+                        <div style="display:none;"> <input id="Dependencies_{i}__KnownDependency_ComponentName" name="Dependencies[{i}].KnownDependency.ComponentName" type="text"></div>
+                        <span class="field-validation-valid" data-valmsg-for="Dependencies[{i}].KnownDependency.ComponentName" data-valmsg-replace="true"></span>
+                        <select class="dropDownKD valid" data-val="true" data-val-required="The KnownDependenciesId field is required." id="Dependencies_{i}__KnownDependenciesId" name="Dependencies[{i}].KnownDependenciesId" onchange="javascript: DisplayComponentNameNewInputField(this.options[this.selectedIndex].text, this.id)" style="width: 206.944px" aria-required="true" aria-invalid="false">
+                            @{
+                                var itemsTemplate = (IEnumerable<SelectListItem>)Html.ViewBag.KnownDependencies;
+                                if (itemsTemplate != null)
+                                {
+                                    <option></option>
+                                    foreach (var kd in itemsTemplate)
+                                    {
+                                        <option value="@kd.Value">@kd.Text</option>
+                                    }
+                                }
                             }
-                        }
-                    </select>
-                    <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_{i}" title="Remove Dependency" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
-                </div>
-                <div class="pure-control-group" id="newKD-Dependencies_{i}__KnownDependenciesId" style="display: none;">
-                    <label class="pure-form-aligned pure-control-group"></label>
-                    <input class="pure-form valid" id="KDInputDependencies_{i}__KnownDependenciesId" type="text">
-                    <button type="button" id="{i}" onclick="checkIfKDExists(this.id)" title="Add Component Name" style="background-color: white; border: none;"><i style="color:green;" class="fa fa-plus-circle"></i></button>
-                </div>
-                <div class="col pure-control-group">
-                    <label> @Resources.Dependencies_VersionInUse </label>
-                    <input class="form-control" id="Dependencies_{i}__.VersionInUse" name="Dependencies[{i}].VersionInUse" />
-                    <span class="field-validation-valid text-danger"
-                          data-valmsg-for="Dependencies[{i}].VersionInUse"
-                          data-valmsg-replace="true">
-                    </span>
+                        </select>
+                    </th>
+                    <th class="pure-control-group" id="newKD-Dependencies_{i}__KnownDependenciesId" style="display: none;">
+                        <label class="pure-form-aligned pure-control-group"></label>
+                        <input class="pure-form valid" id="KDInputDependencies_{i}__KnownDependenciesId" type="text">
+                        <button type="button" id="{i}" onclick="checkIfKDExists(this.id)" title="Add Component Name" style="background-color: white; border: none;"><i style="color:green;" class="fa fa-plus-circle"></i></button>
+                    </th>
+                    <th class="col pure-control-group">
+                        <input class="form-control" id="Dependencies_{i}__.VersionInUse" name="Dependencies[{i}].VersionInUse" />
+                        <span class="field-validation-valid text-danger"
+                              data-valmsg-for="Dependencies[{i}].VersionInUse"
+                              data-valmsg-replace="true">
+                        </span>
 
-                </div>
-                <div class="col pure-control-group">
-                    <label> @Resources.Dependencies_DateUpdated </label>
-                    <input class="form-control" type="date" id="Dependencies_{i}__.DateUpdated" name="Dependencies[{i}].DateUpdated" />
-                    <span class="field-validation-valid text-danger"
-                          data-valmsg-for="Dependencies[{i}].DateUpdated"
-                          data-valmsg-replace="true">
-                    </span>
-                </div>
-            </div>
-        </template>
-        </fieldset>
+                    </th>
+                    <th class="col pure-control-group">
+                        <input class="form-control" type="date" id="Dependencies_{i}__.DateUpdated" name="Dependencies[{i}].DateUpdated" value="1/1/1900" />
+                        <span class="field-validation-valid text-danger"
+                              data-valmsg-for="Dependencies[{i}].DateUpdated"
+                              data-valmsg-replace="true">
+                        </span>
+                        <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_{i}" title="Remove Dependency" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
+                    </th>
+                </tr>
+            </template>
+    </fieldset>
         <div class="pure-control-group">
             <button type="button" onclick="DepennewField(0);" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.Dependencies_Add </button>
         </div>
