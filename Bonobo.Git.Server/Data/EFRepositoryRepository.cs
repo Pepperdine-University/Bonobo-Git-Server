@@ -283,6 +283,7 @@ namespace Bonobo.Git.Server.Data
                     if (model.Dependencies != null)
                     {
                         //Updates Dependencies in database when added with javascript
+                        // could check if the dependency.knowndependencyid is equal to the add new id, then you know you have to look in the input field, but how do u get access to the contents of that input field from the backend?
                         foreach (var dependency in model.Dependencies.ToList())
                         {
                             dependency.KnownDependency = db.KnownDependencies.FirstOrDefault(i => i.Id == dependency.KnownDependenciesId);

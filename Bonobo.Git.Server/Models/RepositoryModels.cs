@@ -130,6 +130,10 @@ namespace Bonobo.Git.Server.Models
         [Display(ResourceType = typeof(Resources), Name = "Repository_Detail_Dependencies")]
         public List<Dependency> Dependencies { get; set; }
 
+        [AllowHtml]
+        [Display(ResourceType = typeof(Resources), Name = "Repository_Detail_KnownDependencies")]
+        public List<SelectListItem> KnownDependencies { get; set; }
+
         public Guid[] PostedSelectedUsers { get; set; }
         public UserModel[] AllUsers { get; set; }
 

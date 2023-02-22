@@ -9,6 +9,7 @@ using Ionic.Zip;
 using MimeTypes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Security.Principal;
@@ -66,7 +67,7 @@ namespace Bonobo.Git.Server.Controllers
         {
             var model = ConvertRepositoryModel(RepositoryRepository.GetRepository(id), User);
             PopulateCheckboxListData(ref model);
-            ViewBag.KnownDependencies = PopulateKnownDependencyDropdown();
+            model.KnownDependencies = PopulateKnownDependencyDropdown();
             return View(model);
         }
 
@@ -75,6 +76,29 @@ namespace Bonobo.Git.Server.Controllers
         [WebAuthorizeRepository(RequiresRepositoryAdministrator = true)]
         public ActionResult Edit(RepositoryDetailModel model)
         {
+            var nonKnownDepIdErrors = 0;
+            if (!ModelState.IsValid)        // has error where if reload and tries to do same action then creates duplicate known dependency, may need to check to make sure doesn't already exist here
+            {
+                var errors = ModelState
+                    .Where(x => x.Value.Errors.Count > 0)
+                    .Select(x => new { x.Key, x.Value.Errors, x.Value.Value.AttemptedValue })
+                    .ToArray();
+                for (int i = 0; i < errors.Length; i++)
+                {
+                    var errorKey = errors[i].Key;
+                    if (errorKey.Contains("KnownDependenciesId"))
+                    {
+                        var newKnownDepId = GenerateNewGuid(errors[i].AttemptedValue);
+                        var newDependency = model.Dependencies.Where(y => y.Id == Guid.Empty).FirstOrDefault();
+                        newDependency.KnownDependenciesId = newKnownDepId;
+                        errors[i].Errors.Clear();
+                    }
+                    else
+                    {
+                        nonKnownDepIdErrors++;
+                    }
+                }
+            }
             if (ModelState.IsValid)
             {
                 var currentUserIsInAdminList = model.PostedSelectedAdministrators != null && model.PostedSelectedAdministrators.Contains(User.Id());
@@ -100,7 +124,7 @@ namespace Bonobo.Git.Server.Controllers
                 }
             }
             PopulateCheckboxListData(ref model);
-            ViewBag.KnownDependencies = PopulateKnownDependencyDropdown();
+            model.KnownDependencies = PopulateKnownDependencyDropdown();
             return View(model);
         }
 
@@ -126,10 +150,10 @@ namespace Bonobo.Git.Server.Controllers
             return items;
         }
 
-        public string GenerateNewGuid(string componentName)
+        public Guid GenerateNewGuid(string componentName)
         {
             KnownDependency knownDep = CreateKnownDependency(componentName);
-            return knownDep.Id.ToString();
+            return knownDep.Id;
         }
 
         public KnownDependency CreateKnownDependency(string componentName)
