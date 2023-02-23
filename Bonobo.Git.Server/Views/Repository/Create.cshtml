@@ -102,8 +102,8 @@
         <table class="pure-table" id="service-account-table">
             <tr class="row">
                 <th class="col">@Resources.SA_Name</th>
-                <th class="col">@Resources.SA_InPassManager</th>
                 <th class="col">@Resources.SA_PassLastUpdated</th>
+                <th class="col">@Resources.SA_InPassManager</th>
             </tr>
         </table>
 </fieldset>
@@ -128,9 +128,9 @@
                         <input class="form-control" id="Dependencies[{i}].Id" name="Dependencies[{i}].Id" readonly disabled />
                     </th>
                     <th class="pure-control-group">
-                        <div style="display:none;"> <input id="Dependencies_{i}__KnownDependency_ComponentName" name="Dependencies[{i}].KnownDependency.ComponentName" type="text"></div>
+                        <div style="display:none;"> <input id="Dependencies_{i}__KnownDependency_ComponentName" name="Dependencies[{i}].KnownDependency.ComponentName" type="text" style = "width: 250px;"></div>
                         <span class="field-validation-valid" data-valmsg-for="Dependencies[{i}].KnownDependency.ComponentName" data-valmsg-replace="true"></span>
-                        <select class="dropDownKD valid" data-val="true" data-val-required="The KnownDependenciesId field is required." id="Dependencies_{i}__KnownDependenciesId" name="Dependencies[{i}].KnownDependenciesId" onchange="javascript: DisplayComponentNameNewInputField(this.options[this.selectedIndex].text, this.id)" style="width: 206.944px" aria-required="true" aria-invalid="false">
+                        <select class="dropDownKD valid" data-val="true" data-val-required="The KnownDependenciesId field is required." id="Dependencies_{i}__KnownDependenciesId" name="Dependencies[{i}].KnownDependenciesId" onchange="javascript: DisplayComponentNameNewInputField(this.options[this.selectedIndex].text, this.id)" style="width: 250px" aria-required="true" aria-invalid="false">
                             @{
                                 var itemsTemplate = (IEnumerable<SelectListItem>)Html.ViewBag.KnownDependencies;
                                 if (itemsTemplate != null)
@@ -163,6 +163,8 @@
                               data-valmsg-for="Dependencies[{i}].DateUpdated"
                               data-valmsg-replace="true">
                         </span>
+                        <th />
+                    <th>
                         <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_{i}" title="Remove Dependency" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
                     </th>
                 </tr>

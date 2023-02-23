@@ -979,13 +979,13 @@ The regular C# string formatting rules apply: To get {} in your link you need to
     <value>Id</value>
   </data>
   <data name="SA_InPassManager" xml:space="preserve">
-    <value>Password Manager</value>
+    <value>In Password Manager</value>
   </data>
   <data name="SA_Name" xml:space="preserve">
     <value>Name</value>
   </data>
   <data name="SA_PassLastUpdated" xml:space="preserve">
-    <value>Last Updated </value>
+    <value>Password Last Updated </value>
   </data>
   <data name="Dependencies" xml:space="preserve">
     <value>Dependencies</value>

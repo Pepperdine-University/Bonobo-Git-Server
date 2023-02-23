@@ -141,16 +141,16 @@ else
     </div>
 
     <fieldset class="pure-control-group">
-        <legend>
+        <legend style="padding-top: 30px;">
             @Resources.SA
         </legend>
        
         @if (Model != null)
-        {   <table class="pure-table" id="service-account-table">
+        {   <table class="pure-table pure-control-group" id="service-account-table">
         <tr>
             <th>@Resources.SA_Name</th>
-            <th>@Resources.SA_InPassManager</th>
             <th>@Resources.SA_PassLastUpdated</th>
+            <th>@Resources.SA_InPassManager</th>
         </tr>     
     @for (int i = 0; i < Model.ServiceAccounts.Count; i++)
     {
@@ -159,14 +159,9 @@ else
         <tr class="row service-account-details" id="@id">
             <th class=" col pure-control-group">
                 @*@Html.LabelFor(m => m.ServiceAccounts[i].ServiceAccountName)*@
-                @Html.TextBoxFor(m => m.ServiceAccounts[i].ServiceAccountName)
+                @Html.TextBoxFor(m => m.ServiceAccounts[i].ServiceAccountName, htmlAttributes: new { @style = "width: 250px;" })
                 @Html.ValidationMessageFor(m => m.ServiceAccounts[i].ServiceAccountName)
                 @{ }
-            </th>
-            <th class="col pure-control-group">
-                @*@Html.LabelFor(m => m.ServiceAccounts[i].InPassManager)*@
-                @Html.CheckBoxFor(m => m.ServiceAccounts[i].InPassManager)
-                @Html.ValidationMessageFor(m => m.ServiceAccounts[i].InPassManager)
             </th>
             <th class="col pure-control-group">
                 @*@Html.LabelFor(m => m.ServiceAccounts[i].PassLastUpdated)*@
@@ -181,6 +176,13 @@ else
                 <input class="form-control" type="date" id="@saId" name="ServiceAccounts[@i].PassLastUpdated" value="@formattedDate" onfocus="console.log(this.value)" />
                   }
                 @Html.ValidationMessageFor(m => m.ServiceAccounts[i].PassLastUpdated)
+            </th>
+            <th class="col pure-control-group">
+                @*@Html.LabelFor(m => m.ServiceAccounts[i].InPassManager)*@
+                @Html.CheckBoxFor(m => m.ServiceAccounts[i].InPassManager)
+                @Html.ValidationMessageFor(m => m.ServiceAccounts[i].InPassManager)
+            </th>
+            <th>
                 <button type="button" onclick=" remField(this.id);" id="@btnId" title="Remove Service Account" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
             </th>
             <th class="col pure-control-group" style="display:none;">
@@ -200,8 +202,8 @@ else
         <button type="button" onclick=" newField(@Model.ServiceAccounts.Count);" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.SA_Add </button>
     </div>
     <fieldset class="pure-control-group" style="padding-top:10px;">
-        <legend>
-            Dependencies
+        <legend style="padding-top:30px;">
+            @Resources.Dependencies
         </legend>
 
         <template id="Dependencyrow">
@@ -211,9 +213,9 @@ else
                         <input class="form-control" id="Dependencies[{i}].Id" name="Dependencies[{i}].Id" readonly disabled />
                     </th>
                     <th class="pure-control-group">
-                        <div style="display:none;"> <input id="Dependencies_{i}__KnownDependency_ComponentName" name="Dependencies[{i}].KnownDependency.ComponentName" type="text"></div>
+                        <div style="display:none;"> <input id="Dependencies_{i}__KnownDependency_ComponentName" name="Dependencies[{i}].KnownDependency.ComponentName" type="text" style = "width: 250px;"></div>
                         <span class="field-validation-valid" data-valmsg-for="Dependencies[{i}].KnownDependency.ComponentName" data-valmsg-replace="true"></span>
-                        <select class="dropDownKD valid" data-val="true" data-val-required="The KnownDependenciesId field is required." id="Dependencies_{i}__KnownDependenciesId" name="Dependencies[{i}].KnownDependenciesId" onchange="javascript: DisplayComponentNameNewInputField(this.id)" style="width: 206.944px" aria-required="true" aria-invalid="false">
+                        <select class="dropDownKD valid" data-val="true" data-val-required="The KnownDependenciesId field is required." id="Dependencies_{i}__KnownDependenciesId" name="Dependencies[{i}].KnownDependenciesId" onchange="javascript: DisplayComponentNameNewInputField(this.id)" style="width: 250px" aria-required="true" aria-invalid="false">
                             @{
                                 var itemsTemplate = (IEnumerable<SelectListItem>)Model.KnownDependencies;
                                 if (itemsTemplate != null)
@@ -256,13 +258,15 @@ else
                               data-valmsg-for="Dependencies[{i}].DateUpdated"
                               data-valmsg-replace="true">
                         </span>
+                        </th>
+                    <th>
                         <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_{i}" title="Remove Dependency" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
                     </th>
                 </tr>
         </template>
 
 
-        <table class="pure-table" id="dependencies-table">
+        <table class="pure-table pure-control-group bottom" id="dependencies-table">
             <tr>
                 <th>@Resources.Account_Create_Name</th>
                 <th>@Resources.Dependencies_VersionInUse</th>
@@ -272,7 +276,7 @@ else
             {
                 <tr class="row Dependencies-details" id="Dependencies_@i" name="Dependencies-details">
                     <th class="pure-control-group">
-                        <div style="display:none;"> @Html.TextBoxFor(m => m.Dependencies[i].KnownDependency.ComponentName)</div>
+                        <div style="display:none;"> @Html.TextBoxFor(m => m.Dependencies[i].KnownDependency.ComponentName, htmlAttributes: new { @style = "width: 250px;" })</div>
                         @Html.ValidationMessageFor(m => m.Dependencies[i].KnownDependency.ComponentName)
                         @{
                             var items = (IEnumerable<SelectListItem>)Model.KnownDependencies; //Getting all the KD in the model
@@ -293,7 +297,7 @@ else
                        {
                            @class = "dropDownKD",
                            @disabled = "disabled",
-                           @style = "width: 206.944px; color: #6B6B6B;",
+                           @style = "width: 250px; color: #6B6B6B;",
                            @onChange = "javascript: DisplayComponentNameNewInputField(this.id)",
                            @onLoad = "javascript: setKDDropDownSelectedValue(this.id)"
                        });
@@ -309,8 +313,8 @@ else
                         }
                     </td>
                     <th class="pure-control-group">
-                        @Html.TextBoxFor(m => m.Dependencies[i].VersionInUse);
-                        @Html.ValidationMessageFor(m => m.Dependencies[i].VersionInUse);
+                        @Html.TextBoxFor(m => m.Dependencies[i].VersionInUse)
+                        @Html.ValidationMessageFor(m => m.Dependencies[i].VersionInUse)
                     </th>
                     <th class="pure-control-group">
                         @{var depId = "Dependencies_" + i + "__.DateUpdated";
@@ -323,9 +327,10 @@ else
                         }
                             <input class="form-control" type="date" id="@depId" name="Dependencies[@i].DateUpdated" value="@formattedDate" />
                         @Html.ValidationMessageFor(m => m.Dependencies[i].DateUpdated)
+                    </th>
+                    <th>
                         <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_@i" title="Remove Dependency" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
                     </th>
-
                     <th class="pure-control-group" style="display:none">
                         @Html.HiddenFor(m => m.Dependencies[i].Id);
                         @Html.HiddenFor(m => m.Dependencies[i].RepositoryId);

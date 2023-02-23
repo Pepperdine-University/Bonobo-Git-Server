@@ -2097,7 +2097,7 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password Manager.
+        ///   Looks up a localized string similar to In Password Manager.
         /// </summary>
         public static string SA_InPassManager {
             get {
@@ -2133,7 +2133,7 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Last Updated .
+        ///   Looks up a localized string similar to Password Last Updated .
         /// </summary>
         public static string SA_PassLastUpdated {
             get {
