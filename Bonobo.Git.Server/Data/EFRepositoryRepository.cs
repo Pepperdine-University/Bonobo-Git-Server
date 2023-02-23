@@ -7,6 +7,7 @@ using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Security.Cryptography;
 using Unity;
 
 namespace Bonobo.Git.Server.Data
@@ -279,7 +280,16 @@ namespace Bonobo.Git.Server.Data
                             db.ServiceAccounts.Remove(sa);
                         }
                     }
-
+                    else
+                    {
+                        foreach(var serviceAccount in repo.ServiceAccounts.ToList())
+                        {
+                            var sa = db.ServiceAccounts.FirstOrDefault(i => i.Id == serviceAccount.Id);
+                            db.ServiceAccounts.Remove(sa);
+                        }
+                    }
+                    
+                
                     if (model.Dependencies != null)
                     {
                         //Updates Dependencies in database when added with javascript
@@ -305,6 +315,14 @@ namespace Bonobo.Git.Server.Data
                         }
                         //Updates Dependencies in database when deleted with javascript
                         foreach (var dependency in repo.Dependencies.Where(repoDep => model.Dependencies.All(modelDep => modelDep.Id != repoDep.Id)).ToList())
+                        {
+                            var dep = db.Dependencies.FirstOrDefault(i => i.Id == dependency.Id);
+                            db.Dependencies.Remove(dep);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var dependency in repo.Dependencies.ToList())
                         {
                             var dep = db.Dependencies.FirstOrDefault(i => i.Id == dependency.Id);
                             db.Dependencies.Remove(dep);
