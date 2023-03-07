@@ -217,9 +217,8 @@ else
                         <span class="field-validation-valid" data-valmsg-for="Dependencies[{i}].KnownDependency.ComponentName" data-valmsg-replace="true"></span>
                         <select class="dropDownKD valid" data-val="true" data-val-required="The KnownDependenciesId field is required." id="Dependencies_{i}__KnownDependenciesId" name="Dependencies[{i}].KnownDependenciesId" onchange="javascript: DisplayComponentNameNewInputField(this.id)" style="width: 250px" aria-required="true" aria-invalid="false">
                             @{
-                                var itemsTemplate = (IEnumerable<SelectListItem>)Model.KnownDependencies;
                                 var dependencies = Model.Dependencies; //existing KD in repo
-                                if (itemsTemplate != null)
+                                if (Model.KnownDependencies != null)
                                 {
                                     <option></option>
                                     //display first empty
@@ -229,15 +228,15 @@ else
                                     {
                                         DependenciesDictionary.Add(Dependency.KnownDependenciesId.ToString(), Dependency.KnownDependenciesId.ToString());
                                     }
-                                    foreach (var kd in itemsTemplate) //all pre-existing
+                                    foreach (var knownDependency in Model.KnownDependencies) //all pre-existing
                                     {
                                         if (DependenciesDictionary.ContainsKey(kd.Value))
                                         {
-                                            <option disabled value="@kd.Value"> @kd.Text</option>
+                                            <option value="@knownDependency.Id.ToString()">@knownDependency.ComponentName</option>
                                         }
                                         else
                                         {
-                                            <option value="@kd.Value"> @kd.Text</option>
+                                            <option disabled value="@knownDependency.Id.ToString()">@knownDependency.ComponentName</option>
                                         }
                                     }
                                 }
@@ -284,40 +283,18 @@ else
                         <div style="display:none;"> @Html.TextBoxFor(m => m.Dependencies[i].KnownDependency.ComponentName, htmlAttributes: new { @style = "width: 250px;" })</div>
                         @Html.ValidationMessageFor(m => m.Dependencies[i].KnownDependency.ComponentName)
                         @{
-                            var items = (IEnumerable<SelectListItem>)Model.KnownDependencies; //Getting all the KD in the model
-                            
-                            for (int j = 0; j < items.Count(); j++) //looping through all the KD
+                            var knownDependenciesList = new SelectList(Model.KnownDependencies, "Id", "ComponentName", Model.Dependencies[i].KnownDependenciesId);
+
+                            @Html.DropDownListFor(m => m.Dependencies[i].KnownDependenciesId, knownDependenciesList, new
                             {
-                                if (items.ToList()[j].Value == Model.Dependencies[i].KnownDependency.Id.ToString()) //current value 
-                                {
-                                    items.ToList()[j].Selected = true;
-                                }
-                                else
-                                {
-                                    items.ToList()[j].Selected = false;
-                                }
-                            }
-                            
-                            @Html.DropDownListFor(m => m.Dependencies[i].KnownDependenciesId, items, new
-                       {
-                           @class = "dropDownKD",
-                           @disabled = "disabled",
-                           @style = "width: 250px; color: #6B6B6B;",
-                           @onChange = "javascript: DisplayComponentNameNewInputField(this.id)",
-                           @onLoad = "javascript: setKDDropDownSelectedValue(this.id)"
-                       });
-                            @*<img onload="setKDDropDownSelectedValue(@i)" style="display: none;">*@
+                                @class = "dropDownKD",
+                                @disabled = "disabled",
+                                @style = "width: 206.944px; color: #6B6B6B;",
+                                @onChange = "javascript: DisplayComponentNameNewInputField(this.id)"
+                            });
                             var DepenId = Model.Dependencies[i].Id;
                         }
-                    <td class="pure-control-group" id="@($"newKD-Dependencies_{i}__KnownDependenciesId")" style="display:none;">
-                        @{
-                            var txtBoxId = "KDInputDependencies_" + i + "__KnownDependenciesId";
-                            <label class="pure-form-aligned pure-control-group"></label>
-                            <input class="pure-form valid" id=@txtBoxId type="text" />
-                            <button type="button" onclick="checkIfKDExists(@(i))" title="Add Component Name" style="background-color: white; border: none;"><i style="color:green;" class="fa fa-plus-circle"></i></button>
-                        }
-                    </td>
-                    <th class="pure-control-group">
+<th class="pure-control-group">
                         @Html.TextBoxFor(m => m.Dependencies[i].VersionInUse)
                         @Html.ValidationMessageFor(m => m.Dependencies[i].VersionInUse)
                     </th>
@@ -362,43 +339,13 @@ else
 <script src="~/scripts/ServiceAccountsEdit.js"></script>
 <script src="~/scripts/DependenciesEdit.js"></script>
 <script>
-    //function lookForAddNewKD() {
-    //    i = 0;
-    //    $(".dropDownKD").each(function () {
-    //        //console.log(this.id);
-    //        //console.log(currentID);
-    //        if (this.value == "-1") {
-    //            var dropdown = this;
-    //            var newKDName = document.getElementById("KDInput" + this.id).value;
-    //            console.log(this);
-    //            console.log(i);
-    //            // add to list of compnames, then current drop down set the values to disabled if they're in the array
-    //        }
-    //        i++;
-    //    })
-    //}
-    //window.onload = function () {
-    //    $(".dropDownKD").each(function () {
-    //        var index = this.id;
-    //        if (this.value == "Add New...") {
-    //            $("#newKD-" + index).css("display", "inline-block");
-    //        } else {
-    //            $("#newKD-" + index).css("display", "none");
-    //        }
-    //    })
-    //}
-
-    function setKDDropDownSelectedValue(i) {
-        console.log(i);
-    }
-
     function DisplayComponentNameNewInputField(dropDownID) {
         inputField = document.getElementById("KDInput" + dropDownID);
-        console.log("KDInput" + dropDownID);
-        console.log("KDInputDependencies_2__KnownDependenciesId");
         dropDown = document.getElementById(dropDownID);
         selectedValue = dropDown[dropDown.selectedIndex].text;
         if (selectedValue == "Add New...") {
+            //var table = document.getElementById("dependencies-table");
+            console.log("Drop down id = ", dropDownID);
             $("#newKD-" + dropDownID).css("display", "inline-block");
             changeNameOfInput(inputField, dropDown, 1);
         } else {
@@ -421,7 +368,16 @@ else
         if (newKDName == "") {
             //alert("The new component name cannot be blank");
         } else if (exists == 1) {
-            alert("The component name entered already exists");
+            //if (window.confirm("the component name entered already exists")) {
+            //    document.getElementById(inputID).focus();
+            //} else {
+            //    document.getElementById(inputID).focus();
+            //}
+            //window.confirm("the component name entered already exists");
+            alert("the component name entered already exists");
+            //if (!alert("the component name entered already exists")) {
+            //    document.getElementById(inputID).focus();
+            //}
         } else {
             //changeNameOfInput(inputField, dropDown, 1);
             //addKDtoDropDown(i, newKDName, dropDown);
@@ -437,66 +393,6 @@ else
             dropDown.setAttribute("name", inputField.name);
             inputField.setAttribute("name", "");
         }
-    }
-
-    //old check if kd exists, just based on i
-    //function checkIfKDExists(i) {
-    //    console.log("within checkifkdexists");
-    //    var inputTemplate = document.getElementById("KDInputDependencies_" + i + "__KnownDependenciesId");
-    //    var newKDName = inputTemplate.value;
-    //    var dropDown = document.getElementById(`Dependencies_${i}__KnownDependenciesId`);
-    //    var exists = 0;
-    //    for (j = 0; j < dropDown.options.length; j++) {
-    //        if (newKDName == dropDown.options[j].text) {
-    //            exists = 1;
-    //            break;
-    //        }
-    //    }
-    //    if (newKDName == "") {
-    //        alert("The new component name cannot be blank");
-    //    } else if (exists == 1) {
-    //        alert("The component name entered already exists");
-    //    } else {
-    //        changeNameOfInput(inputTemplate, dropDown);
-    //        //addKDtoDropDown(i, newKDName, dropDown);
-    //    }
-    //}
-
-    function addKDtoDropDown(i, newKDName, dropDown) {
-
-        //Ajax call to the controller to add knowndependencies 
-        $.ajax({
-            type: "GET",
-            contentType: "application/json; charset=utf-8",
-            url: `@Url.Action("GenerateNewGuid", "Repository")`,
-            data: { "componentName": newKDName },
-            success: function (response) {
-                //adding new option to list
-                var option = document.createElement("option");
-                option.text = newKDName;
-                option.value = response;
-                option.selected = true;
-                dropDown.add(option);
-                //console.log("test: " + $(`#Dependencies_${i}__KnownDependenciesId option[value=${response}]`));
-                //$(`#Dependencies_${i}__KnownDependenciesId option[value=${response}]`).css("display", "none");
-                //adding add new to the bottom of the option list by removing it and adding it again
-                $(`#KDInputDependencies_${i}__KnownDependenciesId`).val("");
-                $(`#newKD-Dependencies_${i}__KnownDependenciesId`).css("display", "none");
-                $(`#Dependencies_${i}__KnownDependenciesId option[value='-1']`).remove();
-
-                var option2 = document.createElement("option");
-                option2.text = "Add New...";
-                option2.remove();
-                option2.value = "-1";
-                option2.selected = false;
-                dropDown.add(option2);
-
-            },
-            failure: function (response) {
-                alert("Failed to add new component name");
-            }
-        });
-        return false;
     }
 </script>
 

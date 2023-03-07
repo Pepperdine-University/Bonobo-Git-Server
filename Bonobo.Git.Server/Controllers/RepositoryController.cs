@@ -67,7 +67,7 @@ namespace Bonobo.Git.Server.Controllers
         {
             var model = ConvertRepositoryModel(RepositoryRepository.GetRepository(id), User);
             PopulateCheckboxListData(ref model);
-            model.KnownDependencies = PopulateKnownDependencyDropdown();
+            PopulateKnownDependencyDropdownOptions(ref model);
             return View(model);
         }
 
@@ -76,29 +76,7 @@ namespace Bonobo.Git.Server.Controllers
         [WebAuthorizeRepository(RequiresRepositoryAdministrator = true)]
         public ActionResult Edit(RepositoryDetailModel model)
         {
-            var nonKnownDepIdErrors = 0;
-            if (!ModelState.IsValid)        // has error where if reload and tries to do same action then creates duplicate known dependency, may need to check to make sure doesn't already exist here
-            {
-                var errors = ModelState
-                    .Where(x => x.Value.Errors.Count > 0)
-                    .Select(x => new { x.Key, x.Value.Errors, x.Value.Value.AttemptedValue })
-                    .ToArray();
-                for (int i = 0; i < errors.Length; i++)
-                {
-                    var errorKey = errors[i].Key;
-                    if (errorKey.Contains("KnownDependenciesId"))
-                    {
-                        var newKnownDepId = GenerateNewGuid(errors[i].AttemptedValue);
-                        var newDependency = model.Dependencies.Where(y => y.Id == Guid.Empty).FirstOrDefault();
-                        newDependency.KnownDependenciesId = newKnownDepId;
-                        errors[i].Errors.Clear();
-                    }
-                    else
-                    {
-                        nonKnownDepIdErrors++;
-                    }
-                }
-            }
+            CheckIfKnownDependencyErrors(model);
             if (ModelState.IsValid)
             {
                 var currentUserIsInAdminList = model.PostedSelectedAdministrators != null && model.PostedSelectedAdministrators.Contains(User.Id());
@@ -124,30 +102,43 @@ namespace Bonobo.Git.Server.Controllers
                 }
             }
             PopulateCheckboxListData(ref model);
-            model.KnownDependencies = PopulateKnownDependencyDropdown();
+            PopulateKnownDependencyDropdownOptions(ref model);
             return View(model);
         }
 
-        public List<SelectListItem> PopulateKnownDependencyDropdown()
+        private void CheckIfKnownDependencyErrors(RepositoryDetailModel model)
         {
-            IList<KnownDependency> knownDepList = RepositoryRepository.GetAllKnownDependencies();
-            List<SelectListItem> items = new List<SelectListItem>();
-            foreach (var item in knownDepList)
+            if (!ModelState.IsValid)
             {
-                var componentName = new SelectListItem
+                var newDependencies = ModelState
+                    .SelectMany(kvp => kvp.Value.Errors, (kvp, e) => new { kvp, e })
+                    .Where(t => t.kvp.Value.Errors.Count >= 1)
+                    .Where(t => Regex.Match(t.kvp.Key, @"^Dependencies\[\d+\]\.KnownDependenciesId$").Success)
+                    .Where(t => Regex.Match(t.e.ErrorMessage, $@"^The value '{t.kvp.Value.Value.AttemptedValue}' is not valid for KnownDependenciesId.$").Success)
+                    .Select(t => new { t.kvp.Key, t.kvp.Value.Errors, t.kvp.Value.Value.AttemptedValue })
+                    .ToArray();
+                foreach (var newDependency in newDependencies)
                 {
-                    Text = item.ComponentName,
-                    Value = item.Id.ToString(),
-                };
-                items.Add(componentName);
+                    int dependencyIndex = int.Parse(Regex.Match(newDependency.Key, @"\d+").Value);
+                    Guid newKnownDependenciesId = GenerateNewGuid(newDependency.AttemptedValue);
+                    model.Dependencies[dependencyIndex].KnownDependenciesId = newKnownDependenciesId;
+                    ModelState.SetModelValue(newDependency.Key,
+                        new ValueProviderResult(newKnownDependenciesId, newKnownDependenciesId.ToString(),
+                            System.Globalization.CultureInfo.InvariantCulture));
+                    newDependency.Errors.Clear();
+                }
             }
-            var addNew = new SelectListItem
+        }
+
+        public void PopulateKnownDependencyDropdownOptions(ref RepositoryDetailModel model)
+        {
+            IList<KnownDependency> knownDependencies = RepositoryRepository.GetAllKnownDependencies();
+            knownDependencies.Add(new KnownDependency
             {
-                Text = "Add New...",
-                Value = "-1"
-            };
-            items.Add(addNew);
-            return items;
+                Id = Guid.Empty,
+                ComponentName = "Add New..."
+            });
+            model.KnownDependencies = knownDependencies;
         }
 
         public Guid GenerateNewGuid(string componentName)
@@ -204,7 +195,7 @@ namespace Bonobo.Git.Server.Controllers
                 Administrators = new UserModel[] { MembershipService.GetUserModel(User.Id()) },
             };
             PopulateCheckboxListData(ref model);
-            ViewBag.KnownDependencies = PopulateKnownDependencyDropdown();
+            PopulateKnownDependencyDropdownOptions(ref model);
             return View(model);
         }
 
@@ -213,6 +204,7 @@ namespace Bonobo.Git.Server.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(RepositoryDetailModel model)
         {
+            CheckIfKnownDependencyErrors(model);
             if (!RepositoryPermissionService.HasCreatePermission(User.Id()))
             {
                 return RedirectToAction("Unauthorized", "Home");
@@ -254,7 +246,7 @@ namespace Bonobo.Git.Server.Controllers
                 }
             }
             PopulateCheckboxListData(ref model);
-            ViewBag.KnownDependencies = PopulateKnownDependencyDropdown();
+            PopulateKnownDependencyDropdownOptions(ref model);
             return View(model);
         }
 
