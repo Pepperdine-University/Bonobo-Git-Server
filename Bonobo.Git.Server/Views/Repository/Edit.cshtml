@@ -230,7 +230,7 @@ else
                                     }
                                     foreach (var knownDependency in Model.KnownDependencies) //all pre-existing
                                     {
-                                        if (DependenciesDictionary.ContainsKey(kd.Value))
+                                        if (DependenciesDictionary.ContainsKey(knownDependency.Id.ToString()))
                                         {
                                             <option value="@knownDependency.Id.ToString()">@knownDependency.ComponentName</option>
                                         }
