@@ -232,11 +232,11 @@ else
                                     {
                                         if (DependenciesDictionary.ContainsKey(knownDependency.Id.ToString()))
                                         {
-                                            <option value="@knownDependency.Id.ToString()">@knownDependency.ComponentName</option>
+                                            <option disabled value="@knownDependency.Id.ToString()">@knownDependency.ComponentName</option>
                                         }
                                         else
                                         {
-                                            <option disabled value="@knownDependency.Id.ToString()">@knownDependency.ComponentName</option>
+                                            <option value="@knownDependency.Id.ToString()">@knownDependency.ComponentName</option>
                                         }
                                     }
                                 }
@@ -245,7 +245,7 @@ else
                     </th>
                     <th class="pure-control-group" id="newKD-Dependencies_{i}__KnownDependenciesId" style="display: none;">
                         <label class="pure-form-aligned pure-control-group"></label>
-                        <input class="pure-form valid" id="KDInputDependencies_{i}__KnownDependenciesId" type="text">
+                        <input class="pure-form valid" id="KDInputDependencies_{i}__KnownDependenciesId" type="text" onfocusout="checkIfKDExists(this.id)">
                         <button type="button" id="{i}" @*onclick="checkIfKDExists(this.id)"*@ title="Add Component Name" style="background-color: white; border: none;"><i style="color:green;" class="fa fa-plus-circle"></i></button>
                     </th>
                     <th class="col pure-control-group">
