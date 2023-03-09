@@ -207,66 +207,64 @@ else
         </legend>
 
         <template id="Dependencyrow">
-                <tr class="row Dependencies-details" id="Dependencies_{i}" name="Dependencies-details">
-                    <th class=" col pure-control-group" style="display:none;">
-                        <label> @Resources.Dependencies_ID </label>
-                        <input class="form-control" id="Dependencies[{i}].Id" name="Dependencies[{i}].Id" readonly disabled />
-                    </th>
-                    <th class="pure-control-group">
-                        <div style="display:none;"> <input id="Dependencies_{i}__KnownDependency_ComponentName" name="Dependencies[{i}].KnownDependency.ComponentName" type="text" style = "width: 250px;"></div>
-                        <span class="field-validation-valid" data-valmsg-for="Dependencies[{i}].KnownDependency.ComponentName" data-valmsg-replace="true"></span>
-                        <select class="dropDownKD valid" data-val="true" data-val-required="The KnownDependenciesId field is required." id="Dependencies_{i}__KnownDependenciesId" name="Dependencies[{i}].KnownDependenciesId" onchange="javascript: DisplayComponentNameNewInputField(this.id)" style="width: 250px" aria-required="true" aria-invalid="false">
-                            @{
-                                var dependencies = Model.Dependencies; //existing KD in repo
-                                if (Model.KnownDependencies != null)
+            <tr class="row Dependencies-details" id="Dependencies_{i}" name="Dependencies-details">
+                <th class=" col pure-control-group" style="display:none;">
+                    <label> @Resources.Dependencies_ID </label>
+                    <input class="form-control" id="Dependencies[{i}].Id" name="Dependencies[{i}].Id" readonly disabled />
+                </th>
+                <th class="pure-control-group">
+                    <div style="display:none;"> <input id="Dependencies_{i}__KnownDependency_ComponentName" name="Dependencies[{i}].KnownDependency.ComponentName" type="text" style="width: 250px;"></div>
+                    <span class="field-validation-valid" data-valmsg-for="Dependencies[{i}].KnownDependency.ComponentName" data-valmsg-replace="true"></span>
+                    <select class="dropDownKD valid" data-val="true" data-val-required="The KnownDependenciesId field is required." id="Dependencies_{i}__KnownDependenciesId" name="Dependencies[{i}].KnownDependenciesId" onchange="javascript: DisplayComponentNameNewInputField(this.id)" style="width: 250px" aria-required="true" aria-invalid="false">
+                        @{
+                            var dependencies = Model.Dependencies; //existing KD in repo
+                            if (Model.KnownDependencies != null)
+                            {
+                                <option></option>
+                                //display first empty
+                                //create a dict using the var depen.
+                                Dictionary<string, string> DependenciesDictionary = new Dictionary<string, string>();
+                                foreach (var Dependency in Model.Dependencies) //existing repo
                                 {
-                                    <option></option>
-                                    //display first empty
-                                    //create a dict using the var depen.
-                                    Dictionary<string, string> DependenciesDictionary = new Dictionary<string, string>();
-                                    foreach (var Dependency in Model.Dependencies) //existing repo
+                                    DependenciesDictionary.Add(Dependency.KnownDependenciesId.ToString(), Dependency.KnownDependenciesId.ToString());
+                                }
+                                foreach (var knownDependency in Model.KnownDependencies) //all pre-existing
+                                {
+                                    if (DependenciesDictionary.ContainsKey(knownDependency.Id.ToString()))
                                     {
-                                        DependenciesDictionary.Add(Dependency.KnownDependenciesId.ToString(), Dependency.KnownDependenciesId.ToString());
+                                        <option disabled value="@knownDependency.Id.ToString()">@knownDependency.ComponentName</option>
                                     }
-                                    foreach (var knownDependency in Model.KnownDependencies) //all pre-existing
+                                    else
                                     {
-                                        if (DependenciesDictionary.ContainsKey(knownDependency.Id.ToString()))
-                                        {
-                                            <option disabled value="@knownDependency.Id.ToString()">@knownDependency.ComponentName</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="@knownDependency.Id.ToString()">@knownDependency.ComponentName</option>
-                                        }
+                                        <option value="@knownDependency.Id.ToString()">@knownDependency.ComponentName</option>
                                     }
                                 }
                             }
-                        </select>
-                    </th>
-                    <th class="pure-control-group" id="newKD-Dependencies_{i}__KnownDependenciesId" style="display: none;">
-                        <label class="pure-form-aligned pure-control-group"></label>
-                        <input class="pure-form valid" id="KDInputDependencies_{i}__KnownDependenciesId" type="text" onfocusout="checkIfKDExists(this.id)">
-                        <button type="button" id="{i}" @*onclick="checkIfKDExists(this.id)"*@ title="Add Component Name" style="background-color: white; border: none;"><i style="color:green;" class="fa fa-plus-circle"></i></button>
-                    </th>
-                    <th class="col pure-control-group">
-                        <input class="form-control" id="Dependencies_{i}__.VersionInUse" name="Dependencies[{i}].VersionInUse" />
-                        <span class="field-validation-valid text-danger"
-                              data-valmsg-for="Dependencies[{i}].VersionInUse"
-                              data-valmsg-replace="true">
-                        </span>
-
-                    </th>
-                    <th class="col pure-control-group">
-                        <input class="form-control" type="date" id="Dependencies_{i}__.DateUpdated" name="Dependencies[{i}].DateUpdated" value="1/1/1900" />
-                        <span class="field-validation-valid text-danger"
-                              data-valmsg-for="Dependencies[{i}].DateUpdated"
-                              data-valmsg-replace="true">
-                        </span>
-                        </th>
-                    <th>
-                        <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_{i}" title="Remove Dependency" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
-                    </th>
-                </tr>
+                        }
+                    </select>
+                    <div class="pure-control-group new-known-dependency" id="newKD-Dependencies_{i}__KnownDependenciesId">
+                        <input class="pure-form valid" id="KDInputDependencies_{i}__KnownDependenciesId" type="text" onfocusout="checkIfKDExists(this.id)" style="width:250px;">
+                        <button class="return-to-dropdown" type="button" id="{i}" onclick="returnToDropdownFromKDInput(this.id)" title="Return to Dropdown" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-times-circle"></i></button>
+                    </div>
+                </th>
+                <th class="col pure-control-group">
+                    <input class="form-control" id="Dependencies_{i}__.VersionInUse" name="Dependencies[{i}].VersionInUse" />
+                    <span class="field-validation-valid text-danger"
+                          data-valmsg-for="Dependencies[{i}].VersionInUse"
+                          data-valmsg-replace="true">
+                    </span>
+                </th>
+                <th class="col pure-control-group">
+                    <input class="form-control" type="date" id="Dependencies_{i}__.DateUpdated" name="Dependencies[{i}].DateUpdated" value="1/1/1900" />
+                    <span class="field-validation-valid text-danger"
+                          data-valmsg-for="Dependencies[{i}].DateUpdated"
+                          data-valmsg-replace="true">
+                    </span>
+                </th>
+                <th>
+                    <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_{i}" title="Remove Dependency" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
+                </th>
+            </tr>
         </template>
 
 
@@ -289,12 +287,12 @@ else
                             {
                                 @class = "dropDownKD",
                                 @disabled = "disabled",
-                                @style = "width: 206.944px; color: #6B6B6B;",
+                                @style = "width: 250px; color: #6B6B6B;",
                                 @onChange = "javascript: DisplayComponentNameNewInputField(this.id)"
                             });
                             var DepenId = Model.Dependencies[i].Id;
                         }
-<th class="pure-control-group">
+                    <th class="pure-control-group">
                         @Html.TextBoxFor(m => m.Dependencies[i].VersionInUse)
                         @Html.ValidationMessageFor(m => m.Dependencies[i].VersionInUse)
                     </th>
@@ -344,9 +342,9 @@ else
         dropDown = document.getElementById(dropDownID);
         selectedValue = dropDown[dropDown.selectedIndex].text;
         if (selectedValue == "Add New...") {
-            //var table = document.getElementById("dependencies-table");
             console.log("Drop down id = ", dropDownID);
             $("#newKD-" + dropDownID).css("display", "inline-block");
+            $("#" + dropDownID).css("display", "none");
             changeNameOfInput(inputField, dropDown, 1);
         } else {
             $("#newKD-" + dropDownID).css("display", "none");
@@ -384,9 +382,17 @@ else
         }
     }
 
-    function changeNameOfInput(inputField, dropDown, addNewSelected) {          // tomorrow start working on backend stuff, first how to prevent the default if model state is not valid stuff so that I can then actually test the other stuff in the backend
+    function returnToDropdownFromKDInput(i) {
+        dropDownID = "Dependencies_" + i + "__KnownDependenciesId";
+        $("#" + dropDownID).css("display", "inline-block");
+        $("#newKD-" + dropDownID).css("display", "none");
+
+        document.getElementById("KDInput" + dropDownID).value = "";
+        document.getElementById(dropDownID).selectedIndex = 0;
+    }
+
+    function changeNameOfInput(inputField, dropDown, addNewSelected) {
         if (addNewSelected) {
-            console.log(inputField);
             inputField.setAttribute("name", dropDown.name);
             dropDown.setAttribute("name", "");
         } else if (dropDown.name == "") {
