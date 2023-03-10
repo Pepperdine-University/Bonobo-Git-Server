@@ -40,7 +40,7 @@ namespace Bonobo.Git.Server.Models
         public bool LinksUseGlobal { get; set; }
         public List<ServiceAccount> ServiceAccounts { get; set; }
         public List<Dependency> Dependencies { get; set; }
-        public List<KnownDependency> KnownDependencies { get; set; }
+        public IList<KnownDependency> KnownDependencies { get; set; }
 
         public RepositoryModel()
         {

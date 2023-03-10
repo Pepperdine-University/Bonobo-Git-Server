@@ -936,6 +936,15 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The new component name that you entered already exists.
+        /// </summary>
+        public static string Known_Dependency_CantHaveDuplicates {
+            get {
+                return ResourceManager.GetString("Known_Dependency_CantHaveDuplicates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ComponentName.
         /// </summary>
         public static string Known_Dependency_Name {

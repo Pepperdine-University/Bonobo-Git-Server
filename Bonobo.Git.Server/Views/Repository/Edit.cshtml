@@ -243,8 +243,8 @@ else
                         }
                     </select>
                     <div class="pure-control-group new-known-dependency" id="newKD-Dependencies_{i}__KnownDependenciesId">
-                        <input class="pure-form valid" id="KDInputDependencies_{i}__KnownDependenciesId" type="text" onfocusout="checkIfKDExists(this.id)" style="width:250px;">
-                        <button class="return-to-dropdown" type="button" id="{i}" onclick="returnToDropdownFromKDInput(this.id)" title="Return to Dropdown" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-times-circle"></i></button>
+                        <input class="pure-form valid" id="KDInputDependencies_{i}__KnownDependenciesId" type="text" style="width:250px;">
+                        <button class="return-to-dropdown" type="button" id="{i}" onclick="returnToDropdownFromKDInput(this.id)" title="Return to dropdown" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-times-circle"></i></button>
                     </div>
                 </th>
                 <th class="col pure-control-group">
@@ -345,36 +345,6 @@ else
             $("#newKD-" + dropDownID).css("display", "inline-block");
             $("#" + dropDownID).css("display", "none");
             changeNameOfInput(inputField, dropDown, 1);
-        }
-    }
-
-    function checkIfKDExists(inputID) {
-        var inputField = document.getElementById(inputID);
-        var newKDName = inputField.value;
-        var dropDown = document.getElementById(inputID.slice(7));
-        var exists = 0;
-        for (j = 0; j < dropDown.options.length; j++) {
-            if (newKDName == dropDown.options[j].text) {
-                exists = 1;
-                break;
-            }
-        }
-        if (newKDName == "") {
-            //alert("The new component name cannot be blank");
-        } else if (exists == 1) {
-            //if (window.confirm("the component name entered already exists")) {
-            //    document.getElementById(inputID).focus();
-            //} else {
-            //    document.getElementById(inputID).focus();
-            //}
-            //window.confirm("the component name entered already exists");
-            //alert("the component name entered already exists");
-            //if (!alert("the component name entered already exists")) {
-            //    document.getElementById(inputID).focus();
-            //}
-        } else {
-            //changeNameOfInput(inputField, dropDown, 1);
-            //addKDtoDropDown(i, newKDName, dropDown);
         }
     }
 

@@ -110,6 +110,7 @@ namespace Bonobo.Git.Server.Controllers
         {
             if (!ModelState.IsValid)
             {
+                PopulateKnownDependencyDropdownOptions(ref model);
                 var newDependencies = ModelState
                     .SelectMany(kvp => kvp.Value.Errors, (kvp, e) => new { kvp, e })
                     .Where(t => t.kvp.Value.Errors.Count >= 1)
@@ -119,13 +120,24 @@ namespace Bonobo.Git.Server.Controllers
                     .ToArray();
                 foreach (var newDependency in newDependencies)
                 {
-                    int dependencyIndex = int.Parse(Regex.Match(newDependency.Key, @"\d+").Value);
-                    Guid newKnownDependenciesId = GenerateNewGuid(newDependency.AttemptedValue);
-                    model.Dependencies[dependencyIndex].KnownDependenciesId = newKnownDependenciesId;
-                    ModelState.SetModelValue(newDependency.Key,
-                        new ValueProviderResult(newKnownDependenciesId, newKnownDependenciesId.ToString(),
-                            System.Globalization.CultureInfo.InvariantCulture));
-                    newDependency.Errors.Clear();
+                    var duplicateDependency = model.KnownDependencies
+                        .Where(kd => kd.ComponentName == newDependency.AttemptedValue)
+                        .FirstOrDefault();
+                    if (duplicateDependency == null)
+                    {
+                        int dependencyIndex = int.Parse(Regex.Match(newDependency.Key, @"\d+").Value);
+                        Guid newKnownDependenciesId = GenerateNewGuid(newDependency.AttemptedValue);
+                        model.Dependencies[dependencyIndex].KnownDependenciesId = newKnownDependenciesId;
+                        ModelState.SetModelValue(newDependency.Key,
+                            new ValueProviderResult(newKnownDependenciesId, newKnownDependenciesId.ToString(),
+                                System.Globalization.CultureInfo.InvariantCulture));
+                        newDependency.Errors.Clear();
+                    }
+                    else
+                    {
+                        newDependency.Errors.Clear();
+                        ModelState.AddModelError("", Resources.Known_Dependency_CantHaveDuplicates);     // Ask question about where the key comes from
+                    }
                 }
             }
         }
@@ -809,7 +821,8 @@ namespace Bonobo.Git.Server.Controllers
                 LinksRegex = (model.LinksUseGlobal ? UserConfiguration.Current.LinksRegex : model.LinksRegex),
                 LinksUrl = (model.LinksUseGlobal ? UserConfiguration.Current.LinksUrl : model.LinksUrl),
                 ServiceAccounts = model.ServiceAccounts,
-                Dependencies = model.Dependencies
+                Dependencies = model.Dependencies,
+                KnownDependencies = model.KnownDependencies
             };
         }
 
@@ -846,7 +859,8 @@ namespace Bonobo.Git.Server.Controllers
                 LinksRegex = model.LinksRegex ?? "",
                 LinksUrl = model.LinksUrl ?? "",
                 ServiceAccounts = model.ServiceAccounts,
-                Dependencies = model.Dependencies
+                Dependencies = model.Dependencies,
+                KnownDependencies = model.KnownDependencies
             };
         }
 
