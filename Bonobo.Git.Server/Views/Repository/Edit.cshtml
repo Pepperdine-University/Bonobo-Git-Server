@@ -167,14 +167,17 @@ else
                 @*@Html.LabelFor(m => m.ServiceAccounts[i].PassLastUpdated)*@
                 @*@Html.TextBoxFor(m => m.ServiceAccounts[i].PassLastUpdated)*@
                 @{var saId = "ServiceAccounts_" + i + "__.PassLastUpdated";
-                    var formattedDate = "1900-01-01";
                     if (Model.ServiceAccounts[i].PassLastUpdated != null)
                     {
                         var dateValue = Model.ServiceAccounts[i].PassLastUpdated.ToString().Split('/');
-                        formattedDate = dateValue[2].Substring(0, 4) + "-" + (dateValue[0].Length == 1 ? "0" + dateValue[0] : dateValue[0]) + "-" + (dateValue[1].Length == 1 ? "0" + dateValue[1] : dateValue[1]);
+                        var formattedDate = dateValue[2].Substring(0, 4) + "-" + (dateValue[0].Length == 1 ? "0" + dateValue[0] : dateValue[0]) + "-" + (dateValue[1].Length == 1 ? "0" + dateValue[1] : dateValue[1]);
+                        <input class="form-control" type="date" id="@saId" name="ServiceAccounts[@i].PassLastUpdated" value="@formattedDate" onfocus="console.log(this.value)" />
                     }
-                <input class="form-control" type="date" id="@saId" name="ServiceAccounts[@i].PassLastUpdated" value="@formattedDate" onfocus="console.log(this.value)" />
-                  }
+                    else
+                    {
+                        <input class="form-control" type="date" id="@saId" name="ServiceAccounts[@i].PassLastUpdated" onfocus="console.log(this.value)" />
+                    }
+                }
                 @Html.ValidationMessageFor(m => m.ServiceAccounts[i].PassLastUpdated)
             </th>
             <th class="col pure-control-group">
