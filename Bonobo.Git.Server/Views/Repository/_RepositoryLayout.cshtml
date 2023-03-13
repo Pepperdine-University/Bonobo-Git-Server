@@ -14,7 +14,7 @@ else
         </h1>
         <div class="pure-menu pure-menu-open pure-menu-horizontal repository-menu">
             <ul>
-                <li><a href="@Url.Action("Tree", new { id = ViewBag.ID })" class="browser"><i class="fa fa-book"></i> @Resources.Repository_Layout_Browse</a></li>
+                <li><a href="@Url.Action("Tree", new { id = ViewBag.ID })" class="browser"><i class="fa fa-file-code-o"></i> @Resources.Repository_Layout_Browse</a></li>
                 <li><a href="@Url.Action("Commits", new { id = ViewBag.ID })" class="commits"><i class="fa fa-random"></i> @Resources.Repository_Layout_Commits</a></li>
                 <li><a href="@Url.Action("Tags", new { id = ViewBag.ID })" class="tags"><i class="fa fa-tag"></i> @Resources.Repository_Layout_Tags</a></li>
                 @*Dropdown Menu*@
@@ -23,12 +23,12 @@ else
                         <summary><i class="fa fa-chevron-down"></i>@Resources.Repository_Layout_Code</summary>
                         <div style="position:absolute;">
                             @*To get dropdown box as Relative to Fixed postition*@
-                            <div id="dropdownBox">
+                            <div class="dropdownBox">
                                 <div>
                                     @*Git URL + Copy Button*@
                                     <label>@Resources.Repository_Detail_Location</label>
                                     <input type="text" class="git-url-text removeVisualInput" value="@Model.GitUrl" readonly />
-                                    <button title="@Resources.Repository_Git_Url_Copy" class="pure-button copy-to-clip-button layout" data-clipboard-target=".git-url-text"><i class="fa fa-clone"></i></button>
+                                    <button title="@Resources.Repository_Git_Url_Copy" class="pure-button copy-to-clip-button layout" data-clipboard-target=".git-url-text"><i class="fa fa-copy"></i></button>
                                 </div>
                                 @if (User.Identity.IsAuthenticated)
                                 {
@@ -38,12 +38,12 @@ else
                                             @Resources.Repository_Detail_Location_Personal
                                         </label>
                                         <input type="text" class="personal-url-text removeVisualInput" value="@Model.PersonalGitUrl " readonly />
-                                        <button title="@Resources.Repository_Personal_Git_Url_Copy" class="pure-button copy-to-clip-button layout" data-clipboard-target=".personal-url-text"><i class="fa fa-clone"></i></button>
+                                        <button title="@Resources.Repository_Personal_Git_Url_Copy" class="pure-button copy-to-clip-button layout" data-clipboard-target=".personal-url-text"><i class="fa fa-copy"></i></button>
                                     </div>
                                 }
-                                <div id="dropbuttons">
+                                <div class="dropbuttons">
                                     <a href="@Url.Action("Download", new { id = ViewBag.ID })" class="download"><i class="fa fa-download"></i> @Resources.Repository_Tree_Zip</a>
-                                    <a href="@Url.Action("Clone", new { id = ViewBag.ID })" class="clone"><i class="fa fa-copy"></i> @Resources.Repository_Layout_Clone</a>
+                                    <a href="@Url.Action("Clone", new { id = ViewBag.ID })" class="clone"><i class="fa fa-clone"></i> @Resources.Repository_Layout_Clone</a>
                                 </div>
                             </div>
                         </div>
@@ -59,7 +59,6 @@ else
 {
     @RenderSection("scripts", false)
     <script>new Clipboard('.copy-to-clip-button');</script>
-    <script src="https://kit.fontawesome.com/66c8834e3a.js" crossorigin="anonymous"></script>
     <script>
         //Adds the ability to close dropdown when clicked anywhere in the page
         var details = [...document.querySelectorAll('details')];

@@ -61,16 +61,16 @@ namespace Bonobo.Git.Server.Data
         {
             using (var db = CreateContext())
             {
-                var dbknowndeps = db.KnownDependencies.Select(sa => new
+                var knownDependencies = db.KnownDependencies.Select(knownDependency => new
                 {
-                    Id = sa.Id,
-                    ComponentName = sa.ComponentName
+                    Id = knownDependency.Id,
+                    ComponentName = knownDependency.ComponentName
                 }).ToList();
 
-                return dbknowndeps.Select(sa => new KnownDependency
+                return knownDependencies.Select(knownDependency => new KnownDependency
                 {
-                    Id = sa.Id,
-                    ComponentName = sa.ComponentName
+                    Id = knownDependency.Id,
+                    ComponentName = knownDependency.ComponentName
                 }).ToList();
             }
         }
@@ -161,7 +161,7 @@ namespace Bonobo.Git.Server.Data
                 };
                 database.Repositories.Add(repository);
                 AddMembers(model.Users.Select(x => x.Id), model.Administrators.Select(x => x.Id), model.Teams.Select(x => x.Id), repository, database);
-                //Adds service accounts to model when creating new repository with a randomly generated Guid id
+                //Adds dependencies to model when creating new repository with a randomly generated Guid id
                 if (model.Dependencies != null)
                 {
                     foreach (var dependency in model.Dependencies.ToList())
@@ -218,8 +218,9 @@ namespace Bonobo.Git.Server.Data
                     Log.Error(ex, "Failed to create known dependency {RepoName}", knownDependency.ComponentName);
                     return false;
                 }
-                catch (UpdateException)
+                catch (UpdateException ex)
                 {
+                    Log.Error(ex, "Failed to update {RepoName}", knownDependency.ComponentName);
                     return false;
                 }
                 return true;
@@ -274,18 +275,18 @@ namespace Bonobo.Git.Server.Data
                             }
                         }
                         //Updates Service accounts in database when deleted with javascript
-                        foreach (var serviceAccount in repo.ServiceAccounts.Where(repoSA => model.ServiceAccounts.All(modelSA => modelSA.Id != repoSA.Id)).ToList())
+                        foreach (var serviceAccount in repo.ServiceAccounts.Where(repoServiceAccount => model.ServiceAccounts.All(modelServiceAccount => modelServiceAccount.Id != repoServiceAccount.Id)).ToList())
                         {
-                            var sa = db.ServiceAccounts.FirstOrDefault(i => i.Id == serviceAccount.Id);
-                            db.ServiceAccounts.Remove(sa);
+                            var removedServiceAccount = db.ServiceAccounts.FirstOrDefault(i => i.Id == serviceAccount.Id);
+                            db.ServiceAccounts.Remove(removedServiceAccount);
                         }
                     }
                     else
                     {
                         foreach(var serviceAccount in repo.ServiceAccounts.ToList())
                         {
-                            var sa = db.ServiceAccounts.FirstOrDefault(i => i.Id == serviceAccount.Id);
-                            db.ServiceAccounts.Remove(sa);
+                            var removedServiceAccount = db.ServiceAccounts.FirstOrDefault(i => i.Id == serviceAccount.Id);
+                            db.ServiceAccounts.Remove(removedServiceAccount);
                         }
                     }
                     
@@ -422,15 +423,6 @@ namespace Bonobo.Git.Server.Data
         public IList<RepositoryModel> GetTeamRepositories(Guid[] teamsId)
         {
             return GetAllRepositories().Where(repo => repo.Teams.Any(team => teamsId.Contains(team.Id))).ToList();
-        }
-        public void DeleteDependency(Guid id)
-        {
-            using (var db = CreateContext())
-            {
-                var Depen = db.Dependencies.FirstOrDefault(i => i.Id == id);
-                db.Dependencies.Remove(Depen);
-                db.SaveChanges();
-            }
         }
     }
 }

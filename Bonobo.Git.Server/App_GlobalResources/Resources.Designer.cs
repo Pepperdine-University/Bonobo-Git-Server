@@ -565,6 +565,15 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add New....
+        /// </summary>
+        public static string Depenedencies_AddNew {
+            get {
+                return ResourceManager.GetString("Depenedencies_AddNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;p&gt;A request has been received to reset your password. 
         ///                           If you did not initiate the request, then please ignore this email.&lt;/p&gt;
         ///                           &lt;p&gt;Please click the following link to reset your password:&lt;/p&gt;.

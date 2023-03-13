@@ -1014,6 +1014,9 @@ The regular C# string formatting rules apply: To get {} in your link you need to
   <data name="SA_InPassManager_True" xml:space="preserve">
     <value>In Password Manager</value>
   </data>
+  <data name="Depenedencies_AddNew" xml:space="preserve">
+    <value>Add New...</value>
+  </data>
   <data name="Known_Dependency_CantHaveDuplicates" xml:space="preserve">
     <value>The new component name that you entered already exists</value>
   </data>

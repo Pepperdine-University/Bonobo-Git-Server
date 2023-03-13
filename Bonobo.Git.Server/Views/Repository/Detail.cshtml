@@ -64,7 +64,7 @@
         </div>
         <div class="sidebar-bordergrid">
             <div class="pure-control-group">
-                <label><i class="fa-regular fa-square@(Model.AllowAnonymous? "-check": "")" title="@(Model.AllowAnonymous? "Yes": "No")"></i> Anonymous</label>
+                <label><i class="fa fa-@(Model.AllowAnonymous? "check-": "")square-o" title="@(Model.AllowAnonymous? "Yes": "No")"></i> Anonymous</label>
             </div>
             @if (Model.AllowAnonymous)
             {
@@ -72,7 +72,7 @@
                 @{
                         bool pushMode = Model.AllowAnonymousPush == Bonobo.Git.Server.Data.RepositoryPushMode.Yes
                                         || (Model.AllowAnonymousPush == Bonobo.Git.Server.Data.RepositoryPushMode.Global && UserConfiguration.Current.AllowAnonymousPush);
-                    <label><i class="fa-regular fa-square@(pushMode? "-check": "")" title="@(pushMode? "Yes": "No")"></i> Anonymous Push</label>
+                    <label><i class="fa fa-@(pushMode? "check-": "")square-o" title="@(pushMode? "Yes": "No")"></i> Anonymous Push</label>
                 }
             </div>
             }
@@ -118,7 +118,7 @@
                         <div class="pass-info">
                             <div class="pure-control-group">
                                 <div>
-                                        <label><i class="fa-regular fa-square@(serviceAccount.InPassManager? "-check": "")"></i>@Resources.SA_InPassManager </label>
+                                        <label><i class="fa fa-@(serviceAccount.InPassManager? "check-": "")square-o"></i> @Resources.SA_InPassManager </label>
                                 </div>
                             </div>
                             <div class="pure-control-group">

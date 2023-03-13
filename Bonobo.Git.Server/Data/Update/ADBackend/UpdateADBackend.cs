@@ -129,54 +129,54 @@ namespace Bonobo.Git.Server.Data.Update.ADBackendUpdate
             foreach(var repoitem in repos)
             {
                 var repo = repoitem.Value;
-                var newrepo = new Models.RepositoryModel();
-                newrepo.Id = Guid.NewGuid();
-                newrepo.Name = repo.Name;
-                newrepo.Group = repo.Group;
-                newrepo.Description = repo.Description;
-                newrepo.AnonymousAccess = repo.AnonymousAccess;
-                newrepo.AuditPushUser = repo.AuditPushUser;
-                newrepo.Logo = repo.Logo;
-                newrepo.RemoveLogo = repo.RemoveLogo;
-                newrepo.ServiceAccounts = repo.ServiceAccounts;
-                newrepo.Dependencies = repo.Dependencies;
+                var newRepo = new Models.RepositoryModel();
+                newRepo.Id = Guid.NewGuid();
+                newRepo.Name = repo.Name;
+                newRepo.Group = repo.Group;
+                newRepo.Description = repo.Description;
+                newRepo.AnonymousAccess = repo.AnonymousAccess;
+                newRepo.AuditPushUser = repo.AuditPushUser;
+                newRepo.Logo = repo.Logo;
+                newRepo.RemoveLogo = repo.RemoveLogo;
+                newRepo.ServiceAccounts = repo.ServiceAccounts;
+                newRepo.Dependencies = repo.Dependencies;
 
                 var list = new List<Models.UserModel>();
                 foreach (var user in repo.Users)
                 {
                     list.Add(users[user]);
                 }
-                newrepo.Users = list.ToArray();
+                newRepo.Users = list.ToArray();
 
                 list.Clear();
                 foreach(var admins in repo.Administrators)
                 {
                     list.Add(users[admins]);
                 }
-                newrepo.Administrators = list.ToArray();
+                newRepo.Administrators = list.ToArray();
 
                 var newteams = new List<Models.TeamModel>();
                 foreach(var team in repo.Teams)
                 {
                     newteams.Add(teams[team]);
                 }
-                newrepo.Teams = newteams.ToArray();
+                newRepo.Teams = newteams.ToArray();
 
                 var accountsList = new List<ServiceAccount>();
                 foreach (var serviceAccount in repo.ServiceAccounts)
                 {
                     accountsList.Add(serviceAccount);
                 }
-                newrepo.ServiceAccounts = accountsList.ToList();
+                newRepo.ServiceAccounts = accountsList.ToList();
 
                 var dependenciesList = new List<Dependency>();
                 foreach (var dependency in repo.Dependencies)
                 {
                     dependenciesList.Add(dependency);
                 }
-                newrepo.Dependencies = dependenciesList.ToList();
+                newRepo.Dependencies = dependenciesList.ToList();
 
-                ADBackend.Instance.Repositories.Add(newrepo);
+                ADBackend.Instance.Repositories.Add(newRepo);
             }
         }
 
@@ -208,20 +208,20 @@ namespace Bonobo.Git.Server.Data.Update.ADBackendUpdate
             var teams = Pre600Functions.LoadContent<Pre600TeamModel>(dir);
             var newTeams = new Dictionary<string, Models.TeamModel>();
             
-            foreach (var teamitem in teams)
+            foreach (var teamItem in teams)
             {
-                var team = teamitem.Value;
-                var newteam = new Models.TeamModel();
-                newteam.Name = team.Name;
-                newteam.Description = team.Description;
-                newteam.Id = Guid.NewGuid();
+                var team = teamItem.Value;
+                var newTeam = new Models.TeamModel();
+                newTeam.Name = team.Name;
+                newTeam.Description = team.Description;
+                newTeam.Id = Guid.NewGuid();
 
                 try
                 {
                     GroupPrincipal group;
                     PrincipalContext pc = ADHelper.GetPrincipalGroup(ActiveDirectorySettings.TeamNameToGroupNameMapping[team.Name], out group);
 
-                    newteam.Id = group.Guid.Value;
+                    newTeam.Id = group.Guid.Value;
                 }
                 catch (Exception ex)
                 {
@@ -234,10 +234,10 @@ namespace Bonobo.Git.Server.Data.Update.ADBackendUpdate
                 {
                     members.Add(users[member]);
                 }
-                newteam.Members = members.ToArray();
+                newTeam.Members = members.ToArray();
 
-                ADBackend.Instance.Teams.Add(newteam);
-                newTeams[team.Name] = newteam;
+                ADBackend.Instance.Teams.Add(newTeam);
+                newTeams[team.Name] = newTeam;
             }
             return newTeams;
         }

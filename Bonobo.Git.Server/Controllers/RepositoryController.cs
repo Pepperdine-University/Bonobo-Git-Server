@@ -155,8 +155,8 @@ namespace Bonobo.Git.Server.Controllers
 
         public Guid GenerateNewGuid(string componentName)
         {
-            KnownDependency knownDep = CreateKnownDependency(componentName);
-            return knownDep.Id;
+            KnownDependency knownDependency = CreateKnownDependency(componentName);
+            return knownDependency.Id;
         }
 
         public KnownDependency CreateKnownDependency(string componentName)
@@ -287,34 +287,27 @@ namespace Bonobo.Git.Server.Controllers
             return RedirectToAction("Index");
         }
 
-        [WebAuthorizeRepository]
-        public ActionResult Detail(Guid id)
+        public RepositoryDetailModel SetUrlsConvertRepo(Guid id)
         {
             ViewBag.ID = id;
-
             var model = ConvertRepositoryModel(RepositoryRepository.GetRepository(id), User);
             if (model != null)
             {
                 model.IsCurrentUserAdministrator = RepositoryPermissionService.HasPermission(User.Id(), model.Id, RepositoryAccessLevel.Administer);
                 SetGitUrls(model);
             }
-
-            return View(model);
+            return model;
+        }
+        [WebAuthorizeRepository]
+        public ActionResult Detail(Guid id)
+        {
+            return View(SetUrlsConvertRepo(id));
         }
 
         [WebAuthorizeRepository]
         public ActionResult Buttons(Guid id) //no matching view when there should be and not being used anywhere?
         {
-            ViewBag.ID = id;
-
-            var model = ConvertRepositoryModel(RepositoryRepository.GetRepository(id), User);
-            if (model != null)
-            {
-                model.IsCurrentUserAdministrator = RepositoryPermissionService.HasPermission(User.Id(), model.Id, RepositoryAccessLevel.Administer);
-                SetGitUrls(model);
-            }
-
-            return View(model);
+            return View(SetUrlsConvertRepo(id));
         }
 
 
@@ -322,45 +315,36 @@ namespace Bonobo.Git.Server.Controllers
         /// Construct the URLs for the repository
         /// (This code extracted from the view)
         /// </summary>
+        string CreateAddress()
+        {
+            UriBuilder uri = new UriBuilder();
+            uri.Scheme = Request.Url.Scheme;
+            uri.Host = Request.Url.Host;
+            uri.Port = Request.Url.Port;
+            uri.Path = Request.ApplicationPath;
+            return uri.ToString();
+        }
         void SetGitUrls(RepositoryDetailModel model)
         {
-            string serverAddress = System.Configuration.ConfigurationManager.AppSettings["GitServerPath"]
-                                   ?? string.Format("{0}://{1}{2}{3}/",
-                                       Request.Url.Scheme,
-                                       Request.Url.Host,
-                                       (Request.Url.IsDefaultPort ? "" : (":" + Request.Url.Port)),
-                                       Request.ApplicationPath == "/" ? "" : Request.ApplicationPath
-                                       );
-
-            model.GitUrl = String.Concat(serverAddress, model.Name, ".git");
+            string serverAddress = CreateAddress();
+            model.GitUrl = $"{serverAddress}{model.Name}.git";
             if (User.Identity.IsAuthenticated)
             {
-                model.PersonalGitUrl =
-                    String.Concat(serverAddress.Replace("://", "://" + Uri.EscapeDataString(User.Username()) + "@"), model.Name, ".git");
+                model.PersonalGitUrl = $"{serverAddress.Replace("://", "://" + Uri.EscapeDataString(User.Username()) + "@")}{model.Name}.git";
             }
         }
-
-        string GetUrls(string Name, string type)
+        string GetUrls(string name, string type)
         {
-            string serverAddress = System.Configuration.ConfigurationManager.AppSettings["GitServerPath"]
-                                   ?? string.Format("{0}://{1}{2}{3}/",
-                                       Request.Url.Scheme,
-                                       Request.Url.Host,
-                                       (Request.Url.IsDefaultPort ? "" : (":" + Request.Url.Port)),
-                                       Request.ApplicationPath == "/" ? "" : Request.ApplicationPath
-                                       );
-
-            string GitUrl = String.Concat(serverAddress, Name, ".git");
+            string serverAddress = CreateAddress();
+            string gitUrl = $"{serverAddress}{name}.git";
             if (User.Identity.IsAuthenticated && type == "PersonalUrl")
             {
-                string personalUrl =
-                     String.Concat(serverAddress.Replace("://", "://" + Uri.EscapeDataString(User.Username()) + "@"), Name, ".git");
+                string personalUrl = $"{serverAddress.Replace("://", "://" + Uri.EscapeDataString(User.Username()) + "@")}{name}.git";
                 return personalUrl;
             }
-            return GitUrl;
+            return gitUrl;
 
         }
-
 
         [WebAuthorizeRepository]
         public ActionResult Tree(Guid id, string encodedName, string encodedPath)
@@ -612,12 +596,6 @@ namespace Bonobo.Git.Server.Controllers
                         }
                     }
                     commit.Links = links;
-                }
-                var model = ConvertRepositoryModel(RepositoryRepository.GetRepository(id), User);
-                if (model != null)
-                {
-                    model.IsCurrentUserAdministrator = RepositoryPermissionService.HasPermission(User.Id(), model.Id, RepositoryAccessLevel.Administer);
-                    SetGitUrls(model);
                 }
 
                 return View(new RepositoryCommitsModel
