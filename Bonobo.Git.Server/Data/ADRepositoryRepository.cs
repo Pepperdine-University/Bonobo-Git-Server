@@ -97,7 +97,7 @@ namespace Bonobo.Git.Server.Data
             return GetAllRepositories().Where(repo => repo.Teams.Any(team => teamsId.Contains(team.Id))).ToList();
         }
 
-        public void DeleteDepen(Guid id)
+        public void DeleteDependency(Guid id)
         {
 
         }

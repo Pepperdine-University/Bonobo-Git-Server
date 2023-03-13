@@ -161,14 +161,14 @@ namespace Bonobo.Git.Server.Controllers
 
         public KnownDependency CreateKnownDependency(string componentName)
         {
-            KnownDependency newKnownDep = new KnownDependency
+            KnownDependency newKnownDependency = new KnownDependency
             {
                 Id = Guid.NewGuid(),
                 ComponentName = componentName
             };
-            if (RepositoryRepository.CreateKnownDep(newKnownDep) == true)
+            if (RepositoryRepository.CreateKnownDep(newKnownDependency))
             {
-                return newKnownDep;
+                return newKnownDependency;
             }
             return new KnownDependency
             {
@@ -303,7 +303,7 @@ namespace Bonobo.Git.Server.Controllers
         }
 
         [WebAuthorizeRepository]
-        public ActionResult Buttons(Guid id)
+        public ActionResult Buttons(Guid id) //no matching view when there should be and not being used anywhere?
         {
             ViewBag.ID = id;
 
