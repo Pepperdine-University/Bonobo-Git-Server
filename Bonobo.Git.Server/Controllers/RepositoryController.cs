@@ -148,8 +148,8 @@ namespace Bonobo.Git.Server.Controllers
             knownDependencies.Add(new KnownDependency
             {
                 Id = Guid.Empty,
-                ComponentName = "Add New..."
-            });
+                ComponentName = Resources.Depenedencies_AddNew
+            }) ; 
             model.KnownDependencies = knownDependencies;
         }
 
@@ -166,7 +166,7 @@ namespace Bonobo.Git.Server.Controllers
                 Id = Guid.NewGuid(),
                 ComponentName = componentName
             };
-            if (RepositoryRepository.CreateKnownDep(newKnownDependency))
+            if (RepositoryRepository.EFCreateKnownDependency(newKnownDependency))
             {
                 return newKnownDependency;
             }

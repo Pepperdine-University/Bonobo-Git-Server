@@ -14,7 +14,7 @@ namespace Bonobo.Git.Server.Data
         RepositoryModel GetRepository(Guid id);
         RepositoryModel GetRepository(string Name);
         bool Create(RepositoryModel repository);
-        bool CreateKnownDep(KnownDependency knownDependency);
+        bool EFCreateKnownDependency(KnownDependency knownDependency);
         void Update(RepositoryModel repository);
         void Delete(Guid id);
         bool NameIsUnique(string newName, Guid ignoreRepoId);

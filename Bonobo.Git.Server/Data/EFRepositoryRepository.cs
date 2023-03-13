@@ -199,7 +199,7 @@ namespace Bonobo.Git.Server.Data
             }
         }
 
-        public bool CreateKnownDep(KnownDependency knownDependency)
+        public bool EFCreateKnownDependency(KnownDependency knownDependency)
         {
             using (var database = CreateContext())
             {

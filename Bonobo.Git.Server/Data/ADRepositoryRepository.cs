@@ -20,7 +20,7 @@ namespace Bonobo.Git.Server.Data
             return ADBackend.Instance.Repositories.Add(SanitizeModel(repository));
         }
 
-        public bool CreateKnownDep(KnownDependency knownDependency)
+        public bool EFCreateKnownDependency(KnownDependency knownDependency)
         {
             // Make sure we don't already have a repo with this name
             //if (GetRepository(repository.Name) != null)
