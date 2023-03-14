@@ -8,6 +8,9 @@ a { color: #4183c4; text-decoration: none; }
 a:hover { text-decoration: underline; }
 .pure-button:hover { text-decoration: none; }
 i.fa { margin-right: 0.25em; }
+.hidden.hidden{
+    display:none;
+}
 
 table { width: 100%; margin: 2em 0; }
 th a { color: #333; }
@@ -51,14 +54,53 @@ div.pure-control-group.checkboxlist>span { display: inline-block; }
     color: white;
     background-color: #1e90ff;
     transform: translateX(2px);
+    background-color: white;
+    border: none;
+}
+.return-to-dropdown i{
+    color:red;
 }
 .pure-control-group .new-known-dependency {
     margin: 0px;
     display: none;
     position: relative;
 }
+.add-some-padding {
+    padding-top: 30px;
+}
+.rem-btn {
+    background-color: white;
+    border: none;
+}
+.rem-btn i{
+    color:red;
+}
+.dependency-details {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.add-little-padding {
+    padding-top: 10px;
+}
+label.removeVisualInput.dependency-label {
+    margin:0;
+    color: black;
+    display: inline-block;
+    font-size: 100%;
+    padding-right: 5px;
+    font-weight: normal;
+    max-width: 177px;
+    overflow: clip;
+}
 
+.overflow-ellipsis{
+    text-overflow:ellipsis;
+}
 
+.field-width{
+    width:250px;
+}
 table.repositories button.copy-to-clip-button {
     margin-left: 0px;
     border-radius: 5px;
