@@ -76,7 +76,7 @@ namespace Bonobo.Git.Server.Controllers
         [WebAuthorizeRepository(RequiresRepositoryAdministrator = true)]
         public ActionResult Edit(RepositoryDetailModel model)
         {
-            CheckIfKnownDependencyErrors(model);
+            HandleKnownDependencyErrors(model);
             if (ModelState.IsValid)
             {
                 var currentUserIsInAdminList = model.PostedSelectedAdministrators != null && model.PostedSelectedAdministrators.Contains(User.Id());
@@ -106,12 +106,12 @@ namespace Bonobo.Git.Server.Controllers
             return View(model);
         }
 
-        private void CheckIfKnownDependencyErrors(RepositoryDetailModel model)
+        private void HandleKnownDependencyErrors(RepositoryDetailModel model)
         {
+            PopulateKnownDependencyDropdownOptions(ref model);
             if (!ModelState.IsValid)
             {
-                PopulateKnownDependencyDropdownOptions(ref model);
-                var newDependencies = ModelState
+                var newDependencies = ModelState        // maybe change name, cause it's really newDependencies that used add new, newDependenciesWithNewComponentNames
                     .SelectMany(kvp => kvp.Value.Errors, (kvp, e) => new { kvp, e })
                     .Where(t => t.kvp.Value.Errors.Count >= 1)
                     .Where(t => Regex.Match(t.kvp.Key, @"^Dependencies\[\d+\]\.KnownDependenciesId$").Success)
@@ -120,10 +120,33 @@ namespace Bonobo.Git.Server.Controllers
                     .ToArray();
                 foreach (var newDependency in newDependencies)
                 {
-                    var duplicateDependency = model.KnownDependencies
+                    var duplicateKnownDependency = model.KnownDependencies        // checks if each newly created dependency has a newly added known dependency that already exists
                         .Where(kd => kd.ComponentName == newDependency.AttemptedValue)
                         .FirstOrDefault();
-                    if (duplicateDependency == null)
+                    var duplicateNewDependency = newDependencies                     // checks if two newly created dependencies have the same newly added known dependency
+                        .Where(d => d.AttemptedValue == newDependency.AttemptedValue && d.Key != newDependency.Key)
+                        .FirstOrDefault();
+                    if (duplicateKnownDependency != null)
+                    {
+                        newDependency.Errors.Clear();
+                        ModelState.AddModelError("", $"{Resources.Known_Dependency_CantHaveDuplicates}: {newDependency.AttemptedValue}");  
+                    }
+                    else if (duplicateNewDependency != null)
+                    {
+                        if (newDependency.Errors.Count >= 1)
+                        {
+                            var duplicateDependencyErrors = newDependencies
+                                .Where(nd => nd.AttemptedValue == newDependency.AttemptedValue)
+                                .Select(nd => nd.Errors)
+                                .ToList();
+                            foreach (var error in duplicateDependencyErrors)
+                            {
+                                error.Clear();
+                            }
+                            ModelState.AddModelError("", $"{Resources.Dependencies_CantHaveDuplicates}: {newDependency.AttemptedValue}");     // Make more general but still descriptive, remove knowndepid id specific error
+                        }
+                    }
+                    else
                     {
                         int dependencyIndex = int.Parse(Regex.Match(newDependency.Key, @"\d+").Value);
                         Guid newKnownDependenciesId = GenerateNewGuid(newDependency.AttemptedValue);
@@ -133,10 +156,30 @@ namespace Bonobo.Git.Server.Controllers
                                 System.Globalization.CultureInfo.InvariantCulture));
                         newDependency.Errors.Clear();
                     }
-                    else
+                    
+                }
+            }
+            if (ModelState.IsValid)     // Could still be duplicate dependencies if ModelState is valid, it just means the user didn't use add new
+            {
+                var newDependencies = model.Dependencies
+                    .Where(d => d.Id == Guid.Empty)
+                    .ToList();
+
+                foreach (var newDependency in newDependencies)
+                {
+                    var duplicateNewDependency = newDependencies
+                        .Where(d => d.KnownDependenciesId == newDependency.KnownDependenciesId);
+
+                    if (duplicateNewDependency.Count() >= 2)
                     {
-                        newDependency.Errors.Clear();
-                        ModelState.AddModelError("", Resources.Known_Dependency_CantHaveDuplicates);     // Ask question about where the key comes from
+                        //model.Dependencies.Remove(newDependency);         // this code is if we wanna remove one dependency so that one can be created
+                        //newDependencies.Remove(newDependency);
+                        var duplicateComponentName = model.KnownDependencies
+                            .Where(kd => kd.Id == newDependency.KnownDependenciesId)
+                            .Select(kd => kd.ComponentName)
+                            .SingleOrDefault();
+                        ModelState.AddModelError("", $"{Resources.Dependencies_CantHaveDuplicates}: {duplicateComponentName}");     // Maybe change message to Multiple Dependencies were created with the same component name
+                        break;                                                                                                                  // Should I just create one new dependency? I guess question for Dustin
                     }
                 }
             }
@@ -216,7 +259,7 @@ namespace Bonobo.Git.Server.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(RepositoryDetailModel model)
         {
-            CheckIfKnownDependencyErrors(model);
+            HandleKnownDependencyErrors(model);
             if (!RepositoryPermissionService.HasCreatePermission(User.Id()))
             {
                 return RedirectToAction("Unauthorized", "Home");

@@ -1020,4 +1020,7 @@ The regular C# string formatting rules apply: To get {} in your link you need to
   <data name="Known_Dependency_CantHaveDuplicates" xml:space="preserve">
     <value>The new component name that you entered already exists</value>
   </data>
+  <data name="Dependencies_CantHaveDuplicates" xml:space="preserve">
+    <value>Cannot create multiple dependencies with the same component name</value>
+  </data>
 </root>

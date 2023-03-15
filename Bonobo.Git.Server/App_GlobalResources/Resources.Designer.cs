@@ -529,6 +529,15 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot create multiple dependencies with the same component name.
+        /// </summary>
+        public static string Dependencies_CantHaveDuplicates {
+            get {
+                return ResourceManager.GetString("Dependencies_CantHaveDuplicates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date Updated.
         /// </summary>
         public static string Dependencies_DateUpdated {
