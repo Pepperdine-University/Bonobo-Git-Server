@@ -142,15 +142,15 @@ else
 
     <fieldset class="pure-control-group">
         <legend class="add-some-padding">
-            @Resources.SA
+            @Resources.ServiceAccount
         </legend>
        
         @if (Model != null)
         {   <table class="pure-table pure-control-group" id="service-account-table">
         <tr>
-            <th>@Resources.SA_Name</th>
-            <th>@Resources.SA_PassLastUpdated</th>
-            <th>@Resources.SA_InPassManager</th>
+            <th>@Resources.ServiceAccount_Name</th>
+            <th>@Resources.ServiceAccount_PassLastUpdated</th>
+            <th>@Resources.ServiceAccount_InPassManager</th>
         </tr>     
     @for (int i = 0; i < Model.ServiceAccounts.Count; i++)
     {
@@ -160,7 +160,6 @@ else
             <th class=" col pure-control-group">
                 @Html.TextBoxFor(m => m.ServiceAccounts[i].ServiceAccountName, htmlAttributes: new { @style = "width: 250px;" })
                 @Html.ValidationMessageFor(m => m.ServiceAccounts[i].ServiceAccountName)
-                @{ }
             </th>
             <th class="col pure-control-group">
                 @{var serviceAccountId = "ServiceAccounts_" + i + "__.PassLastUpdated";
@@ -198,7 +197,7 @@ else
     </fieldset>
 
     <div class="pure-control-group">
-        <button type="button" onclick=" newField(@Model.ServiceAccounts.Count);" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.SA_Add </button>
+        <button type="button" onclick=" newField(@Model.ServiceAccounts.Count);" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.ServiceAccount_Add </button>
     </div>
     <fieldset class="pure-control-group add-little-padding">
         <legend class="add-some-padding">
@@ -296,15 +295,20 @@ else
                         @Html.ValidationMessageFor(m => m.Dependencies[i].VersionInUse)
                     </th>
                     <th class="pure-control-group">
-                        @{var dependencyId = "Dependencies_" + i + "__.DateUpdated";
-                            var formattedDate = "1900-01-01";
+                        @{
+                            var dependencyId = "Dependencies_" + i + "__.DateUpdated";
                             if (Model.Dependencies[i].DateUpdated != null)
                             {
                                 var dateValue = Model.Dependencies[i].DateUpdated.ToString().Split('/');
-                                formattedDate = dateValue[2].Substring(0, 4) + "-" + (dateValue[0].Length == 1 ? "0" + dateValue[0] : dateValue[0]) + "-" + (dateValue[1].Length == 1 ? "0" + dateValue[1] : dateValue[1]);
+                                var formattedDate = dateValue[2].Substring(0, 4) + "-" + (dateValue[0].Length == 1 ? "0" + dateValue[0] : dateValue[0]) + "-" + (dateValue[1].Length == 1 ? "0" + dateValue[1] : dateValue[1]);
+                                <input class="form-control" type="date" id="@dependencyId" name="Dependencies[@i].DateUpdated" value="@formattedDate"/>
+                            }
+                            else
+                            {
+                                <input class="form-control" type="date" id="@dependencyId" name="Dependencies[@i].DateUpdated" />
                             }
                         }
-                            <input class="form-control" type="date" id="@dependencyId" name="Dependencies[@i].DateUpdated" value="@formattedDate" />
+
                         @Html.ValidationMessageFor(m => m.Dependencies[i].DateUpdated)
                     </th>
                     <th>

@@ -2088,92 +2088,92 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Service Accounts.
         /// </summary>
-        public static string SA {
+        public static string ServiceAccount {
             get {
-                return ResourceManager.GetString("SA", resourceCulture);
+                return ResourceManager.GetString("ServiceAccount", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Add Service Account.
         /// </summary>
-        public static string SA_Add {
+        public static string ServiceAccount_Add {
             get {
-                return ResourceManager.GetString("SA_Add", resourceCulture);
+                return ResourceManager.GetString("ServiceAccount_Add", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Delete Service Account.
         /// </summary>
-        public static string SA_Delete {
+        public static string ServiceAccount_Delete {
             get {
-                return ResourceManager.GetString("SA_Delete", resourceCulture);
+                return ResourceManager.GetString("ServiceAccount_Delete", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Id.
         /// </summary>
-        public static string SA_ID {
+        public static string ServiceAccount_ID {
             get {
-                return ResourceManager.GetString("SA_ID", resourceCulture);
+                return ResourceManager.GetString("ServiceAccount_ID", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to In Password Manager.
         /// </summary>
-        public static string SA_InPassManager {
+        public static string ServiceAccount_InPassManager {
             get {
-                return ResourceManager.GetString("SA_InPassManager", resourceCulture);
+                return ResourceManager.GetString("ServiceAccount_InPassManager", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Not In Password Manager.
         /// </summary>
-        public static string SA_InPassManager_False {
+        public static string ServiceAccount_InPassManager_False {
             get {
-                return ResourceManager.GetString("SA_InPassManager_False", resourceCulture);
+                return ResourceManager.GetString("ServiceAccount_InPassManager_False", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to In Password Manager.
         /// </summary>
-        public static string SA_InPassManager_True {
+        public static string ServiceAccount_InPassManager_True {
             get {
-                return ResourceManager.GetString("SA_InPassManager_True", resourceCulture);
+                return ResourceManager.GetString("ServiceAccount_InPassManager_True", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
-        public static string SA_Name {
+        public static string ServiceAccount_Name {
             get {
-                return ResourceManager.GetString("SA_Name", resourceCulture);
+                return ResourceManager.GetString("ServiceAccount_Name", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Password Last Updated .
         /// </summary>
-        public static string SA_PassLastUpdated {
+        public static string ServiceAccount_PassLastUpdated {
             get {
-                return ResourceManager.GetString("SA_PassLastUpdated", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Search.
-        /// </summary>
-        public static string Search {
-            get {
-                return ResourceManager.GetString("Search", resourceCulture);
+                return ResourceManager.GetString("ServiceAccount_PassLastUpdated", resourceCulture);
             }
         }
         

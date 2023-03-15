@@ -103,7 +103,7 @@
         <div class="sidebar-bordergrid">
 
             <label>
-                @Resources.SA
+                @Resources.ServiceAccount
             </label>
             @if (@Model.ServiceAccounts.Count > 0)
             {
@@ -118,21 +118,13 @@
                         <div class="pass-info">
                             <div class="pure-control-group">
                                 <div>
-                                        <label><i class="fa fa-@(serviceAccount.InPassManager? "check-": "")square-o"></i> @Resources.SA_InPassManager </label>
+                                        <label><i class="fa fa-@(serviceAccount.InPassManager? "check-": "")square-o"></i> @Resources.ServiceAccount_InPassManager </label>
                                 </div>
                             </div>
                             <div class="pure-control-group">
-                                <label>@Resources.SA_PassLastUpdated</label>
+                                <label>@Resources.ServiceAccount_PassLastUpdated</label>
                                 <div class="sidebar-text">
-                                    @{ if (serviceAccount.PassLastUpdated != null)
-                                        {
-                                            <input class="removeVisualInput" value="@serviceAccount.PassLastUpdated.ToString().Split(' ')[0]" readonly />
-                                        }
-                                        else
-                                        {
-                                            <input class="removeVisualInput" value="1990-01-01" readonly />
-                                        }
-                                    }
+                                        <input class="removeVisualInput" value="@serviceAccount.PassLastUpdated.ToString().Split(' ')[0]" readonly />
                                 </div>
                             </div>
                         </div>

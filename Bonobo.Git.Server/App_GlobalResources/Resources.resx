@@ -966,25 +966,25 @@ The regular C# string formatting rules apply: To get {} in your link you need to
   <data name="Repository_Layout_Code" xml:space="preserve">
     <value>Code</value>
   </data>
-  <data name="SA" xml:space="preserve">
+  <data name="ServiceAccount" xml:space="preserve">
     <value>Service Accounts</value>
   </data>
-  <data name="SA_Add" xml:space="preserve">
+  <data name="ServiceAccount_Add" xml:space="preserve">
     <value>Add Service Account</value>
   </data>
-  <data name="SA_Delete" xml:space="preserve">
+  <data name="ServiceAccount_Delete" xml:space="preserve">
     <value>Delete Service Account</value>
   </data>
-  <data name="SA_ID" xml:space="preserve">
+  <data name="ServiceAccount_ID" xml:space="preserve">
     <value>Id</value>
   </data>
-  <data name="SA_InPassManager" xml:space="preserve">
+  <data name="ServiceAccount_InPassManager" xml:space="preserve">
     <value>In Password Manager</value>
   </data>
-  <data name="SA_Name" xml:space="preserve">
+  <data name="ServiceAccount_Name" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="SA_PassLastUpdated" xml:space="preserve">
+  <data name="ServiceAccount_PassLastUpdated" xml:space="preserve">
     <value>Password Last Updated </value>
   </data>
   <data name="Dependencies" xml:space="preserve">
@@ -1008,10 +1008,10 @@ The regular C# string formatting rules apply: To get {} in your link you need to
   <data name="Known_Dependency_Name" xml:space="preserve">
     <value>ComponentName</value>
   </data>
-  <data name="SA_InPassManager_False" xml:space="preserve">
+  <data name="ServiceAccount_InPassManager_False" xml:space="preserve">
     <value>Not In Password Manager</value>
   </data>
-  <data name="SA_InPassManager_True" xml:space="preserve">
+  <data name="ServiceAccount_InPassManager_True" xml:space="preserve">
     <value>In Password Manager</value>
   </data>
   <data name="Depenedencies_AddNew" xml:space="preserve">
