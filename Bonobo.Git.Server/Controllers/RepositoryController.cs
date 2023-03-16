@@ -161,25 +161,28 @@ namespace Bonobo.Git.Server.Controllers
             }
             if (ModelState.IsValid)     // Could still be duplicate dependencies if ModelState is valid, it just means the user didn't use add new
             {
-                var newDependencies = model.Dependencies
-                    .Where(d => d.Id == Guid.Empty)
-                    .ToList();
-
-                foreach (var newDependency in newDependencies)
+                if (model.Dependencies != null)
                 {
-                    var duplicateNewDependency = newDependencies
-                        .Where(d => d.KnownDependenciesId == newDependency.KnownDependenciesId);
+                    var newDependencies = model.Dependencies
+                        .Where(d => d.Id == Guid.Empty)
+                        .ToList();
 
-                    if (duplicateNewDependency.Count() >= 2)
+                    foreach (var newDependency in newDependencies)
                     {
-                        //model.Dependencies.Remove(newDependency);         // this code is if we wanna remove one dependency so that one can be created
-                        //newDependencies.Remove(newDependency);
-                        var duplicateComponentName = model.KnownDependencies
-                            .Where(kd => kd.Id == newDependency.KnownDependenciesId)
-                            .Select(kd => kd.ComponentName)
-                            .SingleOrDefault();
-                        ModelState.AddModelError("", $"{Resources.Dependencies_CantHaveDuplicates}: {duplicateComponentName}");     // Maybe change message to Multiple Dependencies were created with the same component name
-                        break;                                                                                                                  // Should I just create one new dependency? I guess question for Dustin
+                        var duplicateNewDependency = newDependencies
+                            .Where(d => d.KnownDependenciesId == newDependency.KnownDependenciesId);
+
+                        if (duplicateNewDependency.Count() >= 2)
+                        {
+                            //model.Dependencies.Remove(newDependency);         // this code is if we wanna remove one dependency so that one can be created
+                            //newDependencies.Remove(newDependency);
+                            var duplicateComponentName = model.KnownDependencies
+                                .Where(kd => kd.Id == newDependency.KnownDependenciesId)
+                                .Select(kd => kd.ComponentName)
+                                .SingleOrDefault();
+                            ModelState.AddModelError("", $"{Resources.Dependencies_CantHaveDuplicates}: {duplicateComponentName}");     // Maybe change message to Multiple Dependencies were created with the same component name
+                            break;                                                                                                                  // Should I just create one new dependency? I guess question for Dustin
+                        }
                     }
                 }
             }

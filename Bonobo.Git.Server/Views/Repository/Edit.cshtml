@@ -221,10 +221,15 @@ else
                                 <option></option>
                                 //display first empty
                                 //create a dict using the var depen.
+                                //don't need dictionary, could use array or list cuase just keeping track of id
+                                //delete line of code in populate checkboxlistdata, fix error when two items with same key are added, add none?, not sure
                                 Dictionary<string, string> DependenciesDictionary = new Dictionary<string, string>();
-                                foreach (var Dependency in Model.Dependencies) //existing repo
+                                if (Model.Dependencies != null)
                                 {
-                                    DependenciesDictionary.Add(Dependency.KnownDependenciesId.ToString(), Dependency.KnownDependenciesId.ToString());
+                                    foreach (var Dependency in Model.Dependencies) //existing repo
+                                    {
+                                        DependenciesDictionary.Add(Dependency.KnownDependenciesId.ToString(), Dependency.KnownDependenciesId.ToString());
+                                    }
                                 }
                                 foreach (var knownDependency in Model.KnownDependencies) //all pre-existing
                                 {
@@ -272,61 +277,64 @@ else
                 <th>@Resources.Dependencies_VersionInUse</th>
                 <th>@Resources.Dependencies_DateUpdated</th>
             </tr>
-            @for (int i = 0; i < Model.Dependencies.Count; i++)
+            @if (Model.Dependencies != null && Model.Dependencies.Count > 0)
             {
-                <tr class="row Dependencies-details" id="Dependencies_@i" name="Dependencies-details">
-                    <th class="pure-control-group">
-                        <div class="hidden"> @Html.TextBoxFor(m => m.Dependencies[i].KnownDependency.ComponentName, htmlAttributes: new { @style = "width: 250px;" })</div>
-                        @Html.ValidationMessageFor(m => m.Dependencies[i].KnownDependency.ComponentName)
-                        @{
-                            var knownDependenciesList = new SelectList(Model.KnownDependencies, "Id", "ComponentName", Model.Dependencies[i].KnownDependenciesId);
+                for (int i = 0; i < Model.Dependencies.Count; i++)
+                {
+                    <tr class="row Dependencies-details" id="Dependencies_@i" name="Dependencies-details">
+                        <th class="pure-control-group">
+                            <div class="hidden"> @Html.TextBoxFor(m => m.Dependencies[i].KnownDependency.ComponentName, htmlAttributes: new { @style = "width: 250px;" })</div>
+                            @Html.ValidationMessageFor(m => m.Dependencies[i].KnownDependency.ComponentName)
+                            @{
+                                var knownDependenciesList = new SelectList(Model.KnownDependencies, "Id", "ComponentName", Model.Dependencies[i].KnownDependenciesId);
 
-                            @Html.DropDownListFor(m => m.Dependencies[i].KnownDependenciesId, knownDependenciesList, new
-                            {
-                                @class = "dropDownKD",
-                                @disabled = "disabled",
-                                @style = "width: 250px; color: #6B6B6B;",
-                                @onChange = "javascript: DisplayComponentNameNewInputField(this.id)"
-                            });
-                            var DepenId = Model.Dependencies[i].Id;
-                        }
-                    <th class="pure-control-group">
-                        @Html.TextBoxFor(m => m.Dependencies[i].VersionInUse)
-                        @Html.ValidationMessageFor(m => m.Dependencies[i].VersionInUse)
-                    </th>
-                    <th class="pure-control-group">
-                        @{
-                            var dependencyId = "Dependencies_" + i + "__.DateUpdated";
-                            if (Model.Dependencies[i].DateUpdated != null)
-                            {
-                                var dateValue = Model.Dependencies[i].DateUpdated.ToString().Split('/');
-                                var formattedDate = dateValue[2].Substring(0, 4) + "-" + (dateValue[0].Length == 1 ? "0" + dateValue[0] : dateValue[0]) + "-" + (dateValue[1].Length == 1 ? "0" + dateValue[1] : dateValue[1]);
-                                <input class="form-control" type="date" id="@dependencyId" name="Dependencies[@i].DateUpdated" value="@formattedDate"/>
+                                @Html.DropDownListFor(m => m.Dependencies[i].KnownDependenciesId, knownDependenciesList, new
+                                {
+                                    @class = "dropDownKD",
+                                    @disabled = "disabled",
+                                    @style = "width: 250px; color: #6B6B6B;",
+                                    @onChange = "javascript: DisplayComponentNameNewInputField(this.id)"
+                                });
+                                var DepenId = Model.Dependencies[i].Id;
                             }
-                            else
-                            {
-                                <input class="form-control" type="date" id="@dependencyId" name="Dependencies[@i].DateUpdated" />
+                        <th class="pure-control-group">
+                            @Html.TextBoxFor(m => m.Dependencies[i].VersionInUse)
+                            @Html.ValidationMessageFor(m => m.Dependencies[i].VersionInUse)
+                        </th>
+                        <th class="pure-control-group">
+                            @{
+                                var dependencyId = "Dependencies_" + i + "__.DateUpdated";
+                                if (Model.Dependencies[i].DateUpdated != null)
+                                {
+                                    var dateValue = Model.Dependencies[i].DateUpdated.ToString().Split('/');
+                                    var formattedDate = dateValue[2].Substring(0, 4) + "-" + (dateValue[0].Length == 1 ? "0" + dateValue[0] : dateValue[0]) + "-" + (dateValue[1].Length == 1 ? "0" + dateValue[1] : dateValue[1]);
+                                    <input class="form-control" type="date" id="@dependencyId" name="Dependencies[@i].DateUpdated" value="@formattedDate" />
+                                }
+                                else
+                                {
+                                    <input class="form-control" type="date" id="@dependencyId" name="Dependencies[@i].DateUpdated" />
+                                }
                             }
-                        }
 
-                        @Html.ValidationMessageFor(m => m.Dependencies[i].DateUpdated)
-                    </th>
-                    <th>
-                        <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_@i" title="Remove Dependency" class="rem-btn"><i class="fa fa-minus-circle"></i></button>
-                    </th>
-                    <th class="pure-control-group hidden">
-                        @Html.HiddenFor(m => m.Dependencies[i].Id);
-                        @Html.HiddenFor(m => m.Dependencies[i].RepositoryId);
-                        @Html.HiddenFor(m => m.Dependencies[i].KnownDependenciesId);
-                    </th>
-                </tr>
+                            @Html.ValidationMessageFor(m => m.Dependencies[i].DateUpdated)
+                        </th>
+                        <th>
+                            <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_@i" title="Remove Dependency" class="rem-btn"><i class="fa fa-minus-circle"></i></button>
+                        </th>
+                        <th class="pure-control-group hidden">
+                            @Html.HiddenFor(m => m.Dependencies[i].Id);
+                            @Html.HiddenFor(m => m.Dependencies[i].RepositoryId);
+                            @Html.HiddenFor(m => m.Dependencies[i].KnownDependenciesId);
+                        </th>
+                    </tr>
+                }
             }
 
         </table>
     </fieldset>
 
     <div class="pure-control-group">
-        <button type="button" onclick="DepennewField(@Model.Dependencies.Count);" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.Dependencies_Add </button>
+        <button type="button" onclick="DepennewField(@(Model.Dependencies != null? Model.Dependencies.Count: 0));" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.Dependencies_Add </button>
     </div>
     <div class="pure-controls">
         <a class="pure-button" href="@Url.Action("Tree", new { id = Model.Id, ServiceAccounts = Model.ServiceAccounts, Dependencies = Model.Dependencies })"><i class="fa fa-long-arrow-left"></i> @Resources.Repository_Edit_Back</a>
