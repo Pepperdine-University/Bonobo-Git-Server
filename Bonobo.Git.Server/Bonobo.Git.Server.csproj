@@ -656,6 +656,7 @@
     <Content Include="Views\Repository\Sidebar.cshtml" />
     <Content Include="Views\_ViewImports.cshtml" />
     <Content Include="Views\Repository\_NewKnownDependency.cshtml" />
+    <Content Include="Views\Repository\Buttons.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
