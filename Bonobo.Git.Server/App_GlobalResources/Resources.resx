@@ -994,7 +994,7 @@ The regular C# string formatting rules apply: To get {} in your link you need to
     <value>Add Dependencies</value>
   </data>
   <data name="Dependencies_DateUpdated" xml:space="preserve">
-    <value>Date Updated</value>
+    <value>Last Updated</value>
   </data>
   <data name="Dependencies_Delete" xml:space="preserve">
     <value>Delete Dependencies</value>
@@ -1022,5 +1022,14 @@ The regular C# string formatting rules apply: To get {} in your link you need to
   </data>
   <data name="Dependencies_CantHaveDuplicates" xml:space="preserve">
     <value>Cannot create multiple dependencies with the same component name</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="ServiceAccount_Future_Date" xml:space="preserve">
+    <value>Password Last Updated field cannot be in the future</value>
+  </data>
+  <data name="Dependency_Future_Date" xml:space="preserve">
+    <value>Last Updated field can not be in the future</value>
   </data>
 </root>

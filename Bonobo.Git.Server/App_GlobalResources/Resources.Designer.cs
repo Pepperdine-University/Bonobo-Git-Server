@@ -538,7 +538,7 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Date Updated.
+        ///   Looks up a localized string similar to Last Updated.
         /// </summary>
         public static string Dependencies_DateUpdated {
             get {
@@ -570,6 +570,15 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         public static string Dependencies_VersionInUse {
             get {
                 return ResourceManager.GetString("Dependencies_VersionInUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Updated field can not be in the future.
+        /// </summary>
+        public static string Dependency_Future_Date {
+            get {
+                return ResourceManager.GetString("Dependency_Future_Date", resourceCulture);
             }
         }
         
@@ -2124,6 +2133,15 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password Last Updated field cannot be in the future.
+        /// </summary>
+        public static string ServiceAccount_Future_Date {
+            get {
+                return ResourceManager.GetString("ServiceAccount_Future_Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Id.
         /// </summary>
         public static string ServiceAccount_ID {
@@ -2674,6 +2692,15 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         public static string Team_Index_Title {
             get {
                 return ResourceManager.GetString("Team_Index_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown.
+        /// </summary>
+        public static string Unknown {
+            get {
+                return ResourceManager.GetString("Unknown", resourceCulture);
             }
         }
         

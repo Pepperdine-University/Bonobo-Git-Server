@@ -77,6 +77,7 @@ namespace Bonobo.Git.Server.Controllers
         public ActionResult Edit(RepositoryDetailModel model)
         {
             HandleKnownDependencyErrors(model);
+            HandleFutureDateErrors(model);
             if (ModelState.IsValid)
             {
                 var currentUserIsInAdminList = model.PostedSelectedAdministrators != null && model.PostedSelectedAdministrators.Contains(User.Id());
@@ -106,6 +107,43 @@ namespace Bonobo.Git.Server.Controllers
             return View(model);
         }
 
+        private void HandleFutureDateErrors(RepositoryDetailModel model)
+        {
+            if (model.ServiceAccounts!= null)
+            {
+                //checks if Service Account Date is in the future
+            var newServiceAccounts = model.ServiceAccounts
+                        .Where(sa => sa.PassLastUpdated > DateTime.Today)
+                        .ToArray();
+                var numErrors = 1;
+            foreach (var newServiceAccount in newServiceAccounts)
+                {
+                    if (newServiceAccount != null && numErrors==1)
+                    {
+                        ModelState.AddModelError("", $"{@Resources.ServiceAccount_Future_Date}");
+                        numErrors = 0;
+                    }
+                }
+            }
+            if (model.Dependencies != null)
+            {
+                //checks if Dependencies Date is in the future
+                var newDependencies = model.Dependencies
+                            .Where(dependency => dependency.DateUpdated > DateTime.Today)
+                            .ToArray();
+                var numErrors = 1;
+                foreach (var newDependency in newDependencies)
+                {
+                    if (newDependency != null && numErrors == 1)
+                    {
+                        ModelState.AddModelError("", $"{@Resources.Dependency_Future_Date}");
+                        numErrors = 0;
+                    }
+                }
+            }
+
+
+        }
         private void HandleKnownDependencyErrors(RepositoryDetailModel model)
         {
             PopulateKnownDependencyDropdownOptions(ref model);
@@ -159,7 +197,7 @@ namespace Bonobo.Git.Server.Controllers
                     
                 }
             }
-            if (ModelState.IsValid)     // Could still be duplicate dependencies if ModelState is valid, it just means the user didn't use add new
+            if (ModelState.IsValid && model.Dependencies != null)     // Could still be duplicate dependencies if ModelState is valid, it just means the user didn't use add new
             {
                 if (model.Dependencies != null)
                 {
@@ -262,6 +300,7 @@ namespace Bonobo.Git.Server.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(RepositoryDetailModel model)
         {
+            HandleFutureDateErrors(model);
             HandleKnownDependencyErrors(model);
             if (!RepositoryPermissionService.HasCreatePermission(User.Id()))
             {

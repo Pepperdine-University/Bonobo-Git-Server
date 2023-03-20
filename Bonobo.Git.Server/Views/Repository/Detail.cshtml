@@ -118,13 +118,22 @@
                         <div class="pass-info">
                             <div class="pure-control-group">
                                 <div>
-                                        <label><i class="fa fa-@(serviceAccount.InPassManager? "check-": "")square-o"></i> @Resources.ServiceAccount_InPassManager </label>
+                                        <label><i class="fa fa-@(serviceAccount.InPassManager ? "check-" : "")square-o"></i> @Resources.ServiceAccount_InPassManager </label>
                                 </div>
                             </div>
                             <div class="pure-control-group">
                                 <label>@Resources.ServiceAccount_PassLastUpdated</label>
                                 <div class="sidebar-text">
-                                        <input class="removeVisualInput" value="@serviceAccount.PassLastUpdated.ToString().Split(' ')[0]" readonly />
+                                    @{ if (serviceAccount.PassLastUpdated != null)
+                                        {
+                                            <input class="removeVisualInput" value="@serviceAccount.PassLastUpdated.ToString().Split(' ')[0]" readonly />
+
+                                        }
+                                        else
+                                        {
+                                            <input class="removeVisualInput" value="@Resources.Unknown" readonly />
+                                        }
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -158,9 +167,19 @@
                         </summary>
                         <div class="pass-info">
                             <div class="pure-control-group">
-                                <label> Date Last Updated </label>
+                                <label> @Resources.Dependencies_DateUpdated </label>
                                 <div class="sidebar-text">
-                                    <input class="removeVisualInput" value="@dependency.DateUpdated.ToString().Split(' ')[0]" readonly />
+                                    @{
+                                        if (dependency.DateUpdated != null)
+                                        {
+                                            <input class="removeVisualInput" value="@dependency.DateUpdated.ToString().Split(' ')[0]" readonly />
+
+                                        }
+                                        else
+                                        {
+                                            <input class="removeVisualInput" value="@Resources.Unknown" readonly/>
+                                        }
+                                     }
                                 </div>
                             </div>
                         </div>

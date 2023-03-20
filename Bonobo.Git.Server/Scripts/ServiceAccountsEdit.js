@@ -57,7 +57,7 @@ function remField(id) {
     })
     
 }
-//function that recurivly updates indicies by replacing the place holder with the correct value
+//function that recursivly updates indicies by replacing the place holder with the correct value
 function setChildNameAndIdIndexes(element, placeholder, index) {
     if (element instanceof jQuery) {
         element = element.get(0);
