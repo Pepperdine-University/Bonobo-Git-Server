@@ -181,7 +181,7 @@ else
                 @Html.ValidationMessageFor(m => m.ServiceAccounts[i].InPassManager)
             </th>
             <th>
-                <button type="button" onclick=" remField(this.id);" id="@btnId" title="Remove Service Account" class="rem-btn"><i class="fa fa-minus-circle"></i></button>
+                <button type="button" onclick=" removeServiceAccount(this.id);" id="@btnId" title="Remove Service Account" class="rem-btn"><i class="fa fa-minus-circle"></i></button>
             </th>
             <th class="col pure-control-group hidden">
                 @Html.LabelFor(m => m.ServiceAccounts[i].Id)
@@ -197,7 +197,7 @@ else
     </fieldset>
 
     <div class="pure-control-group">
-        <button type="button" onclick=" newField(@Model.ServiceAccounts.Count);" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.ServiceAccount_Add </button>
+        <button type="button" onclick=" createServiceAccount(@Model.ServiceAccounts.Count);" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.ServiceAccount_Add </button>
     </div>
     <fieldset class="pure-control-group add-little-padding">
         <legend class="add-some-padding">
@@ -246,7 +246,7 @@ else
                         }
                     </select>
                     <div class="pure-control-group new-known-dependency" id="newKD-Dependencies_{i}__KnownDependenciesId">
-                        <input class="pure-form valid field-width" id="KDInputDependencies_{i}__KnownDependenciesId" type="text" style="width:250px;">
+                        <input class="pure-form valid field-width" id="KDInputDependencies_{i}__KnownDependenciesId" type="text">
                         <button class="return-to-dropdown" type="button" id="{i}" onclick="returnToDropdownFromKDInput(this.id)" title="Return to dropdown" style="background-color: white; border: none;"><i style="color:black;" class="fa fa-arrow-left"></i></button>
                     </div>
                 </th>
@@ -265,7 +265,7 @@ else
                     </span>
                 </th>
                 <th>
-                    <button class="rem-btn" type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_{i}" title="Remove Dependency"><i class="fa fa-minus-circle"></i></button>
+                    <button class="rem-btn" type="button" onclick="removeDependency(this.id);" id=" DependenciesBtn_{i}" title="Remove Dependency"><i class="fa fa-minus-circle"></i></button>
                 </th>
             </tr>
         </template>
@@ -319,7 +319,7 @@ else
                             @Html.ValidationMessageFor(m => m.Dependencies[i].DateUpdated)
                         </th>
                         <th>
-                            <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_@i" title="Remove Dependency" class="rem-btn"><i class="fa fa-minus-circle"></i></button>
+                            <button type="button" onclick="removeDependency(this.id);" id=" DependenciesBtn_@i" title="Remove Dependency" class="rem-btn"><i class="fa fa-minus-circle"></i></button>
                         </th>
                         <th class="pure-control-group hidden">
                             @Html.HiddenFor(m => m.Dependencies[i].Id);
@@ -329,12 +329,11 @@ else
                     </tr>
                 }
             }
-
         </table>
     </fieldset>
 
     <div class="pure-control-group">
-        <button type="button" onclick="DepennewField(@(Model.Dependencies != null? Model.Dependencies.Count: 0));" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.Dependencies_Add </button>
+        <button type="button" onclick="createDependency(@(Model.Dependencies != null? Model.Dependencies.Count: 0));" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.Dependencies_Add </button>
     </div>
     <div class="pure-controls">
         <a class="pure-button" href="@Url.Action("Tree", new { id = Model.Id, ServiceAccounts = Model.ServiceAccounts, Dependencies = Model.Dependencies })"><i class="fa fa-long-arrow-left"></i> @Resources.Repository_Edit_Back</a>
@@ -347,38 +346,5 @@ else
 }
 <script src="~/scripts/ServiceAccountsEdit.js"></script>
 <script src="~/scripts/DependenciesEdit.js"></script>
-<script>
-    function DisplayComponentNameNewInputField(dropDownID) {
-        inputField = document.getElementById("KDInput" + dropDownID);
-        dropDown = document.getElementById(dropDownID);
-        selectedValue = dropDown[dropDown.selectedIndex].text;
-        if (selectedValue == "Add New...") {
-            $("#newKD-" + dropDownID).css("display", "inline-block");
-            $("#" + dropDownID).css("display", "none");
-            changeNameOfInput(inputField, dropDown, 1);
-        }
-    }
-
-    function returnToDropdownFromKDInput(i) {
-        dropDownID = "Dependencies_" + i + "__KnownDependenciesId";
-        $("#" + dropDownID).css("display", "inline-block");
-        $("#newKD-" + dropDownID).css("display", "none");
-
-        document.getElementById("KDInput" + dropDownID).value = "";
-        document.getElementById(dropDownID).selectedIndex = 0;
-
-        changeNameOfInput(inputField, dropDown, 0);
-    }
-
-    function changeNameOfInput(inputField, dropDown, addNewSelected) {
-        if (addNewSelected) {
-            inputField.setAttribute("name", dropDown.name);
-            dropDown.setAttribute("name", "");
-        } else if (dropDown.name == "") {
-            dropDown.setAttribute("name", inputField.name);
-            inputField.setAttribute("name", "");
-        }
-    }
-</script>
 
 

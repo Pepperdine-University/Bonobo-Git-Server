@@ -108,7 +108,7 @@
         </table>
 </fieldset>
     <div class="pure-control-group">
-        <button type="button" onclick=" newField();" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.ServiceAccount_Add </button>
+        <button type="button" onclick=" createServiceAccount();" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.ServiceAccount_Add </button>
     </div>
     <fieldset class="pure-control-group add-little-padding">
         <legend>
@@ -163,13 +163,13 @@
                         </span>
                         <th />
                     <th>
-                        <button type="button" onclick="DepenremField(this.id);" id=" DependenciesBtn_{i}" title="Remove Dependency" class="rem-btn"><i class="fa fa-minus-circle"></i></button>
+                        <button type="button" onclick="removeDependency(this.id);" id=" DependenciesBtn_{i}" title="Remove Dependency" class="rem-btn"><i class="fa fa-minus-circle"></i></button>
                     </th>
                 </tr>
             </template>
     </fieldset>
         <div class="pure-control-group">
-            <button type="button" onclick="DepennewField(0);" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.Dependencies_Add </button>
+            <button type="button" onclick="createDependency(0);" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.Dependencies_Add </button>
         </div>
        
         <div class="pure-controls">
@@ -179,39 +179,4 @@
     </fieldset>
 <script src="~/scripts/ServiceAccountsEdit.js" asp-append-version="true"></script>
 <script src="~/scripts/DependenciesEdit.js" asp-append-version="true"></script>
-<script>
-    function DisplayComponentNameNewInputField(dropDownID) {
-        inputField = document.getElementById("KDInput" + dropDownID);
-        dropDown = document.getElementById(dropDownID);
-        selectedValue = dropDown[dropDown.selectedIndex].text;
-        if (selectedValue == "Add New...") {
-            console.log("Drop down id = ", dropDownID);
-            $("#newKD-" + dropDownID).css("display", "inline-block");
-            $("#" + dropDownID).css("display", "none");
-            changeNameOfInput(inputField, dropDown, 1);
-        } else {
-            $("#newKD-" + dropDownID).css("display", "none");
-            changeNameOfInput(inputField, dropDown, 0);
-        }
-    }
-
-    function returnToDropdownFromKDInput(i) {
-        dropDownID = "Dependencies_" + i + "__KnownDependenciesId";
-        $("#" + dropDownID).css("display", "inline-block");
-        $("#newKD-" + dropDownID).css("display", "none");
-
-        document.getElementById("KDInput" + dropDownID).value = "";
-        document.getElementById(dropDownID).selectedIndex = 0;
-    }
-
-    function changeNameOfInput(inputField, dropDown, addNewSelected) {
-        if (addNewSelected) {
-            inputField.setAttribute("name", dropDown.name);
-            dropDown.setAttribute("name", "");
-        } else if (dropDown.name == "") {
-            dropDown.setAttribute("name", inputField.name);
-            inputField.setAttribute("name", "");
-        }
-    }
-</script>
 }

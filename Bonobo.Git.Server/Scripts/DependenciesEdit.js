@@ -1,5 +1,5 @@
 ﻿//dynamically creates a new empty dependency field
-function DepennewField(count) { 
+function createDependency(count) { 
     var table = document.getElementById("dependencies-table");
     var row = table.insertRow();
     row.classList.add("row");
@@ -14,7 +14,7 @@ function DepennewField(count) {
     }
 }
 //dynamically deletes a dependency field when the delete button is clicked
-function DepenremField(id) {
+function removeDependency(id) {
     id = id.slice(-1);
     idStr = "Dependencies_" + id;
     console.log(idStr);
@@ -27,28 +27,35 @@ function DepenremField(id) {
         i++;
     })
 }
-//function that recurivly updates indicies by replacing the place holder with the correct value
-function setDepenChildNameAndIdIndexes(element, placeholder, index) {
-    if (element instanceof jQuery) {
-        element = element.get(0);
-    }
-;
-    if (element.children) {
-        Array.from(element.children).forEach((child) => {
-            if (element.id) {
-                element.id = element.id.replace(placeholder, index);
-            }
-            if (child.id) {
-                child.id = child.id.replace(placeholder, index);
-            }
-            if (child.name) {
-                child.name = child.name.replace(placeholder, index);
-            }
-            if (child.dataset.valmsgFor) {
-                child.dataset.valmsgFor = child.dataset.valmsgFor.replace(placeholder, index);
-            }
-            setChildNameAndIdIndexes(child, placeholder, index);
-        });
+
+function DisplayComponentNameNewInputField(dropDownID) {
+    inputField = document.getElementById("KDInput" + dropDownID);
+    dropDown = document.getElementById(dropDownID);
+    selectedValue = dropDown[dropDown.selectedIndex].text;
+    if (selectedValue == "Add New...") {
+        $("#newKD-" + dropDownID).css("display", "inline-block");
+        $("#" + dropDownID).css("display", "none");
+        changeNameOfInput(inputField, dropDown, 1);
     }
 }
 
+function returnToDropdownFromKDInput(i) {
+    dropDownID = "Dependencies_" + i + "__KnownDependenciesId";
+    $("#" + dropDownID).css("display", "inline-block");
+    $("#newKD-" + dropDownID).css("display", "none");
+
+    document.getElementById("KDInput" + dropDownID).value = "";
+    document.getElementById(dropDownID).selectedIndex = 0;
+
+    changeNameOfInput(inputField, dropDown, 0);
+}
+
+function changeNameOfInput(inputField, dropDown, addNewSelected) {
+    if (addNewSelected) {
+        inputField.setAttribute("name", dropDown.name);
+        dropDown.setAttribute("name", "");
+    } else if (dropDown.name == "") {
+        dropDown.setAttribute("name", inputField.name);
+        inputField.setAttribute("name", "");
+    }
+}

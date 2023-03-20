@@ -1,5 +1,5 @@
 ﻿//dynamically creates a new empty service account field
-function newField() {
+function createServiceAccount() {
     var table = document.getElementById("service-account-table");
     var row = table.insertRow();
     row.classList.add("row");
@@ -32,7 +32,7 @@ function newField() {
                         </span>
                     </th>
                     <th>
-                        <button type="button" onclick="remField(this.id);" id=" ServiceAccountBtn_{i}" title="Remove Service Account" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
+                        <button type="button" onclick="removeServiceAccount(this.id);" id=" ServiceAccountBtn_{i}" title="Remove Service Account" style="background-color: white; border: none;"><i style="color:red;" class="fa fa-minus-circle"></i></button>
                     </th>
                 </tr>`;
     var allDetailRows = $(".service-account-details");
@@ -45,7 +45,7 @@ function newField() {
 }
  
 //dynamically deletes a service account field when the delete button is clicked
-function remField(id) { 
+function removeServiceAccount(id) { 
     id = id.slice(-1);
     idStr = "ServiceAccounts_" + id;
     var account = document.getElementById(idStr);

@@ -30,7 +30,7 @@ namespace Bonobo.Git.Server.Data
 
             //repository.Id = Guid.NewGuid();
             //return ADBackend.Instance.Repositories.Add(SanitizeModel(repository));
-            return true;
+            throw new NotImplementedException();
         }
 
         public void Delete(Guid id)
