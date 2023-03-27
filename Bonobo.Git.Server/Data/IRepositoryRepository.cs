@@ -18,5 +18,7 @@ namespace Bonobo.Git.Server.Data
         void Update(RepositoryModel repository);
         void Delete(Guid id);
         bool NameIsUnique(string newName, Guid ignoreRepoId);
+        void CreateServiceAccount(RepositoryModel model, ServiceAccount serviceAccount);
+        void DeleteServiceAccount(RepositoryModel model, ServiceAccount serviceAccount);
     }
 }

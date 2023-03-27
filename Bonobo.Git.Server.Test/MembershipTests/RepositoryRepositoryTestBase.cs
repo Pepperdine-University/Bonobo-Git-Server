@@ -173,6 +173,116 @@ namespace Bonobo.Git.Server.Test.MembershipTests
             Assert.AreEqual(repo.AnonymousAccess, readBackRepo.AnonymousAccess);
             Assert.AreEqual(repo.AuditPushUser, readBackRepo.AuditPushUser);
             Assert.AreEqual(repo.Description, readBackRepo.Description);
+
+        }
+
+        [TestMethod]
+        public void ServiceAccountsPropertiesAreSavedOnUpdate()
+        {
+            var repo = MakeRepo("Repo1");
+            _repo.Create(repo);
+            repo.Name = "SonOfRepo";
+            ServiceAccount serviceAccount = new ServiceAccount();
+            serviceAccount.ServiceAccountName = "my new sa";
+            serviceAccount.PassLastUpdated = new DateTime(2001, 1, 1);
+            serviceAccount.InPassManager = true;
+            repo.ServiceAccounts = new System.Collections.Generic.List<ServiceAccount>
+            {
+                serviceAccount
+            };
+
+            _repo.Update(repo);
+
+            var readBackRepo = _repo.GetRepository("SonOfRepo");
+            for (int i = 0; i < repo.ServiceAccounts.Count(); i++)
+            {
+                Assert.AreEqual(repo.ServiceAccounts[i].ServiceAccountName, readBackRepo.ServiceAccounts[i].ServiceAccountName);
+                Assert.AreEqual(repo.ServiceAccounts[i].PassLastUpdated, readBackRepo.ServiceAccounts[i].PassLastUpdated);
+                Assert.AreEqual(repo.ServiceAccounts[i].InPassManager, readBackRepo.ServiceAccounts[i].InPassManager);
+            }
+        }
+
+        [TestMethod]
+        public void DependencyPropertiesAreSavedOnUpdate()
+        {
+            var repo = MakeRepo("Repo1");
+            _repo.Create(repo);
+            repo.Name = "SonOfRepo";
+            Dependency dependency = new Dependency();
+            dependency.KnownDependency.ComponentName = "my new sa";
+            dependency.DateUpdated = new DateTime(2011, 1, 1);
+            dependency.VersionInUse = "4.8";
+            repo.Dependencies = new System.Collections.Generic.List<Dependency>
+            {
+                dependency
+            };
+            _repo.Update(repo);
+
+            var readBackRepo = _repo.GetRepository("SonOfRepo");
+            for (int i = 0; i < repo.ServiceAccounts.Count(); i++)
+            {
+                Assert.AreEqual(repo.Dependencies[i].KnownDependency.ComponentName, readBackRepo.Dependencies[i].KnownDependency.ComponentName);
+                Assert.AreEqual(repo.Dependencies[i].DateUpdated, readBackRepo.Dependencies[i].DateUpdated);
+                Assert.AreEqual(repo.Dependencies[i].VersionInUse, readBackRepo.Dependencies[i].VersionInUse);
+            }
+        }
+
+        [TestMethod]
+        public void ServiceAccountsCanBeRemovedLeadingToNonNull()
+        {
+            var repo = MakeRepo("Repo1");
+            _repo.Create(repo);
+            repo.Name = "SonOfRepo";
+            ServiceAccount serviceAccount1 = new ServiceAccount();
+            serviceAccount1.ServiceAccountName = "my new sa";
+            serviceAccount1.PassLastUpdated = new DateTime(2001, 1, 1);
+            serviceAccount1.InPassManager = true;
+            ServiceAccount serviceAccount2 = new ServiceAccount();
+            serviceAccount2.ServiceAccountName = "deleted sa";
+            serviceAccount2.PassLastUpdated = new DateTime(2021, 1, 1);
+            serviceAccount2.InPassManager = false;
+            repo.ServiceAccounts = new System.Collections.Generic.List<ServiceAccount>
+            {
+                serviceAccount1,serviceAccount2
+            };
+            _repo.DeleteServiceAccount(repo, serviceAccount2);
+            Assert.AreEqual("my new sa",repo.ServiceAccounts.Single().ServiceAccountName);
+
+        }
+
+        [TestMethod]
+        public void ServiceAccountsCanBeRemovedLeadingToNull()
+        {
+            var repo = MakeRepo("Repo1");
+            _repo.Create(repo);
+            repo.Name = "SonOfRepo";
+            ServiceAccount serviceAccount = new ServiceAccount();
+            serviceAccount.ServiceAccountName = "my new sa";
+            serviceAccount.PassLastUpdated = new DateTime(2001, 1, 1);
+            serviceAccount.InPassManager = true;
+            
+            repo.ServiceAccounts = new System.Collections.Generic.List<ServiceAccount>
+            {
+                serviceAccount
+            };
+            _repo.DeleteServiceAccount(repo, serviceAccount);
+            Assert.IsTrue(repo.ServiceAccounts.Count() == 0);
+        }
+
+        [TestMethod]
+        public void ServiceAccountsCanBeAddedAfterCreate()
+        {
+            var repo = MakeRepo("Repo1");
+            
+            repo.Name = "SonOfRepo";
+            ServiceAccount serviceAccount = new ServiceAccount();
+            serviceAccount.ServiceAccountName = "my new sa";
+            serviceAccount.PassLastUpdated = new DateTime(2001, 1, 1);
+            serviceAccount.InPassManager = true;
+            repo.ServiceAccounts = new System.Collections.Generic.List<ServiceAccount>();
+            _repo.Create(repo);
+            repo.ServiceAccounts.Add(serviceAccount);
+            Assert.AreEqual("my new sa", repo.ServiceAccounts.Single().ServiceAccountName);
         }
 
         [TestMethod]

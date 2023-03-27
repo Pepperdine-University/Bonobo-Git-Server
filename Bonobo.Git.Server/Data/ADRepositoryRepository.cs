@@ -32,6 +32,18 @@ namespace Bonobo.Git.Server.Data
             //return ADBackend.Instance.Repositories.Add(SanitizeModel(repository));
             throw new NotImplementedException();
         }
+        public void UpdateServiceAccount(RepositoryModel model, Repository repo, BonoboGitServerContext db)
+        {
+            throw new NotImplementedException();
+        }
+        public void CreateServiceAccount(RepositoryModel model, ServiceAccount serviceAccount)
+        {
+            throw new NotImplementedException();
+        }
+        public void DeleteServiceAccount(RepositoryModel model, ServiceAccount serviceAccount)
+        {
+            throw new NotImplementedException();
+        }
 
         public void Delete(Guid id)
         {

@@ -199,6 +199,14 @@ namespace Bonobo.Git.Server.Data
                 return true;
             }
         }
+        public void DeleteServiceAccount(RepositoryModel model, ServiceAccount serviceAccount)
+        {
+            model.ServiceAccounts.Remove(serviceAccount);
+        }
+        public void CreateServiceAccount(RepositoryModel model, ServiceAccount serviceAccount)
+        {
+            model.ServiceAccounts.Remove(serviceAccount);
+        }
 
         public bool EFCreateKnownDependency(KnownDependency knownDependency)
         {
@@ -227,6 +235,46 @@ namespace Bonobo.Git.Server.Data
                 return true;
             }
         }
+        public void UpdateServiceAccount(RepositoryModel model, Repository repo, BonoboGitServerContext db)
+        {
+            if (model.ServiceAccounts != null)
+            {
+                //Update Service accounts in database when added with javascript
+                foreach (var serviceAccount in model.ServiceAccounts.ToList())
+                {
+                    var existingServiceAccount = repo.ServiceAccounts
+                        .Where(c => c.Id == serviceAccount.Id && c.Id != Guid.Parse("94cab580-0018-4a00-9bb4-bed27234ff22"))
+                        .SingleOrDefault();
+
+                    if (existingServiceAccount != null)
+                    {
+                        existingServiceAccount.RepositoryId = model.Id;
+                        db.Entry(existingServiceAccount).CurrentValues.SetValues(serviceAccount);
+                    }
+                    else
+                    {
+                        serviceAccount.Id = Guid.NewGuid();
+                        serviceAccount.RepositoryId = model.Id;
+                        repo.ServiceAccounts.Add(serviceAccount);
+                    }
+                }
+                //Updates Service accounts in database when deleted with javascript
+                foreach (var serviceAccount in repo.ServiceAccounts.Where(repoServiceAccount => model.ServiceAccounts.All(modelServiceAccount => modelServiceAccount.Id != repoServiceAccount.Id)).ToList())
+                {
+                    var removedServiceAccount = db.ServiceAccounts.FirstOrDefault(i => i.Id == serviceAccount.Id);
+                    db.ServiceAccounts.Remove(removedServiceAccount);
+                }         
+            }
+            else
+            {
+                foreach (var serviceAccount in repo.ServiceAccounts.ToList())
+                {
+                    var removedServiceAccount = db.ServiceAccounts.FirstOrDefault(i => i.Id == serviceAccount.Id);
+                    db.ServiceAccounts.Remove(removedServiceAccount);
+                }
+            }
+        }
+
 
         public void Update(RepositoryModel model)
         {
@@ -254,42 +302,7 @@ namespace Bonobo.Git.Server.Data
                     repo.LinksUrl = model.LinksUrl;
                     repo.LinksUseGlobal = model.LinksUseGlobal;
 
-                    if (model.ServiceAccounts != null)
-                    {
-                        //Update Service accounts in database when added with javascript
-                        foreach (var serviceAccount in model.ServiceAccounts.ToList())
-                        {
-                            var existingServiceAccount = repo.ServiceAccounts
-                                .Where(c => c.Id == serviceAccount.Id && c.Id != Guid.Parse("94cab580-0018-4a00-9bb4-bed27234ff22"))
-                                .SingleOrDefault();
-                            
-                            if (existingServiceAccount != null)
-                            {
-                                existingServiceAccount.RepositoryId = model.Id;
-                                db.Entry(existingServiceAccount).CurrentValues.SetValues(serviceAccount);
-                            }
-                            else
-                            {
-                                serviceAccount.Id = Guid.NewGuid();
-                                serviceAccount.RepositoryId = model.Id;
-                                repo.ServiceAccounts.Add(serviceAccount);
-                            }
-                        }
-                        //Updates Service accounts in database when deleted with javascript
-                        foreach (var serviceAccount in repo.ServiceAccounts.Where(repoServiceAccount => model.ServiceAccounts.All(modelServiceAccount => modelServiceAccount.Id != repoServiceAccount.Id)).ToList())
-                        {
-                            var removedServiceAccount = db.ServiceAccounts.FirstOrDefault(i => i.Id == serviceAccount.Id);
-                            db.ServiceAccounts.Remove(removedServiceAccount);
-                        }
-                    }
-                    else
-                    {
-                        foreach(var serviceAccount in repo.ServiceAccounts.ToList())
-                        {
-                            var removedServiceAccount = db.ServiceAccounts.FirstOrDefault(i => i.Id == serviceAccount.Id);
-                            db.ServiceAccounts.Remove(removedServiceAccount);
-                        }
-                    }
+                    UpdateServiceAccount(model, repo, db);
                     
                 
                     if (model.Dependencies != null)
