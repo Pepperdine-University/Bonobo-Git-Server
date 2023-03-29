@@ -77,7 +77,7 @@ namespace Bonobo.Git.Server.Test.MembershipTests
         public void RespositoryWithUsersCanBeAdded()
         {
             var newRepo = MakeRepo("Repo1");
-            newRepo.Users = new [] { AddUserFred() };
+            newRepo.Users = new[] { AddUserFred() };
 
             _repo.Create(newRepo);
 
@@ -182,10 +182,7 @@ namespace Bonobo.Git.Server.Test.MembershipTests
             var repo = MakeRepo("Repo1");
             _repo.Create(repo);
             repo.Name = "SonOfRepo";
-            ServiceAccount serviceAccount = new ServiceAccount();
-            serviceAccount.ServiceAccountName = "my new sa";
-            serviceAccount.PassLastUpdated = new DateTime(2001, 1, 1);
-            serviceAccount.InPassManager = true;
+            var serviceAccount = MakeServiceAccount("my new sa");
             repo.ServiceAccounts = new System.Collections.Generic.List<ServiceAccount>
             {
                 serviceAccount
@@ -207,11 +204,7 @@ namespace Bonobo.Git.Server.Test.MembershipTests
         {
             var repo = MakeRepo("Repo1");
             _repo.Create(repo);
-            repo.Name = "SonOfRepo";
-            Dependency dependency = new Dependency();
-            dependency.KnownDependency.ComponentName = "my new sa";
-            dependency.DateUpdated = new DateTime(2011, 1, 1);
-            dependency.VersionInUse = "4.8";
+            var dependency = MakeDependency("my dependency");
             repo.Dependencies = new System.Collections.Generic.List<Dependency>
             {
                 dependency
@@ -232,21 +225,14 @@ namespace Bonobo.Git.Server.Test.MembershipTests
         {
             var repo = MakeRepo("Repo1");
             _repo.Create(repo);
-            repo.Name = "SonOfRepo";
-            ServiceAccount serviceAccount1 = new ServiceAccount();
-            serviceAccount1.ServiceAccountName = "my new sa";
-            serviceAccount1.PassLastUpdated = new DateTime(2001, 1, 1);
-            serviceAccount1.InPassManager = true;
-            ServiceAccount serviceAccount2 = new ServiceAccount();
-            serviceAccount2.ServiceAccountName = "deleted sa";
-            serviceAccount2.PassLastUpdated = new DateTime(2021, 1, 1);
-            serviceAccount2.InPassManager = false;
+            var serviceAccount1 = MakeServiceAccount("my new sa");
+            var serviceAccount2 = MakeServiceAccount("deleted sa");
             repo.ServiceAccounts = new System.Collections.Generic.List<ServiceAccount>
             {
                 serviceAccount1,serviceAccount2
             };
             _repo.DeleteServiceAccount(repo, serviceAccount2);
-            Assert.AreEqual("my new sa",repo.ServiceAccounts.Single().ServiceAccountName);
+            Assert.AreEqual("my new sa", repo.ServiceAccounts.Single().ServiceAccountName);
 
         }
 
@@ -256,11 +242,7 @@ namespace Bonobo.Git.Server.Test.MembershipTests
             var repo = MakeRepo("Repo1");
             _repo.Create(repo);
             repo.Name = "SonOfRepo";
-            ServiceAccount serviceAccount = new ServiceAccount();
-            serviceAccount.ServiceAccountName = "my new sa";
-            serviceAccount.PassLastUpdated = new DateTime(2001, 1, 1);
-            serviceAccount.InPassManager = true;
-            
+            var serviceAccount = MakeServiceAccount("my new sa");
             repo.ServiceAccounts = new System.Collections.Generic.List<ServiceAccount>
             {
                 serviceAccount
@@ -273,16 +255,42 @@ namespace Bonobo.Git.Server.Test.MembershipTests
         public void ServiceAccountsCanBeAddedAfterCreate()
         {
             var repo = MakeRepo("Repo1");
-            
-            repo.Name = "SonOfRepo";
-            ServiceAccount serviceAccount = new ServiceAccount();
-            serviceAccount.ServiceAccountName = "my new sa";
-            serviceAccount.PassLastUpdated = new DateTime(2001, 1, 1);
-            serviceAccount.InPassManager = true;
-            repo.ServiceAccounts = new System.Collections.Generic.List<ServiceAccount>();
+            var serviceAccount = MakeServiceAccount("my new sa");
+            repo.ServiceAccounts = new System.Collections.Generic.List<ServiceAccount>
+            {
+                serviceAccount
+            };
             _repo.Create(repo);
             repo.ServiceAccounts.Add(serviceAccount);
             Assert.AreEqual("my new sa", repo.ServiceAccounts.Single().ServiceAccountName);
+        }
+
+        [TestMethod]
+        public void ServiceAccountCantHaveFutureDates()
+        {
+            var repo = MakeRepo("Repo1");
+            _repo.Create(repo);
+            var serviceAccount = MakeServiceAccount("my new sa");
+            serviceAccount.PassLastUpdated = DateTime.Today.AddDays(2);
+            repo.ServiceAccounts = new System.Collections.Generic.List<ServiceAccount>
+            {
+                serviceAccount
+            };
+            Assert.IsFalse(_repo.HandleFutureDateErrors(repo));
+        }
+
+        [TestMethod]
+        public void DependenciesCantHaveFutureDates()
+        {
+            var repo = MakeRepo("Repo1");
+            _repo.Create(repo);
+            var dependency = MakeDependency("my dependency");
+            dependency.DateUpdated = DateTime.Today.AddDays(2);
+            repo.Dependencies = new System.Collections.Generic.List<Dependency>
+            {
+                dependency
+            };
+            Assert.IsFalse(_repo.HandleFutureDateErrors(repo));
         }
 
         [TestMethod]
@@ -412,6 +420,27 @@ namespace Bonobo.Git.Server.Test.MembershipTests
             var newRepo = new RepositoryModel();
             newRepo.Name = name;
             return newRepo;
+        }
+        private static ServiceAccount MakeServiceAccount(string name)
+        {
+            ServiceAccount serviceAccount = new ServiceAccount();
+            serviceAccount.ServiceAccountName = name;
+            serviceAccount.PassLastUpdated = new DateTime(2015, 5,5);
+            serviceAccount.InPassManager = true;
+            return serviceAccount;
+        }
+
+        private static Dependency MakeDependency(string name)
+        {
+            Dependency dependency = new Dependency();
+            dependency.KnownDependency = new KnownDependency()
+            {
+                ComponentName = "Test"
+            };
+            dependency.KnownDependency.ComponentName = name;
+            dependency.DateUpdated = new DateTime(2011, 1, 1);
+            dependency.VersionInUse = "4.8";
+            return dependency;
         }
         private static Dependency AddDependencytoRepo(RepositoryModel repo)
         {

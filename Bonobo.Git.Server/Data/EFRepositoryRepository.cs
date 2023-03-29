@@ -1,4 +1,5 @@
-﻿using Bonobo.Git.Server.Models;
+﻿using Bonobo.Git.Server.App_GlobalResources;
+using Bonobo.Git.Server.Models;
 using LibGit2Sharp;
 using Serilog;
 using System;
@@ -201,11 +202,47 @@ namespace Bonobo.Git.Server.Data
         }
         public void DeleteServiceAccount(RepositoryModel model, ServiceAccount serviceAccount)
         {
-            model.ServiceAccounts.Remove(serviceAccount);
+             model.ServiceAccounts.Remove(serviceAccount);
         }
         public void CreateServiceAccount(RepositoryModel model, ServiceAccount serviceAccount)
         {
-            model.ServiceAccounts.Remove(serviceAccount);
+            model.ServiceAccounts.Add(serviceAccount);
+        }
+        public bool HandleFutureDateErrors(RepositoryModel repo)
+        {
+            if (repo.ServiceAccounts != null)
+            {
+                //checks if Service Account Date is in the future
+                var newServiceAccounts = repo.ServiceAccounts
+                            .Where(sa => sa.PassLastUpdated > DateTime.Today)
+                            .ToArray();
+                var numErrors = 1;
+                foreach (var newServiceAccount in newServiceAccounts)
+                {
+                    if (newServiceAccount != null && numErrors == 1)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            if (repo.Dependencies != null)
+            {
+                //checks if Dependencies Date is in the future
+                var newDependencies = repo.Dependencies
+                            .Where(dependency => dependency.DateUpdated > DateTime.Today)
+                            .ToArray();
+                var numErrors = 1;
+                foreach (var newDependency in newDependencies)
+                {
+                    if (newDependency != null && numErrors == 1)
+                    { 
+                        return false;
+                    }
+                }
+                return true;
+            }
+            return true;
         }
 
         public bool EFCreateKnownDependency(KnownDependency knownDependency)
@@ -235,7 +272,7 @@ namespace Bonobo.Git.Server.Data
                 return true;
             }
         }
-        public void UpdateServiceAccount(RepositoryModel model, Repository repo, BonoboGitServerContext db)
+        public void UpdateServiceAccounts(RepositoryModel model, Repository repo, BonoboGitServerContext db)
         {
             if (model.ServiceAccounts != null)
             {
@@ -275,6 +312,56 @@ namespace Bonobo.Git.Server.Data
             }
         }
 
+        public void UpdateDependencies(RepositoryModel model, Repository repo, BonoboGitServerContext db)
+        {
+            if (model.Dependencies != null)
+            {
+                //Updates Dependencies in database when added with javascript
+                // could check if the dependency.knowndependencyid is equal to the add new id, then you know you have to look in the input field, but how do u get access to the contents of that input field from the backend?
+                foreach (var dependency in model.Dependencies.ToList())
+                {
+                    dependency.KnownDependency = db.KnownDependencies.FirstOrDefault(i => i.Id == dependency.KnownDependenciesId);
+                    var existingDependency = repo.Dependencies
+                        .Where(c => c.Id == dependency.Id && c.Id != null)
+                        .SingleOrDefault();
+
+                    if (existingDependency != null)
+                    {
+                        existingDependency.RepositoryId = model.Id;
+                        db.Entry(existingDependency).CurrentValues.SetValues(dependency);
+                    }
+                    else
+                    {
+                        dependency.Id = Guid.NewGuid();
+                        dependency.RepositoryId = model.Id;
+                        repo.Dependencies.Add(dependency);
+                    }
+
+                    //var duplicateDependency = model.Dependencies
+                    //    .Where(d => d.KnownDependency.ComponentName == dependency.KnownDependency.ComponentName && d.Id != dependency.Id)
+                    //    .FirstOrDefault();
+                    //if (duplicateDependency != null)
+                    //{
+
+                    //}
+                }
+                //Updates Dependencies in database when deleted with javascript
+                foreach (var dependency in repo.Dependencies.Where(repoDep => model.Dependencies.All(modelDep => modelDep.Id != repoDep.Id)).ToList())
+                {
+                    var dep = db.Dependencies.FirstOrDefault(i => i.Id == dependency.Id);
+                    db.Dependencies.Remove(dep);
+                }
+            }
+            else
+            {
+                foreach (var dependency in repo.Dependencies.ToList())
+                {
+                    var dep = db.Dependencies.FirstOrDefault(i => i.Id == dependency.Id);
+                    db.Dependencies.Remove(dep);
+                }
+            }
+
+        }
 
         public void Update(RepositoryModel model)
         {
@@ -287,7 +374,6 @@ namespace Bonobo.Git.Server.Data
                                 .Include(r => r.ServiceAccounts)
                                 .Include(r => r.Dependencies.Select(d => d.KnownDependency))
                                 .FirstOrDefault(i => i.Id == model.Id);
-
                 if (repo != null)
                 {
                     model.EnsureCollectionsAreValid();
@@ -301,55 +387,11 @@ namespace Bonobo.Git.Server.Data
                     repo.LinksRegex = model.LinksRegex;
                     repo.LinksUrl = model.LinksUrl;
                     repo.LinksUseGlobal = model.LinksUseGlobal;
-
-                    UpdateServiceAccount(model, repo, db);
-                    
                 
-                    if (model.Dependencies != null)
+                    if (HandleFutureDateErrors(model))
                     {
-                        //Updates Dependencies in database when added with javascript
-                        // could check if the dependency.knowndependencyid is equal to the add new id, then you know you have to look in the input field, but how do u get access to the contents of that input field from the backend?
-                        foreach (var dependency in model.Dependencies.ToList())
-                        {
-                            dependency.KnownDependency = db.KnownDependencies.FirstOrDefault(i => i.Id == dependency.KnownDependenciesId);
-                            var existingDependency = repo.Dependencies
-                                .Where(c => c.Id == dependency.Id && c.Id != null)
-                                .SingleOrDefault();
-
-                            if (existingDependency != null)
-                            {
-                                existingDependency.RepositoryId = model.Id;
-                                db.Entry(existingDependency).CurrentValues.SetValues(dependency);
-                            }
-                            else
-                            {
-                                dependency.Id = Guid.NewGuid();
-                                dependency.RepositoryId = model.Id;
-                                repo.Dependencies.Add(dependency);
-                            }
-
-                            //var duplicateDependency = model.Dependencies
-                            //    .Where(d => d.KnownDependency.ComponentName == dependency.KnownDependency.ComponentName && d.Id != dependency.Id)
-                            //    .FirstOrDefault();
-                            //if (duplicateDependency != null)
-                            //{
-                                
-                            //}
-                        }
-                        //Updates Dependencies in database when deleted with javascript
-                        foreach (var dependency in repo.Dependencies.Where(repoDep => model.Dependencies.All(modelDep => modelDep.Id != repoDep.Id)).ToList())
-                        {
-                            var dep = db.Dependencies.FirstOrDefault(i => i.Id == dependency.Id);
-                            db.Dependencies.Remove(dep);
-                        }
-                    }
-                    else
-                    {
-                        foreach (var dependency in repo.Dependencies.ToList())
-                        {
-                            var dep = db.Dependencies.FirstOrDefault(i => i.Id == dependency.Id);
-                            db.Dependencies.Remove(dep);
-                        }
+                        UpdateServiceAccounts(model, repo, db);
+                        UpdateDependencies(model, repo, db);
                     }
 
                     if (model.Logo != null)
