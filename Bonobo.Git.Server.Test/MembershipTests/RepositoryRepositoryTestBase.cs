@@ -382,6 +382,28 @@ namespace Bonobo.Git.Server.Test.MembershipTests
             Assert.AreEqual(0, _repo.GetTeamRepositories(new[] { team.Id }).Count);
         }
 
+        [TestMethod]
+        public void CanCreateDependencyOnUpdate()
+        {
+            var repo = MakeRepo("Repo1");
+            AddDependencytoRepo(repo);
+            repo.Dependencies = new System.Collections.Generic.List<Dependency>();
+            _repo.Create(repo);
+            repo.Dependencies.Add(AddDependencytoRepo(repo));
+            Assert.AreEqual("1.0.0", repo.Dependencies.Single().VersionInUse);
+        }
+
+        [TestMethod]
+        public void CanCreateKnownDependencyOnUpdate()
+        {
+            var repo = MakeRepo("Repo1");
+            AddDependencytoRepo(repo);
+            repo.Dependencies = new System.Collections.Generic.List<Dependency>();
+            _repo.Create(repo);
+            repo.Dependencies.Add(AddDependencytoRepo(repo));
+            Assert.AreEqual("jQuery", repo.Dependencies.Single().KnownDependency.ComponentName);
+        }
+
         protected abstract UserModel AddUserFred();
         protected abstract TeamModel AddTeam();
 
@@ -390,6 +412,19 @@ namespace Bonobo.Git.Server.Test.MembershipTests
             var newRepo = new RepositoryModel();
             newRepo.Name = name;
             return newRepo;
+        }
+        private static Dependency AddDependencytoRepo(RepositoryModel repo)
+        {
+            var dependency = new Dependency();
+            var knownDependency = new KnownDependency();
+            string versionInUse = "1.0.0";
+            dependency.VersionInUse = versionInUse;
+            DateTime dateUpdated = new DateTime(2000, 1, 1);
+            dependency.DateUpdated = dateUpdated;
+            string componentName = "jQuery";
+            dependency.KnownDependency = knownDependency;
+            dependency.KnownDependency.ComponentName = componentName;
+            return dependency;
         }
     }
 }
