@@ -266,6 +266,36 @@ namespace Bonobo.Git.Server.Test.MembershipTests
         }
 
         [TestMethod]
+        public void ServiceAccountsCanBeAddedAfterUpdateFromNull()
+        {
+            var repo = MakeRepo("Repo1");
+            var serviceAccount = MakeServiceAccount("my new sa");
+            repo.ServiceAccounts = new System.Collections.Generic.List<ServiceAccount>
+            {
+                serviceAccount
+            };
+            _repo.Update(repo);
+            Assert.AreEqual("my new sa", repo.ServiceAccounts.Single().ServiceAccountName);
+        }
+
+        [TestMethod]
+        public void ServiceAccountsCanBeAddedAfterUpdateFromNonNull()
+        {
+            var repo = MakeRepo("Repo1");
+            var serviceAccount = MakeServiceAccount("my new sa");
+            repo.ServiceAccounts = new System.Collections.Generic.List<ServiceAccount>
+            {
+                serviceAccount
+            };
+            _repo.Update(repo);
+            var serviceAccount2 = MakeServiceAccount("my other new sa");
+            repo.ServiceAccounts.Add(serviceAccount2);
+            _repo.Update(repo);
+            Assert.AreEqual("my new sa", repo.ServiceAccounts[0].ServiceAccountName);
+            Assert.AreEqual("my other new sa", repo.ServiceAccounts[1].ServiceAccountName);
+        }
+
+        [TestMethod]
         public void ServiceAccountCantHaveFutureDates()
         {
             var repo = MakeRepo("Repo1");

@@ -159,7 +159,7 @@ namespace Bonobo.Git.Server.Controllers
                 foreach (var newDependency in newDependencies)
                 {
                     var duplicateKnownDependency = model.KnownDependencies        // checks if each newly created dependency has a newly added known dependency that already exists
-                        .Where(kd => kd.ComponentName == newDependency.AttemptedValue)
+                        .Where(kd => kd.ComponentName.ToLower() == newDependency.AttemptedValue.ToLower())
                         .FirstOrDefault();
                     var duplicateNewDependency = newDependencies                     // checks if two newly created dependencies have the same newly added known dependency
                         .Where(d => d.AttemptedValue == newDependency.AttemptedValue && d.Key != newDependency.Key)
