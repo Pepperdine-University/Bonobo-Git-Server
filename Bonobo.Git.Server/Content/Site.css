@@ -245,7 +245,8 @@ Tags .tag a { background-color: rgba(148, 190, 214, 1); border-radius: 5px; colo
     cursor: pointer;
 }
 h2.group { margin: 0; }
-td.description { width: 50%; }
+td.description { width: 50%; min-width: 100px; }
+td.name { min-width: 70px;}
 td.logo { width: 36px; }
 
 h2.group .toggle:after { display: inline-block; font-family: FontAwesome; top: 0; content: "\f056"; height: 100%; width: 20px; cursor: pointer; color: #4183c4; }

@@ -136,7 +136,7 @@
                                     @class = "RepositoryName detail" + (item.Logo.Exists ? " customLogo" : ""),
                                     @id = "repo_" + item.Id,
                                 }
-                                )));
+                                ), style: "name"));
 
                     if (User.IsInRole(Definitions.Roles.Administrator))
                     {
