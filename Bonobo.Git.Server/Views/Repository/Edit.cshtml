@@ -92,8 +92,8 @@ else
        {
            @onClick = "document.getElementById('LinksRegex').disabled = this.checked; " +
  "document.getElementById('LinksUrl').disabled =  this.checked; " +
- "document.getElementById('LinksRegex').disabled? document.getElementById('LinksRegex').value = '': ''; " +
- "document.getElementById('LinksUrl').disabled? document.getElementById('LinksUrl').value = '': '';"
+ "document.getElementById('LinksRegex').disabled? document.getElementById('LinksRegex').value = '': document.getElementById('LinksRegex').value = ''; " +
+ "document.getElementById('LinksUrl').disabled? document.getElementById('LinksUrl').value = '': document.getElementById('LinksUrl').value = '';"
        })
         </div>
         <div class="pure-control-group">

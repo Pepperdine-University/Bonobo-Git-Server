@@ -520,7 +520,7 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add Dependencies.
+        ///   Looks up a localized string similar to Add Dependency.
         /// </summary>
         public static string Dependencies_Add {
             get {

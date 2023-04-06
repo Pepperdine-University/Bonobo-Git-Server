@@ -991,7 +991,7 @@ The regular C# string formatting rules apply: To get {} in your link you need to
     <value>Dependencies</value>
   </data>
   <data name="Dependencies_Add" xml:space="preserve">
-    <value>Add Dependencies</value>
+    <value>Add Dependency</value>
   </data>
   <data name="Dependencies_DateUpdated" xml:space="preserve">
     <value>Last Updated</value>
