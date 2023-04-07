@@ -966,6 +966,15 @@ The regular C# string formatting rules apply: To get {} in your link you need to
   <data name="Repository_Layout_Code" xml:space="preserve">
     <value>Code</value>
   </data>
+	<data name="Search_Service_Accounts_Title" xml:space="preserve">
+    <value>Search Out of Date Service Accounts</value>
+  </data>
+<data name="ServiceAccount_RepoName" xml:space="preserve">
+    <value>Repository Name</value>
+  </data>
+	<data name="Search_Service_Accounts_IndexTitle" xml:space="preserve">
+    <value>Search Service Accounts</value>
+  </data>
   <data name="ServiceAccount" xml:space="preserve">
     <value>Service Accounts</value>
   </data>

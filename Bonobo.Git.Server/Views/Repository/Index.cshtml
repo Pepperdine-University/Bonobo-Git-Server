@@ -44,6 +44,7 @@
         }
 
         <a class="pure-button pure-button-primary" href="@Url.Action("Index", sortGroup)"><i class="fa fa-sort"></i> @Resources.Repository_Index_SortGroup</a>
+        <a class="pure-button pure-button-primary" href="@Url.Action("SearchServiceAccounts")"><i class="fa fa-search"></i> @Resources.Search_Service_Accounts_IndexTitle</a>
 
         @if (User.IsInRole(Definitions.Roles.Administrator) || UserConfiguration.Current.AllowUserRepositoryCreation)
         {
@@ -148,12 +149,13 @@
                                 var anonTitle = Resources.Repository_Detail_Anonymous + ": " + (repo.AllowAnonymous ? Resources.Yes : Resources.No);
 
                                 var pushSetting = UserConfiguration.Current.AllowAnonymousPush;
-                                if(repo.AllowAnonymousPush != RepositoryPushMode.Global){
+                                if(repo.AllowAnonymousPush != RepositoryPushMode.Global)
+                                {
                                     pushSetting = repo.AllowAnonymousPush == RepositoryPushMode.Yes;
                                 }
-                                
+
                                 var pushIcon = repo.AllowAnonymousPush == RepositoryPushMode.Global ? "fa-globe" : "fa-sign-in";
-                                var pushTitle = Resources.Repository_Detail_AllowAnonymousPush + ": " + (pushSetting ? Resources.Yes : Resources.No); 
+                                var pushTitle = Resources.Repository_Detail_AllowAnonymousPush + ": " + (pushSetting ? Resources.Yes : Resources.No);
                                 var pushColor = pushSetting ? "rgba(0, 120, 230, 1)" : "lightblue";
                                 var ret = Html.Raw("<span class='fa-fw'>").ToHtmlString();
                                 ret += Html.Raw("<div class='fa fa-sign-out' style='display: block; color: " + anonColor + "' title='" + anonTitle + "'></div>").ToHtmlString();

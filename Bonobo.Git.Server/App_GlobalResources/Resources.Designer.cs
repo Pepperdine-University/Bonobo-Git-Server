@@ -2194,7 +2194,39 @@ namespace Bonobo.Git.Server.App_GlobalResources {
                 return ResourceManager.GetString("ServiceAccount_PassLastUpdated", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Search Out of Date Service Accounts.
+        /// </summary>
+        public static string Search_Service_Accounts_Title
+        {
+            get
+            {
+                return ResourceManager.GetString("Search_Service_Accounts_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Repository Name.
+        /// </summary>
+        public static string ServiceAccount_RepoName
+        {
+            get
+            {
+                return ResourceManager.GetString("ServiceAccount_RepoName", resourceCulture);
+            }
+        }
+
+        ///   Looks up a localized string similar to Search Service Accounts.
+        /// </summary>
+        public static string Search_Service_Accounts_IndexTitle
+        {
+            get
+            {
+                return ResourceManager.GetString("Search_Service_Accounts_IndexTitle", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Allow push for anonymous repositories.
         /// </summary>

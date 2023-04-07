@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Runtime.InteropServices;
 using Bonobo.Git.Server.Models;
 
 namespace Bonobo.Git.Server.Data
@@ -84,6 +85,18 @@ namespace Bonobo.Git.Server.Data
             return result;
         }
 
+        public Repository GetRepositoryFromDatabase(Guid id)
+        {
+            //var result = ADBackend.Instance.Repositories[id];
+            //if (result == null)
+            //{
+            //    // Ensure that we behave the same way as the EF reporepo
+            //    throw new InvalidOperationException("Cannot find repository with ID " + id);
+            //}
+            //return result;
+            return new Repository();
+        }
+
         public void Update(RepositoryModel repository)
         {
             if (repository.RemoveLogo)
@@ -107,6 +120,11 @@ namespace Bonobo.Git.Server.Data
         public IList<RepositoryModel> GetTeamRepositories(Guid[] teamsId)
         {
             return GetAllRepositories().Where(repo => repo.Teams.Any(team => teamsId.Contains(team.Id))).ToList();
+        }
+
+        public IList<ServiceAccount> GetServiceAccounts()
+        {
+            return new List<ServiceAccount>();
         }
     }
 }

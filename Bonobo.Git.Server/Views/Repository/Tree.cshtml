@@ -1,4 +1,4 @@
-@using Bonobo.Git.Server.Extensions
+﻿@using Bonobo.Git.Server.Extensions
 @model RepositoryTreeModel
 @{
     Layout = "~/Views/Repository/_RepositoryLayout.cshtml";
@@ -48,14 +48,14 @@
                 </tbody>
             </table>
 
-            <div class="sidebar">
+            <div class="sidebar-right">
                 @{ Html.RenderAction("Detail", "Repository", Model.Id);}
             </div>
 
         </div>
 
         @*For screen size responsive sidebar*@
-        <div class="sidebar-moved-bottom" style="">
+        <div class="sidebar-moved-bottom">
             @{ Html.RenderAction("Detail", "Repository", Model.Id);}
         </div>
 

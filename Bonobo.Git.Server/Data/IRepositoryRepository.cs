@@ -11,8 +11,10 @@ namespace Bonobo.Git.Server.Data
         IList<RepositoryModel> GetAllRepositories();
         IList<KnownDependency> GetAllKnownDependencies();
         IList<RepositoryModel> GetTeamRepositories(Guid[] teamsId);
+        IList<ServiceAccount> GetServiceAccounts();
         RepositoryModel GetRepository(Guid id);
         RepositoryModel GetRepository(string Name);
+        Repository GetRepositoryFromDatabase(Guid id);
         bool Create(RepositoryModel repository);
         bool EFCreateKnownDependency(KnownDependency knownDependency);
         void Update(RepositoryModel repository);

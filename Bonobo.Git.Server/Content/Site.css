@@ -117,6 +117,21 @@ table.repositories button.copy-to-clip-button {
 .navigation li a:focus { background: none; color: #AECFE5; text-decoration: none; }
 .Repository .navigation .repository, .Account .navigation .users, .Team .navigation .teams, .Settings .navigation .settings { color: #AECFE5; }
 .Repository select.repositories { margin-left: 20px; }
+.Repository select.reports {
+    margin-left: 0px;
+    cursor: pointer;
+    background: #2d3e50;
+    color: #fff;
+    border: none;
+    padding: 7px 4px;
+    -webkit-appearance: none;
+    width: 60px;
+}
+.Repository .navigation ul a #reportsTest:hover {
+    color: #AECFE5;
+    background: none;
+    text-decoration: none;
+}
 
 
 .main { min-height: 100%; position: relative; }
@@ -174,7 +189,7 @@ Tags .tag a { background-color: rgba(148, 190, 214, 1); border-radius: 5px; colo
 .links a { color: maroon; }
 .links a:before { content: '\f0c1'; font-family: FontAwesome; margin-right: 0.25em; margin-left: 0.5em; }
 
-.Tree .pure-table tbody { font-size: 0.8em; }
+.Tree .pure-table tbody, .SearchServiceAccounts .pure-table tbody { font-size: 0.8em; }
 .Tree #files .path { min-width: 55px }
 .Tree #files .date { min-width: 55px }
 .breadcrumbs { padding: 7px; margin: 0; }
@@ -241,7 +256,7 @@ Tags .tag a { background-color: rgba(148, 190, 214, 1); border-radius: 5px; colo
 
 .repositories {
     margin: 0 0 1em 0;
-    border-radius: 10px;
+    /*border-radius: 10px;*/
     cursor: pointer;
 }
 h2.group { margin: 0; }

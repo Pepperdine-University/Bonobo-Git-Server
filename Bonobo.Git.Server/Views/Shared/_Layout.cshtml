@@ -39,6 +39,18 @@
                         <li><a href="@Url.Action("Index", "Account")" class="users"><i class="fa fa-user"></i> @Resources.Layout_AdministrationUsers</a></li>
                         <li><a href="@Url.Action("Index", "Team")" class="teams"><i class="fa fa-group"></i> @Resources.Layout_AdministrationTeams</a></li>
                         <li><a href="@Url.Action("Index", "Settings")" class="settings"><i class="fa fa-gears"></i> @Resources.Layout_AdministrationGlobalSettings</a></li>
+                        //List<SelectListItem> list = new List<SelectListItem>();
+                        ////var u = new UrlHelper(ControllerContext.RequestContext);
+                        //var searchServiceAccount = new SelectListItem
+                        //{
+                        //    Text = "Search Service Accounts",
+                        //    Value = Url.Action("SearchServiceAccounts", "Repository")
+                        //};
+                        //list.Add(searchServiceAccount);
+                        //var items = list.AsEnumerable();
+                        var items = (IEnumerable<SelectListItem>)Html.ViewBag.Reports;      // figure out hover thing, ask Dustin if there's even a point to making it look like all of the others or keep it white
+                        <li><a class="reports1"  id="reportsTest"><i class="fa fa-gears"></i>@Html.DropDownList("Reports", items, "Reports", new { @class = "reports", @onChange = "javascript:location.href=this.options[this.selectedIndex].value;" })</a></li>
+                        @*<li><a href="@Url.Action("Index", "Repository")" class="repository"><i class="fa fa-hdd-o"></i> Reports</a></li>*@
                     }
                     @if (Request.IsAuthenticated)
                     {

@@ -10,6 +10,10 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Web.ModelBinding;
+using System.Reflection;
+using System.Web.Configuration;
+using System.Web.Services.Description;
+using System.Web.WebPages;
 using Unity;
 
 namespace Bonobo.Git.Server.Data
@@ -103,6 +107,14 @@ namespace Bonobo.Git.Server.Data
                 return ConvertToModel(db.Repositories.Include(r => r.Dependencies
                                                              .Select(d => d.KnownDependency))
                                                      .First(i => i.Id.Equals(id)));
+            }
+        }
+
+        public Repository GetRepositoryFromDatabase(Guid id)
+        {
+            using (var db = CreateContext())
+            {
+                return db.Repositories.First(i => i.Id.Equals(id));
             }
         }
 
@@ -487,6 +499,33 @@ namespace Bonobo.Git.Server.Data
         public IList<RepositoryModel> GetTeamRepositories(Guid[] teamsId)
         {
             return GetAllRepositories().Where(repo => repo.Teams.Any(team => teamsId.Contains(team.Id))).ToList();
+        }
+
+        public IList<ServiceAccount> GetServiceAccounts()
+        {
+            using (var db = CreateContext())
+            {
+                var dbserviceaccounts = db.ServiceAccounts.Select(sa => new
+                {
+                    Id = sa.Id,
+                    ServiceAccountName = sa.ServiceAccountName,
+                    InPassManager = sa.InPassManager,
+                    PassLastUpdated = sa.PassLastUpdated,
+                    RepositoryId = sa.RepositoryId
+                }).ToList();
+
+                return dbserviceaccounts.Select(sa => new ServiceAccount
+                {
+                    Id = sa.Id,
+                    ServiceAccountName = sa.ServiceAccountName,
+                    InPassManager = sa.InPassManager,
+                    PassLastUpdated = sa.PassLastUpdated,
+                    RepositoryId = sa.RepositoryId
+                }).ToList();
+
+                //return dbserviceaccounts;
+                //return dbserviceaccounts.Where(sa => sa.PassLastUpdated.AsDateTime() < date).ToList();
+            }
         }
     }
 }

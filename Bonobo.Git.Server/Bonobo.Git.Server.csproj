@@ -655,6 +655,7 @@
     <Content Include="Views\Repository\_Tag.cshtml" />
     <Content Include="Views\_ViewImports.cshtml" />
     <Content Include="Views\Repository\Buttons.cshtml" />
+    <Content Include="Views\Repository\SearchServiceAccounts.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,4 +1,4 @@
-using Bonobo.Git.Server.App_GlobalResources;
+﻿using Bonobo.Git.Server.App_GlobalResources;
 using Bonobo.Git.Server.Configuration;
 using Bonobo.Git.Server.Data;
 using Bonobo.Git.Server.Data.Update;
@@ -258,6 +258,46 @@ namespace Bonobo.Git.Server.Controllers
             {
                 Id = Guid.Empty,
                 ComponentName = componentName
+            };
+        }
+
+        public ActionResult SearchServiceAccounts()
+        {
+            return View(GetServiceAccountsForView(null));
+        }
+
+        [HttpPost]
+        public ActionResult SearchServiceAccounts(DateTime? searchDate = null)
+        {
+            return View(GetServiceAccountsForView(searchDate));
+        }
+
+        public List<ServiceAccountWithRepoName> GetServiceAccountsForView(DateTime? searchDate = null)
+        {
+            IList<ServiceAccount> serviceAccounts = RepositoryRepository.GetServiceAccounts();
+            List<ServiceAccountWithRepoName> serviceAccountsWithRepoNames = new List<ServiceAccountWithRepoName>();
+            foreach (ServiceAccount sa in serviceAccounts)
+            {
+                if (searchDate == null || sa.PassLastUpdated < searchDate)
+                {
+                    serviceAccountsWithRepoNames.Add(ConvertServiceAccountModel(sa));
+                }
+            }
+            serviceAccountsWithRepoNames = serviceAccountsWithRepoNames.OrderBy(s => s.RepositoryName).ThenBy(s => s.PassLastUpdated).ToList();
+            return serviceAccountsWithRepoNames;
+        }
+
+        public ServiceAccountWithRepoName ConvertServiceAccountModel(ServiceAccount model)
+        {
+            return model == null ? null : new ServiceAccountWithRepoName
+            {
+                Id = model.Id,
+                RepositoryName = RepositoryRepository.GetRepositoryFromDatabase(model.RepositoryId).Name,
+                ServiceAccountName = model.ServiceAccountName,
+                InPassManager = model.InPassManager,
+                PassLastUpdated = model.PassLastUpdated,
+                RepositoryId = model.RepositoryId,
+                Repository = model.Repository
             };
         }
 

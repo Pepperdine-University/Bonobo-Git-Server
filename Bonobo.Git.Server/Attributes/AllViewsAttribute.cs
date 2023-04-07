@@ -4,6 +4,7 @@ using Bonobo.Git.Server.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Web.Mvc;
 using Unity;
 
@@ -39,6 +40,7 @@ namespace Bonobo.Git.Server.Attributes
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             filterContext.Controller.ViewBag.PermittedRepositories = PopulateRepoGoToList(filterContext.HttpContext.User.Id(), filterContext.Controller.ControllerContext);
+            filterContext.Controller.ViewBag.Reports = PopulateReportsList(filterContext.Controller.ControllerContext);
         }
 
         private List<SelectListItem> PopulateRepoGoToList(Guid id, ControllerContext ControllerContext)
@@ -77,6 +79,20 @@ namespace Bonobo.Git.Server.Attributes
                 }
             }
             return items;
+        }
+
+        private List<SelectListItem> PopulateReportsList(ControllerContext ControllerContext)
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+            var u = new UrlHelper(ControllerContext.RequestContext);
+            var searchServiceAccount = new SelectListItem
+            {
+                Text = "Search Service Accounts",
+                Value = u.Action("SearchServiceAccounts", "Repository")
+            };
+            list.Add(searchServiceAccount);
+            //var items = list.AsEnumerable();
+            return list;
         }
 
     }
