@@ -148,8 +148,8 @@ else
         @if (Model != null)
         {   <table class="pure-table pure-control-group" id="service-account-table">
         <tr>
-            <th>@Resources.ServiceAccount_Name</th>
-            <th>@Resources.ServiceAccount_PassLastUpdated</th>
+            <th class="header-name">@Resources.ServiceAccount_Name</th>
+            <th class="header-field-2">@Resources.ServiceAccount_PassLastUpdated</th>
             <th>@Resources.ServiceAccount_InPassManager</th>
         </tr>     
     @for (int i = 0; i < Model.ServiceAccounts.Count; i++)
@@ -161,7 +161,7 @@ else
                 @Html.TextBoxFor(m => m.ServiceAccounts[i].ServiceAccountName, htmlAttributes: new { @style = "width: 250px;" })
                 @Html.ValidationMessageFor(m => m.ServiceAccounts[i].ServiceAccountName)
             </th>
-            <th class="col pure-control-group">
+            <th class="col pure-control-group left30">
                 @{var serviceAccountId = "ServiceAccounts_" + i + "__.PassLastUpdated";
                     if (Model.ServiceAccounts[i].PassLastUpdated != null)
                     {
@@ -273,8 +273,8 @@ else
 
         <table class="pure-table pure-control-group bottom" id="dependencies-table">
             <tr>
-                <th>@Resources.Account_Create_Name</th>
-                <th>@Resources.Dependencies_VersionInUse</th>
+                <th class="header-name">@Resources.Account_Create_Name</th>
+                <th class="header-field-2">@Resources.Dependencies_VersionInUse</th>
                 <th>@Resources.Dependencies_DateUpdated</th>
             </tr>
             @if (Model.Dependencies != null && Model.Dependencies.Count > 0)
@@ -283,16 +283,16 @@ else
                 {
                     <tr class="row Dependencies-details" id="Dependencies_@i" name="Dependencies-details">
                         <th class="pure-control-group">
-                            <div class="hidden"> @Html.TextBoxFor(m => m.Dependencies[i].KnownDependency.ComponentName, htmlAttributes: new { @style = "width: 250px;" })</div>
+                            <div class="hidden"> @Html.TextBoxFor(m => m.Dependencies[i].KnownDependency.ComponentName, htmlAttributes: new { @class = "field-width" })</div>
                             @Html.ValidationMessageFor(m => m.Dependencies[i].KnownDependency.ComponentName)
                             @{
                                 var knownDependenciesList = new SelectList(Model.KnownDependencies, "Id", "ComponentName", Model.Dependencies[i].KnownDependenciesId);
 
                                 @Html.DropDownListFor(m => m.Dependencies[i].KnownDependenciesId, knownDependenciesList, new
                                 {
-                                    @class = "dropDownKD",
+                                    @class = "dropDownKD field-width",
                                     @disabled = "disabled",
-                                    @style = "width: 250px; color: #6B6B6B;",
+                                    @style = "color: #6B6B6B;",
                                     @onChange = "javascript: DisplayComponentNameNewInputField(this.id)"
                                 });
                                 var DepenId = Model.Dependencies[i].Id;
