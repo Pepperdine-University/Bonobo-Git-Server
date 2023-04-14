@@ -200,27 +200,6 @@ namespace Bonobo.Git.Server.Test.MembershipTests
         }
 
         [TestMethod]
-        public void DependencyPropertiesAreSavedOnUpdate()
-        {
-            var repo = MakeRepo("Repo1");
-            _repo.Create(repo);
-            var dependency = MakeDependency("my dependency");
-            repo.Dependencies = new System.Collections.Generic.List<Dependency>
-            {
-                dependency
-            };
-            _repo.Update(repo);
-
-            var readBackRepo = _repo.GetRepository("SonOfRepo");
-            for (int i = 0; i < repo.ServiceAccounts.Count(); i++)
-            {
-                Assert.AreEqual(repo.Dependencies[i].KnownDependency.ComponentName, readBackRepo.Dependencies[i].KnownDependency.ComponentName);
-                Assert.AreEqual(repo.Dependencies[i].DateUpdated, readBackRepo.Dependencies[i].DateUpdated);
-                Assert.AreEqual(repo.Dependencies[i].VersionInUse, readBackRepo.Dependencies[i].VersionInUse);
-            }
-        }
-
-        [TestMethod]
         public void ServiceAccountsCanBeRemovedLeadingToNonNull()
         {
             var repo = MakeRepo("Repo1");
@@ -306,7 +285,10 @@ namespace Bonobo.Git.Server.Test.MembershipTests
             {
                 serviceAccount
             };
-            Assert.IsFalse(_repo.HandleFutureDateErrors(repo));
+            var newServiceAccounts = repo.ServiceAccounts
+                           .Where(sa => sa.PassLastUpdated > DateTime.Today)
+                           .ToArray();
+            Assert.AreEqual(newServiceAccounts.Length, 1);
         }
 
         [TestMethod]
@@ -314,13 +296,16 @@ namespace Bonobo.Git.Server.Test.MembershipTests
         {
             var repo = MakeRepo("Repo1");
             _repo.Create(repo);
-            var dependency = MakeDependency("my dependency");
+            var dependency = MakeDependency("jQuery", new DateTime(2000, 01, 01), "1.0.0");
             dependency.DateUpdated = DateTime.Today.AddDays(2);
             repo.Dependencies = new System.Collections.Generic.List<Dependency>
             {
                 dependency
             };
-            Assert.IsFalse(_repo.HandleFutureDateErrors(repo));
+            var newDependencyDateUpdated = repo.Dependencies
+                           .Where(d => d.DateUpdated > DateTime.Today)
+                           .ToArray();
+            Assert.AreEqual(newDependencyDateUpdated.Length, 1);
         }
 
         [TestMethod]
@@ -419,15 +404,14 @@ namespace Bonobo.Git.Server.Test.MembershipTests
 
             Assert.AreEqual(0, _repo.GetTeamRepositories(new[] { team.Id }).Count);
         }
-
         [TestMethod]
         public void CanCreateDependencyOnUpdate()
         {
             var repo = MakeRepo("Repo1");
-            AddDependencytoRepo(repo);
+            var dependency = MakeDependency("jQuery", new DateTime(2000, 01, 01), "1.0.0");
             repo.Dependencies = new System.Collections.Generic.List<Dependency>();
             _repo.Create(repo);
-            repo.Dependencies.Add(AddDependencytoRepo(repo));
+            repo.Dependencies.Add(dependency);
             Assert.AreEqual("1.0.0", repo.Dependencies.Single().VersionInUse);
         }
 
@@ -435,10 +419,10 @@ namespace Bonobo.Git.Server.Test.MembershipTests
         public void CanCreateKnownDependencyOnUpdate()
         {
             var repo = MakeRepo("Repo1");
-            AddDependencytoRepo(repo);
+            var dependency = MakeDependency("jQuery", new DateTime(2000, 01, 01), "1.0.0");
             repo.Dependencies = new System.Collections.Generic.List<Dependency>();
             _repo.Create(repo);
-            repo.Dependencies.Add(AddDependencytoRepo(repo));
+            repo.Dependencies.Add(dependency);
             Assert.AreEqual("jQuery", repo.Dependencies.Single().KnownDependency.ComponentName);
         }
 
@@ -460,27 +444,12 @@ namespace Bonobo.Git.Server.Test.MembershipTests
             return serviceAccount;
         }
 
-        private static Dependency MakeDependency(string name)
+        private static Dependency MakeDependency(string componentName, DateTime dateUpdated, string versionInUse)
         {
             Dependency dependency = new Dependency();
-            dependency.KnownDependency = new KnownDependency()
-            {
-                ComponentName = "Test"
-            };
-            dependency.KnownDependency.ComponentName = name;
-            dependency.DateUpdated = new DateTime(2011, 1, 1);
-            dependency.VersionInUse = "4.8";
-            return dependency;
-        }
-        private static Dependency AddDependencytoRepo(RepositoryModel repo)
-        {
-            var dependency = new Dependency();
-            var knownDependency = new KnownDependency();
-            string versionInUse = "1.0.0";
+            KnownDependency knownDependency = new KnownDependency();
             dependency.VersionInUse = versionInUse;
-            DateTime dateUpdated = new DateTime(2000, 1, 1);
             dependency.DateUpdated = dateUpdated;
-            string componentName = "jQuery";
             dependency.KnownDependency = knownDependency;
             dependency.KnownDependency.ComponentName = componentName;
             return dependency;

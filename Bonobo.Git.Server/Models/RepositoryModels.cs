@@ -349,34 +349,6 @@ namespace Bonobo.Git.Server.Models
         public string[] Lines { get; set; }
     }
 
-/*    public class RepositoryServiceAccountModel
-    {
-        public string ServiceAccountName { get; set; }
-        public bool InPassManager { get; set; }
-        public int PassLastChanged { get; set; }
-        public string Id { get; set; }
-        public string RepositoryId { get; set; }
-    }
-*/
-
-/*    public class Dependency
-    {
-        // Primary Key
-        public string Id { get; set; }
-        public string DateUpdated { get; set; }
-        public string VersionInUse { get; set; }
-        public virtual Bonobo.Git.Server.Data.Repository Repository { get; set; }
-        public Guid RepositoryId { get; set; }
-    }
-
-    public class KnownDependency
-    {
-        public int Id { get; set; }
-        public string ComponentName { get; set; }
-        public virtual Dependency Dependencies { get; set; }
-        public Guid DependenciesId { get; set; }
-    }*/
-
     public class RepositoryLogoDetailModel
     {
         byte[] _data;
