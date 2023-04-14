@@ -336,14 +336,6 @@ namespace Bonobo.Git.Server.Data
                         dependency.RepositoryId = model.Id;
                         repo.Dependencies.Add(dependency);
                     }
-
-                    //var duplicateDependency = model.Dependencies
-                    //    .Where(d => d.KnownDependency.ComponentName == dependency.KnownDependency.ComponentName && d.Id != dependency.Id)
-                    //    .FirstOrDefault();
-                    //if (duplicateDependency != null)
-                    //{
-
-                    //}
                 }
                 //Updates Dependencies in database when deleted with javascript
                 foreach (var dependency in repo.Dependencies.Where(repoDep => model.Dependencies.All(modelDep => modelDep.Id != repoDep.Id)).ToList())

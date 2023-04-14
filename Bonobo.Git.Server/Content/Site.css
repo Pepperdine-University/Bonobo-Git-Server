@@ -57,8 +57,8 @@ div.pure-control-group.checkboxlist>span { display: inline-block; }
     background-color: white;
     border: none;
 }
-.return-to-dropdown i{
-    color:red;
+.return-to-dropdown .fa-arrow-left {
+    color: black;
 }
 .pure-control-group .new-known-dependency {
     margin: 0px;
