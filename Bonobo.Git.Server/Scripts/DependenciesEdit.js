@@ -59,3 +59,34 @@ function changeNameOfInput(inputField, dropDown, addNewSelected) {
         inputField.setAttribute("name", "");
     }
 }
+
+function DisplayComponentNameNewInputFieldOnLoad(dropDownID) {
+    inputField = document.getElementById("KDInput" + dropDownID);
+    dropDown = document.getElementById(dropDownID);
+    $("#newKD-" + dropDownID).css("display", "inline-block");
+    $("#" + dropDownID).css("display", "none");
+    changeNameOfInput(inputField, dropDown, 1);
+}
+
+//window.addEventListener("load", function () {
+//    $(".dropDownKD").each(function () {
+//        console.log(this.selectedIndex);      // we don't have access to the model, not sure if this solution is possible
+//        dropDownID = this.id;
+//        //inputField = document.getElementById("KDInput" + dropDownID);
+//        //dropDown = document.getElementById(dropDownID);
+//        //$("#newKD-" + dropDownID).css("display", "inline-block");
+//        //$("#" + dropDownID).css("display", "none");
+//        //changeNameOfInput(inputField, dropDown, 1);
+//    })
+//});
+
+//window.onload = function () {
+//    $(".dropDownKD").each(function () {
+//        var index = this.id;
+//        if (this.value == "Add New...") {
+//            $("#newKD-" + index).css("display", "inline-block");
+//        } else {
+//            $("#newKD-" + index).css("display", "none");
+//        }
+//    })
+//}

@@ -119,13 +119,6 @@
         <legend>
             @Resources.Dependencies
         </legend>
-            <table class="pure-table" id="dependencies-table">
-                <tr>
-                    <th class="header-name">@Resources.Account_Create_Name</th>
-                    <th class="header-field-2">@Resources.Dependencies_VersionInUse</th>
-                    <th>@Resources.Dependencies_DateUpdated</th>
-                </tr>
-            </table>
             <template id="Dependencyrow">
                 <tr class="row Dependencies-details" id="Dependencies_{i}" name="Dependencies-details">
                     <th class=" col pure-control-group hidden">
@@ -159,19 +152,98 @@
                               data-valmsg-replace="true">
                         </span>
 
-                    </th>
-                    <th class="col pure-control-group">
-                        <input class="form-control" type="date" id="Dependencies_{i}__.DateUpdated" name="Dependencies[{i}].DateUpdated" value="1/1/1900" />
-                        <span class="field-validation-valid text-danger"
-                              data-valmsg-for="Dependencies[{i}].DateUpdated"
-                              data-valmsg-replace="true">
-                        </span>
-                        <th />
-                    <th>
-                        <button type="button" onclick="removeDependency(this.id);" id=" DependenciesBtn_{i}" title="Remove Dependency" class="rem-btn"><i class="fa fa-minus-circle"></i></button>
-                    </th>
-                </tr>
-            </template>
+                </th>
+                <th class="col pure-control-group">
+                    <input class="form-control" type="date" id="Dependencies_{i}__.DateUpdated" name="Dependencies[{i}].DateUpdated" value="1/1/1900" />
+                    <span class="field-validation-valid text-danger"
+                          data-valmsg-for="Dependencies[{i}].DateUpdated"
+                          data-valmsg-replace="true">
+                    </span>
+                <th />
+                <th>
+                    <button type="button" onclick="removeDependency(this.id);" id=" DependenciesBtn_{i}" title="Remove Dependency" class="rem-btn"><i class="fa fa-minus-circle"></i></button>
+                </th>
+            </tr>
+        </template>
+
+        <table class="pure-table pure-control-group bottom" id="dependencies-table">
+            <tr>
+                <th class="header-name">@Resources.Account_Create_Name</th>
+                <th class="header-field-2">@Resources.Dependencies_VersionInUse</th>
+                <th>@Resources.Dependencies_DateUpdated</th>
+            </tr>
+            @if (Model.Dependencies != null && Model.Dependencies.Count > 0)
+            {
+                for (int i = 0; i < Model.Dependencies.Count; i++)
+                {
+                    <tr class="row Dependencies-details" id="Dependencies_@i" name="Dependencies-details">
+                        <th class="pure-control-group">
+                            <div class="hidden"> @Html.TextBoxFor(m => m.Dependencies[i].KnownDependency.ComponentName, htmlAttributes: new { @style = "width: 250px;" })</div>
+                            @Html.ValidationMessageFor(m => m.Dependencies[i].KnownDependency.ComponentName)
+                            @{
+                                object attributes;
+                                var knownDependenciesList = new SelectList(Model.KnownDependencies, "Id", "ComponentName", Model.Dependencies[i].KnownDependenciesId);
+
+                                if (Model.Dependencies[i].Id == Guid.Empty)
+                                {
+                                    attributes = new
+                                    {
+                                        @class = "dropDownKD field-width",
+                                        @style = "width: 250px; color: black;",
+                                        @onChange = "javascript: DisplayComponentNameNewInputField(this.id)"
+                                    };
+                                }
+                                else
+                                {
+                                    attributes = new
+                                    {
+                                        @class = "dropDownKD field-width",
+                                        @disabled = "disabled",
+                                        @style = "width: 250px; color: #6B6B6B;",
+                                        @onChange = "javascript: DisplayComponentNameNewInputField(this.id)"
+                                    };
+                                }
+
+                                @Html.DropDownListFor(m => m.Dependencies[i].KnownDependenciesId, knownDependenciesList, "", attributes);
+                                var DepenId = Model.Dependencies[i].Id;
+                            }
+                            <div class="pure-control-group new-known-dependency" id="newKD-Dependencies_@(i)__KnownDependenciesId">
+                                <input class="pure-form valid field-width" id="KDInputDependencies_@(i)__KnownDependenciesId" type="text">
+                                <button class="return-to-dropdown" type="button" id="@(i)" onclick="returnToDropdownFromKDInput(this.id)" title="Return to dropdown" style="background-color: white; border: none;"><i class="fa fa-arrow-left"></i></button>
+                            </div>
+                        <th class="pure-control-group">
+                            @Html.TextBoxFor(m => m.Dependencies[i].VersionInUse)
+                            @Html.ValidationMessageFor(m => m.Dependencies[i].VersionInUse)
+                        </th>
+                        <th class="pure-control-group">
+                            @{
+                                var dependencyId = "Dependencies_" + i + "__.DateUpdated";
+                                if (Model.Dependencies[i].DateUpdated != null)
+                                {
+                                    var dateValue = Model.Dependencies[i].DateUpdated.ToString().Split('/');
+                                    var formattedDate = dateValue[2].Substring(0, 4) + "-" + (dateValue[0].Length == 1 ? "0" + dateValue[0] : dateValue[0]) + "-" + (dateValue[1].Length == 1 ? "0" + dateValue[1] : dateValue[1]);
+                                    <input class="form-control" type="date" id="@dependencyId" name="Dependencies[@i].DateUpdated" value="@formattedDate" />
+                                }
+                                else
+                                {
+                                    <input class="form-control" type="date" id="@dependencyId" name="Dependencies[@i].DateUpdated" />
+                                }
+                            }
+
+                            @Html.ValidationMessageFor(m => m.Dependencies[i].DateUpdated)
+                        </th>
+                        <th>
+                            <button type="button" onclick="removeDependency(this.id);" id=" DependenciesBtn_@i" title="Remove Dependency" class="rem-btn"><i class="fa fa-minus-circle"></i></button>
+                        </th>
+                        <th class="pure-control-group hidden">
+                            @Html.HiddenFor(m => m.Dependencies[i].Id);
+                            @Html.HiddenFor(m => m.Dependencies[i].RepositoryId);
+                            @Html.HiddenFor(m => m.Dependencies[i].KnownDependenciesId);
+                        </th>
+                    </tr>
+                }
+            }
+        </table>
     </fieldset>
         <div class="pure-control-group">
             <button type="button" onclick="createDependency(0);" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.Dependencies_Add </button>
