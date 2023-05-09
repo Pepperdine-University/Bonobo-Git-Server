@@ -8,6 +8,7 @@ using Bonobo.Git.Server.Security;
 using Ionic.Zip;
 using MimeTypes;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -64,7 +65,7 @@ namespace Bonobo.Git.Server.Controllers
         [WebAuthorizeRepository(RequiresRepositoryAdministrator = true)]
         public ActionResult Edit(Guid id)
         {
-            var model = ConvertRepositoryModel(RepositoryRepository.GetRepository(id), User);
+            var model = ConvertRepositoryModel(RepositoryRepository.GetRepository(id), User); // gets fresh model from database
             PopulateCheckboxListData(ref model);
             PopulateKnownDependencyDropdownOptions(ref model);
             return View(model);
@@ -94,15 +95,22 @@ namespace Bonobo.Git.Server.Controllers
                     {
                         MoveRepo(repoModel, existingRepo);
                     }
-                    ViewBag.UpdateSuccess = true;
+                    TempData["Success"] = true;
+                    return RedirectToAction("Edit", new { id = model.Id });
                 }
                 else
                 {
                     ModelState.AddModelError("Administrators", Resources.Repository_Edit_CantRemoveYourself);
                 }
             }
+            // Fix for service account get error when there was an error in dependencies (for example user entered an empty component name) and zero service accounts for the repository
+            if (model.ServiceAccounts == null)      
+            {
+                model.ServiceAccounts = new List<ServiceAccount>();
+            }
             PopulateCheckboxListData(ref model);
             PopulateKnownDependencyDropdownOptions(ref model);
+            TempData["Success"] = false;
             return View(model);
         }
 
@@ -140,73 +148,83 @@ namespace Bonobo.Git.Server.Controllers
                     }
                 }
             }
-
-
         }
+
+
         private void HandleKnownDependencyErrors(RepositoryDetailModel model)
         {
             PopulateKnownDependencyDropdownOptions(ref model);
             if (!ModelState.IsValid)
             {
-                var newDependencies = ModelState        // maybe change name, cause it's really newDependencies that used add new, newDependenciesWithNewComponentNames
-                    .SelectMany(kvp => kvp.Value.Errors, (kvp, e) => new { kvp, e })
-                    .Where(t => t.kvp.Value.Errors.Count >= 1)
-                    .Where(t => Regex.Match(t.kvp.Key, @"^Dependencies\[\d+\]\.KnownDependenciesId$").Success)
-                    .Where(t => Regex.Match(t.e.ErrorMessage, $@"^The value '{t.kvp.Value.Value.AttemptedValue}' is not valid for KnownDependenciesId.$").Success)
-                    .Select(t => new { t.kvp.Key, t.kvp.Value.Errors, t.kvp.Value.Value.AttemptedValue })
-                    .ToArray();
-                foreach (var newDependency in newDependencies)
+                var newDependenciesUsingAddNew = ModelState    
+                .SelectMany(kvp => kvp.Value.Errors, (kvp, e) => new { kvp, e })
+                .Where(t => t.kvp.Value.Errors.Count >= 1)
+                .Where(t => Regex.Match(t.kvp.Key, @"^Dependencies\[\d+\]\.KnownDependenciesId$").Success)
+                .Where(t => Regex.Match(t.e.ErrorMessage, $@"^The value '{t.kvp.Value.Value.AttemptedValue}' is not valid for KnownDependenciesId.$").Success)
+                .Select(t => new { t.kvp.Key, t.kvp.Value.Errors, Value = ((string[])t.kvp.Value.Value.RawValue)[0] })
+                .ToArray();
+                foreach (var newDependency in newDependenciesUsingAddNew)
                 {
-                    // check if each newly created dependency has a newly added known dependency that already exists
-                    var duplicateKnownDependency = model.KnownDependencies
-                        .FirstOrDefault(kd => string.Equals(kd.ComponentName, newDependency.AttemptedValue, StringComparison.CurrentCultureIgnoreCase));
+                    var duplicateKnownDependency = model.KnownDependencies        // checks if each newly created dependency has a newly added known dependency that already exists
+                        .Where(kd => kd.ComponentName.ToLower() == newDependency.Value.ToLower())
+                        .FirstOrDefault();
+
                     // checks if two newly created dependencies have the same newly added known dependency
-                    var duplicateNewDependency = newDependencies
-                        .FirstOrDefault(d => d.AttemptedValue == newDependency.AttemptedValue && d.Key != newDependency.Key);
+                    var duplicateNewDependency = newDependenciesUsingAddNew                    
+                        .Where(d => d.Value == newDependency.Value && d.Key != newDependency.Key)
+                        .FirstOrDefault();
+
                     if (duplicateKnownDependency != null)
                     {
+                        //ViewBag[newDependency.Key] = newDependency.Value; ;
                         newDependency.Errors.Clear();
-                        ModelState.AddModelError("", $"{Resources.Known_Dependency_CantHaveDuplicates}: {newDependency.AttemptedValue}");  
+                        int index = int.Parse(newDependency.Key.Split('[')[1].Split(']')[0].ToString());
+                        if (ViewBag.DependencyNameAttemptedValues == null)
+                        {
+                            ViewBag.DependencyNameAttemptedValues = new Dictionary<int, string>();
+                        }
+
+                        ViewBag.DependencyNameAttemptedValues.Add(index, newDependency.Value);
+                        ModelState.AddModelError("", $"{Resources.Known_Dependency_CantHaveDuplicates}: {newDependency.Value}");  
                     }
                     else if (duplicateNewDependency != null)
                     {
                         if (newDependency.Errors.Count >= 1)
                         {
-                            var duplicateDependencyErrors = newDependencies
-                                .Where(nd => nd.AttemptedValue == newDependency.AttemptedValue)
-                                .Select(nd => nd.Errors)
-                                .ToList();
-                            foreach (var error in duplicateDependencyErrors)
+                            newDependency.Errors.Clear();
+                            int index = int.Parse(newDependency.Key.Split('[')[1].Split(']')[0].ToString());
+                            if (ViewBag.DependencyNameAttemptedValues == null)
                             {
-                                error.Clear();
+                                ViewBag.DependencyNameAttemptedValues = new Dictionary<int, string>();
                             }
-                            ModelState.AddModelError("", $"{Resources.Dependencies_CantHaveDuplicates}: {newDependency.AttemptedValue}");     // Make more general but still descriptive, remove KnownDependenciesId id specific error
+
+                            ViewBag.DependencyNameAttemptedValues.Add(index, newDependency.Value);
                         }
                     }
                     else
                     {
                         int dependencyIndex = int.Parse(Regex.Match(newDependency.Key, @"\d+").Value);
-                        Guid newKnownDependenciesId = GenerateNewGuid(newDependency.AttemptedValue);
+                        Guid newKnownDependenciesId = GenerateNewGuid(newDependency.Value);
                         model.Dependencies[dependencyIndex].KnownDependenciesId = newKnownDependenciesId;
                         ModelState.SetModelValue(newDependency.Key,
                             new ValueProviderResult(newKnownDependenciesId, newKnownDependenciesId.ToString(),
                                 System.Globalization.CultureInfo.InvariantCulture));
                         newDependency.Errors.Clear();
                     }
-                    
                 }
             }
-            if (ModelState.IsValid && model.Dependencies != null)     // Could still be duplicate dependencies if ModelState is valid, it just means the user didn't use add new
+            // Could still be duplicate dependencies if ModelState is valid, it just means the user didn't use add new
+            if (ModelState.IsValid && model.Dependencies != null)     
             {
                 if (model.Dependencies != null)
                 {
-                    var newDependencies = model.Dependencies
+                    var newDependenciesNotUsingAddNew = model.Dependencies
                         .Where(d => d.Id == Guid.Empty)
                         .ToList();
 
-                    foreach (var newDependency in newDependencies)
+                    foreach (var newDependency in newDependenciesNotUsingAddNew)
                     {
-                        var duplicateNewDependency = newDependencies
+                        var duplicateNewDependency = newDependenciesNotUsingAddNew
                             .Where(d => d.KnownDependenciesId == newDependency.KnownDependenciesId);
 
                         if (duplicateNewDependency.Count() >= 2)
@@ -224,6 +242,17 @@ namespace Bonobo.Git.Server.Controllers
                 }
             }
         }
+
+        //public void AddNewDependencyErrorToViewBag(object newDependency)
+        //{
+        //    int index = int.Parse(newDependency.Key.Split('[')[1].Split(']')[0].ToString());
+        //    if (ViewBag.DependencyNameAttemptedValues == null)
+        //    {
+        //        ViewBag.DependencyNameAttemptedValues = new Dictionary<int, string>();
+        //    }
+
+        //    ViewBag.DependencyNameAttemptedValues.Add(index, newDependency.Value);
+        //}
 
         public void PopulateKnownDependencyDropdownOptions(ref RepositoryDetailModel model)
         {
@@ -815,7 +844,6 @@ namespace Bonobo.Git.Server.Controllers
 
         private void PopulateCheckboxListData(ref RepositoryDetailModel model)
         {
-            model = model.Id != Guid.Empty ? ConvertRepositoryModel(RepositoryRepository.GetRepository(model.Id), User) : model;
             model.AllAdministrators = MembershipService.GetAllUsers().ToArray();
             model.AllUsers = MembershipService.GetAllUsers().ToArray();
             model.AllTeams = TeamRepository.GetAllTeams().ToArray();
