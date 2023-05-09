@@ -2113,7 +2113,27 @@ namespace Bonobo.Git.Server.App_GlobalResources {
                 return ResourceManager.GetString("Search", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Dependencies.
+        /// </summary>
+        public static string Dependencies
+        {
+            get
+            {
+                return ResourceManager.GetString("Dependencies", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Service Accounts.
+        /// </summary>
+        public static string ServiceAccount {
+            get {
+                return ResourceManager.GetString("ServiceAccount", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Add Service Account.
         /// </summary>
