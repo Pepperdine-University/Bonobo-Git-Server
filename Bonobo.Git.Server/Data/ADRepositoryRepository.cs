@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
 using Bonobo.Git.Server.Models;
 
 namespace Bonobo.Git.Server.Data
@@ -20,16 +19,8 @@ namespace Bonobo.Git.Server.Data
             return ADBackend.Instance.Repositories.Add(SanitizeModel(repository));
         }
 
-        public bool EFCreateKnownDependency(KnownDependency knownDependency)
+        public bool CreateKnownDependency(KnownDependency knownDependency)
         {
-            // Make sure we don't already have a repo with this name
-            //if (GetRepository(repository.Name) != null)
-            //{
-            //    return false;
-            //}
-
-            //repository.Id = Guid.NewGuid();
-            //return ADBackend.Instance.Repositories.Add(SanitizeModel(repository));
             throw new NotImplementedException();
         }
         public bool HandleFutureDateErrors(RepositoryModel model)

@@ -1,5 +1,4 @@
 using Bonobo.Git.Server.App_GlobalResources;
-using Bonobo.Git.Server.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

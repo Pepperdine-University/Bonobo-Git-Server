@@ -511,15 +511,6 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dependencies.
-        /// </summary>
-        public static string Dependencies {
-            get {
-                return ResourceManager.GetString("Dependencies", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Add Dependency.
         /// </summary>
         public static string Dependencies_Add {
@@ -1548,6 +1539,15 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dependencies.
+        /// </summary>
+        public static string Repository_Detail_Dependencies {
+            get {
+                return ResourceManager.GetString("Repository_Detail_Dependencies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string Repository_Detail_Description {
@@ -1652,6 +1652,15 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         public static string Repository_Detail_RemoveLogo {
             get {
                 return ResourceManager.GetString("Repository_Detail_RemoveLogo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service Accounts.
+        /// </summary>
+        public static string Repository_Detail_ServiceAccounts {
+            get {
+                return ResourceManager.GetString("Repository_Detail_ServiceAccounts", resourceCulture);
             }
         }
         
@@ -2102,15 +2111,6 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         public static string Search {
             get {
                 return ResourceManager.GetString("Search", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Service Accounts.
-        /// </summary>
-        public static string ServiceAccount {
-            get {
-                return ResourceManager.GetString("ServiceAccount", resourceCulture);
             }
         }
         

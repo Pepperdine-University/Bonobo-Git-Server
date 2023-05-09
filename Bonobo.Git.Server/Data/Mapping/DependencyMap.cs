@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace Bonobo.Git.Server.Data.Mapping
@@ -14,13 +13,13 @@ namespace Bonobo.Git.Server.Data.Mapping
 
         private void SetRelationships()
         {
-            HasRequired<Repository>(d => d.Repository)
+            HasRequired(d => d.Repository)
                 .WithMany(r => r.Dependencies)
-                .HasForeignKey<Guid>(d => d.RepositoryId);
+                .HasForeignKey(d => d.RepositoryId);
 
-            HasRequired<KnownDependency>(d => d.KnownDependency)
+            HasRequired(d => d.KnownDependency)
                 .WithMany(k => k.Dependencies)
-                .HasForeignKey<Guid>(d => d.KnownDependenciesId);
+                .HasForeignKey(d => d.KnownDependenciesId);
             
         }
 

@@ -1,8 +1,6 @@
 using System.Data.Common;
 using Bonobo.Git.Server.Data.Mapping;
 using System.Data.Entity;
-using System.Data.Entity.ModelConfiguration.Conventions;
-using Bonobo.Git.Server.Models;
 
 namespace Bonobo.Git.Server.Data
 {

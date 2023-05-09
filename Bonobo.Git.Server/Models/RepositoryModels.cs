@@ -15,9 +15,6 @@ using Bonobo.Git.Server.Data;
 
 using LibGit2Sharp;
 using System.Web.Mvc;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.AccessControl;
-using Bonobo.Git.Server.Configuration;
 
 namespace Bonobo.Git.Server.Models
 {
@@ -131,7 +128,6 @@ namespace Bonobo.Git.Server.Models
         public List<Dependency> Dependencies { get; set; }
 
         [AllowHtml]
-        [Display(ResourceType = typeof(Resources), Name = "Repository_Detail_KnownDependencies")]
         public IList<KnownDependency> KnownDependencies { get; set; }
 
         public Guid[] PostedSelectedUsers { get; set; }

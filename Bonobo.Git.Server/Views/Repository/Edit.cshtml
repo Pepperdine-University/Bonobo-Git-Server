@@ -88,13 +88,12 @@ else
     {
         <div class="pure-control-group">
             @Html.LabelFor(m => m.LinksUseGlobal)
-            @Html.CheckBoxFor(m => m.LinksUseGlobal, new
-       {
-           @onClick = "document.getElementById('LinksRegex').disabled = this.checked; " +
- "document.getElementById('LinksUrl').disabled =  this.checked; " +
- "document.getElementById('LinksRegex').disabled? document.getElementById('LinksRegex').value = '': document.getElementById('LinksRegex').value = ''; " +
- "document.getElementById('LinksUrl').disabled? document.getElementById('LinksUrl').value = '': document.getElementById('LinksUrl').value = '';"
-       })
+            @Html.CheckBoxFor(m => m.LinksUseGlobal, new {
+                @onClick = "document.getElementById('LinksRegex').disabled = this.checked; " +
+                           "document.getElementById('LinksUrl').disabled =  this.checked; " +
+                           "document.getElementById('LinksRegex').disabled? document.getElementById('LinksRegex').value = '': document.getElementById('LinksRegex').value = ''; " +
+                           "document.getElementById('LinksUrl').disabled? document.getElementById('LinksUrl').value = '': document.getElementById('LinksUrl').value = '';"
+            })
         </div>
         <div class="pure-control-group">
             @Html.LabelFor(m => m.LinksRegex)
@@ -142,7 +141,7 @@ else
 
     <fieldset class="pure-control-group">
         <legend class="add-some-padding">
-            @Resources.ServiceAccount
+            @Html.LabelFor(m => m.ServiceAccounts)
         </legend>
        
         @if (Model != null)
@@ -201,7 +200,7 @@ else
     </div>
     <fieldset class="pure-control-group add-little-padding">
         <legend class="add-some-padding">
-            @Resources.Dependencies
+            @Html.LabelFor(m => m.Dependencies)
         </legend>
 
         <template id="Dependencyrow">
@@ -215,25 +214,23 @@ else
                     <span class="field-validation-valid" data-valmsg-for="Dependencies[{i}].KnownDependency.ComponentName" data-valmsg-replace="true"></span>
                     <select class="dropDownKD valid field-width" data-val="true" data-val-required="The KnownDependenciesId field is required." id="Dependencies_{i}__KnownDependenciesId" name="Dependencies[{i}].KnownDependenciesId" onchange="javascript: DisplayComponentNameNewInputField(this.id)" aria-required="true" aria-invalid="false">
                         @{
-                            var dependencies = Model.Dependencies; //existing KD in repo
                             if (Model.KnownDependencies != null)
                             {
-                                <option></option>
-                                //display first empty
+                                <option></option> //display first empty
                                 //create a dict using the var depen.
                                 //don't need dictionary, could use array or list cuase just keeping track of id
                                 //delete line of code in populate checkboxlistdata, fix error when two items with same key are added, add none?, not sure
-                                Dictionary<string, string> DependenciesDictionary = new Dictionary<string, string>();
+                                Dictionary<string, string> dependenciesDictionary = new Dictionary<string, string>();
                                 if (Model.Dependencies != null)
                                 {
-                                    foreach (var Dependency in Model.Dependencies) //existing repo
+                                    foreach (var dependency in Model.Dependencies) //existing repo
                                     {
-                                        DependenciesDictionary.Add(Dependency.KnownDependenciesId.ToString(), Dependency.KnownDependenciesId.ToString());
+                                        dependenciesDictionary.Add(dependency.KnownDependenciesId.ToString(), dependency.KnownDependenciesId.ToString());
                                     }
                                 }
                                 foreach (var knownDependency in Model.KnownDependencies) //all pre-existing
                                 {
-                                    if (DependenciesDictionary.ContainsKey(knownDependency.Id.ToString()))
+                                    if (dependenciesDictionary.ContainsKey(knownDependency.Id.ToString()))
                                     {
                                         <option disabled value="@knownDependency.Id.ToString()">@knownDependency.ComponentName</option>
                                     }
@@ -291,11 +288,10 @@ else
                                 @Html.DropDownListFor(m => m.Dependencies[i].KnownDependenciesId, knownDependenciesList, new
                                 {
                                     @class = "dropDownKD field-width",
-                                    @disabled = "disabled",
-                                    @style = "color: #6B6B6B;",
-                                    @onChange = "javascript: DisplayComponentNameNewInputField(this.id)"
-                                });
-                                var DepenId = Model.Dependencies[i].Id;
+                                    disabled = "disabled",
+                                    style = "color: #6B6B6B;",
+                                    onChange = "javascript: DisplayComponentNameNewInputField(this.id)"
+                                })
                             }
                         <th class="pure-control-group">
                             @Html.TextBoxFor(m => m.Dependencies[i].VersionInUse)
@@ -333,10 +329,10 @@ else
     </fieldset>
 
     <div class="pure-control-group">
-        <button type="button" onclick="createDependency(@(Model.Dependencies != null? Model.Dependencies.Count: 0));" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.Dependencies_Add </button>
+        <button type="button" onclick="createDependency(@(Model.Dependencies?.Count ?? 0));" class="pure-button pure-button-primary"> <i class="fa fa-plus-circle"></i> @Resources.Dependencies_Add </button>
     </div>
     <div class="pure-controls">
-        <a class="pure-button" href="@Url.Action("Tree", new { id = Model.Id, ServiceAccounts = Model.ServiceAccounts, Dependencies = Model.Dependencies })"><i class="fa fa-long-arrow-left"></i> @Resources.Repository_Edit_Back</a>
+        <a class="pure-button" href="@Url.Action("Tree", new { id = Model.Id, Model.ServiceAccounts, Model.Dependencies })"><i class="fa fa-long-arrow-left"></i> @Resources.Repository_Edit_Back</a>
         <button type="submit" class="pure-button pure-button-primary save"><i class="fa fa-save"></i> @Resources.Repository_Edit_Submit</button>
     </div>
 </fieldset>

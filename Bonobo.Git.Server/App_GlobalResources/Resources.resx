@@ -966,7 +966,7 @@ The regular C# string formatting rules apply: To get {} in your link you need to
   <data name="Repository_Layout_Code" xml:space="preserve">
     <value>Code</value>
   </data>
-  <data name="ServiceAccount" xml:space="preserve">
+  <data name="Repository_Detail_ServiceAccounts" xml:space="preserve">
     <value>Service Accounts</value>
   </data>
   <data name="ServiceAccount_Add" xml:space="preserve">
@@ -987,7 +987,7 @@ The regular C# string formatting rules apply: To get {} in your link you need to
   <data name="ServiceAccount_PassLastUpdated" xml:space="preserve">
     <value>Password Last Updated </value>
   </data>
-  <data name="Dependencies" xml:space="preserve">
+  <data name="Repository_Detail_Dependencies" xml:space="preserve">
     <value>Dependencies</value>
   </data>
   <data name="Dependencies_Add" xml:space="preserve">

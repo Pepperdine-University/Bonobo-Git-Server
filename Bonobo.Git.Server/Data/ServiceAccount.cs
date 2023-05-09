@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Bonobo.Git.Server.Data
 {
-    public partial class ServiceAccount
+    public class ServiceAccount
     {
 
         public string ServiceAccountName { get; set; }

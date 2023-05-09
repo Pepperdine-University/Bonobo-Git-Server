@@ -1,6 +1,4 @@
-﻿using Bonobo.Git.Server.App_GlobalResources;
-using Bonobo.Git.Server.Models;
-using LibGit2Sharp;
+﻿using Bonobo.Git.Server.Models;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -8,8 +6,6 @@ using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Web.ModelBinding;
 using Unity;
 
 namespace Bonobo.Git.Server.Data
@@ -216,10 +212,9 @@ namespace Bonobo.Git.Server.Data
                 var newServiceAccounts = repo.ServiceAccounts
                             .Where(sa => sa.PassLastUpdated > DateTime.Today)
                             .ToArray();
-                var numErrors = 1;
                 foreach (var newServiceAccount in newServiceAccounts)
                 {
-                    if (newServiceAccount != null && numErrors == 1)
+                    if (newServiceAccount != null)
                     {
                         return false;
                     }
@@ -232,10 +227,9 @@ namespace Bonobo.Git.Server.Data
                 var newDependencies = repo.Dependencies
                             .Where(dependency => dependency.DateUpdated > DateTime.Today)
                             .ToArray();
-                var numErrors = 1;
                 foreach (var newDependency in newDependencies)
                 {
-                    if (newDependency != null && numErrors == 1)
+                    if (newDependency != null)
                     { 
                         return false;
                     }
@@ -245,7 +239,7 @@ namespace Bonobo.Git.Server.Data
             return true;
         }
 
-        public bool EFCreateKnownDependency(KnownDependency knownDependency)
+        public bool CreateKnownDependency(KnownDependency knownDependency)
         {
             using (var database = CreateContext())
             {
@@ -280,8 +274,7 @@ namespace Bonobo.Git.Server.Data
                 foreach (var serviceAccount in model.ServiceAccounts.ToList())
                 {
                     var existingServiceAccount = repo.ServiceAccounts
-                        .Where(c => c.Id == serviceAccount.Id && c.Id != Guid.Parse("94cab580-0018-4a00-9bb4-bed27234ff22"))
-                        .SingleOrDefault();
+                        .SingleOrDefault(c => c.Id == serviceAccount.Id && c.Id != Guid.Parse("94cab580-0018-4a00-9bb4-bed27234ff22"));
 
                     if (existingServiceAccount != null)
                     {
@@ -317,13 +310,12 @@ namespace Bonobo.Git.Server.Data
             if (model.Dependencies != null)
             {
                 //Updates Dependencies in database when added with javascript
-                // could check if the dependency.knowndependencyid is equal to the add new id, then you know you have to look in the input field, but how do u get access to the contents of that input field from the backend?
+                // could check if the dependency.KnownDependenciesId is equal to the add new id, then you know you have to look in the input field, but how do u get access to the contents of that input field from the backend?
                 foreach (var dependency in model.Dependencies.ToList())
                 {
                     dependency.KnownDependency = db.KnownDependencies.FirstOrDefault(i => i.Id == dependency.KnownDependenciesId);
                     var existingDependency = repo.Dependencies
-                        .Where(c => c.Id == dependency.Id && c.Id != null)
-                        .SingleOrDefault();
+                        .SingleOrDefault(c => c.Id == dependency.Id);
 
                     if (existingDependency != null)
                     {

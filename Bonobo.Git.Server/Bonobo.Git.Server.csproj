@@ -48,6 +48,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -61,6 +62,7 @@
     <PackageAsSingleFile>true</PackageAsSingleFile>
     <ExcludeApp_Data>false</ExcludeApp_Data>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
@@ -716,7 +718,9 @@
     <EmbeddedResource Include="App_GlobalResources\Resources.ja-JP.resx" />
     <EmbeddedResource Include="App_GlobalResources\Resources.pl-PL.resx" />
     <EmbeddedResource Include="App_GlobalResources\Resources.pt-BR.resx" />
-    <EmbeddedResource Include="App_GlobalResources\Resources.ru-RU.resx" />
+    <EmbeddedResource Include="App_GlobalResources\Resources.ru-RU.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_GlobalResources\Resources.sv-SE.resx" />
     <EmbeddedResource Include="App_GlobalResources\Resources.tr-TR.resx" />
     <EmbeddedResource Include="App_GlobalResources\Resources.zh-CN.resx" />
@@ -739,6 +743,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

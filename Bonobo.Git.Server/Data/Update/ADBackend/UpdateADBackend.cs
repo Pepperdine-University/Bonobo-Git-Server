@@ -11,7 +11,6 @@ using Bonobo.Git.Server.Data;
 using Microsoft.VisualBasic.FileIO;
 using Newtonsoft.Json;
 using Serilog;
-using System.Data.Entity.Core.Metadata.Edm;
 
 namespace Bonobo.Git.Server.Data.Update.ADBackendUpdate
 {

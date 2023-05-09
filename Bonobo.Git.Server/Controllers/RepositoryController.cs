@@ -9,7 +9,6 @@ using Ionic.Zip;
 using MimeTypes;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Security.Principal;
@@ -120,7 +119,7 @@ namespace Bonobo.Git.Server.Controllers
                 {
                     if (newServiceAccount != null && numErrors==1)
                     {
-                        ModelState.AddModelError("", $"{@Resources.ServiceAccount_Future_Date}");
+                        ModelState.AddModelError("", Resources.ServiceAccount_Future_Date);
                         numErrors = 0;
                     }
                 }
@@ -136,7 +135,7 @@ namespace Bonobo.Git.Server.Controllers
                 {
                     if (newDependency != null && numErrors == 1)
                     {
-                        ModelState.AddModelError("", $"{@Resources.Dependency_Future_Date}");
+                        ModelState.AddModelError("", Resources.Dependency_Future_Date);
                         numErrors = 0;
                     }
                 }
@@ -158,12 +157,12 @@ namespace Bonobo.Git.Server.Controllers
                     .ToArray();
                 foreach (var newDependency in newDependencies)
                 {
-                    var duplicateKnownDependency = model.KnownDependencies        // checks if each newly created dependency has a newly added known dependency that already exists
-                        .Where(kd => kd.ComponentName.ToLower() == newDependency.AttemptedValue.ToLower())
-                        .FirstOrDefault();
-                    var duplicateNewDependency = newDependencies                     // checks if two newly created dependencies have the same newly added known dependency
-                        .Where(d => d.AttemptedValue == newDependency.AttemptedValue && d.Key != newDependency.Key)
-                        .FirstOrDefault();
+                    // check if each newly created dependency has a newly added known dependency that already exists
+                    var duplicateKnownDependency = model.KnownDependencies
+                        .FirstOrDefault(kd => string.Equals(kd.ComponentName, newDependency.AttemptedValue, StringComparison.CurrentCultureIgnoreCase));
+                    // checks if two newly created dependencies have the same newly added known dependency
+                    var duplicateNewDependency = newDependencies
+                        .FirstOrDefault(d => d.AttemptedValue == newDependency.AttemptedValue && d.Key != newDependency.Key);
                     if (duplicateKnownDependency != null)
                     {
                         newDependency.Errors.Clear();
@@ -181,7 +180,7 @@ namespace Bonobo.Git.Server.Controllers
                             {
                                 error.Clear();
                             }
-                            ModelState.AddModelError("", $"{Resources.Dependencies_CantHaveDuplicates}: {newDependency.AttemptedValue}");     // Make more general but still descriptive, remove knowndepid id specific error
+                            ModelState.AddModelError("", $"{Resources.Dependencies_CantHaveDuplicates}: {newDependency.AttemptedValue}");     // Make more general but still descriptive, remove KnownDependenciesId id specific error
                         }
                     }
                     else
@@ -250,7 +249,7 @@ namespace Bonobo.Git.Server.Controllers
                 Id = Guid.NewGuid(),
                 ComponentName = componentName
             };
-            if (RepositoryRepository.EFCreateKnownDependency(newKnownDependency))
+            if (RepositoryRepository.CreateKnownDependency(newKnownDependency))
             {
                 return newKnownDependency;
             }
@@ -402,11 +401,13 @@ namespace Bonobo.Git.Server.Controllers
         /// </summary>
         string CreateAddress()
         {
-            UriBuilder uri = new UriBuilder();
-            uri.Scheme = Request.Url.Scheme;
-            uri.Host = Request.Url.Host;
-            uri.Port = Request.Url.Port;
-            uri.Path = Request.ApplicationPath;
+            UriBuilder uri = new UriBuilder
+            {
+                Scheme = Request.Url.Scheme,
+                Host = Request.Url.Host,
+                Port = Request.Url.Port,
+                Path = Request.ApplicationPath
+            };
             return uri.ToString();
         }
         void SetGitUrls(RepositoryDetailModel model)
