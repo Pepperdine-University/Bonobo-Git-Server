@@ -334,49 +334,48 @@ else
                                     };
                                 }
 
-                                            @Html.DropDownListFor(m => m.Dependencies[i].KnownDependenciesId, knownDependenciesList, "", attributes);
+                                @Html.DropDownListFor(m => m.Dependencies[i].KnownDependenciesId, knownDependenciesList, "", attributes);
 
+                                <div class="pure-control-group new-known-dependency" id="newKD-Dependencies_@(i)__KnownDependenciesId">
+                                    <input class="pure-form valid field-width @(ViewBag.DependencyNameAttemptedValues != null && ViewBag.DependencyNameAttemptedValues.ContainsKey(i) ? "input-validation-error" : "")" id="KDInputDependencies_@(i)__KnownDependenciesId" type="text" value="@(ViewBag.DependencyNameAttemptedValues != null && ViewBag.DependencyNameAttemptedValues.ContainsKey(i) ? ViewBag.DependencyNameAttemptedValues[i] : "")" onfocusout="getInput(this.id)">
+                                    <button class="return-to-dropdown" type="button" id="@(i)" onclick="returnToDropdownFromKDInput(this.id)" title="Return to dropdown" style="background-color: white; border: none;"><i class="fa fa-arrow-left"></i></button>
+                                </div>
 
-                                            <div class="pure-control-group new-known-dependency" id="newKD-Dependencies_@(i)__KnownDependenciesId">
-                                                <input class="pure-form valid field-width" id="KDInputDependencies_@(i)__KnownDependenciesId" type="text" onfocusout="getInput(this.id)">
-                                                <button class="return-to-dropdown" type="button" id="@(i)" onclick="returnToDropdownFromKDInput(this.id)" title="Return to dropdown" style="background-color: white; border: none;"><i class="fa fa-arrow-left"></i></button>
-                                            </div>
+                                // write conditionals to check if its a valid guid, if it's a valid guid then display the dropdown, if not then display the input
+                                if (ViewBag.DependencyNameAttemptedValues != null && ViewBag.DependencyNameAttemptedValues.ContainsKey(i))
+                                {
+                                    <script>DisplayComponentNameNewInputFieldOnLoad("Dependencies_@(i)__KnownDependenciesId")</script>
+                                }
+                            }
+                            <th class="pure-control-group">
+                                @Html.TextBoxFor(m => m.Dependencies[i].VersionInUse)
+                                @Html.ValidationMessageFor(m => m.Dependencies[i].VersionInUse)
+                            </th>
+                            <th class="pure-control-group">
+                                @{
+                                    var dependencyId = "Dependencies_" + i + "__.DateUpdated";
+                                    if (Model.Dependencies[i].DateUpdated != null)
+                                    {
+                                        var dateValue = Model.Dependencies[i].DateUpdated.ToString().Split('/');
+                                        var formattedDate = dateValue[2].Substring(0, 4) + "-" + (dateValue[0].Length == 1 ? "0" + dateValue[0] : dateValue[0]) + "-" + (dateValue[1].Length == 1 ? "0" + dateValue[1] : dateValue[1]);
+                                        <input class="form-control" type="date" id="@dependencyId" name="Dependencies[@i].DateUpdated" value="@formattedDate" />
+                                    }
+                                    else
+                                    {
+                                        <input class="form-control" type="date" id="@dependencyId" name="Dependencies[@i].DateUpdated" />
+                                    }
+                                }
 
-                                            // write conditionals to check if its a valid guid, if it's a valid guid then display the dropdown, if not then display the input
-                                            if (!Guid.TryParse(Model.Dependencies[i].KnownDependenciesId.ToString(), out Guid guidOutput) || guidOutput == Guid.Empty)
-                                            {
-                                                <script>DisplayComponentNameNewInputFieldOnLoad("Dependencies_@(i)__KnownDependenciesId")</script>
-                                            }
-                                        }
-                                    <th class="pure-control-group">
-                                        @Html.TextBoxFor(m => m.Dependencies[i].VersionInUse)
-                                        @Html.ValidationMessageFor(m => m.Dependencies[i].VersionInUse)
-                                    </th>
-                                    <th class="pure-control-group">
-                                        @{
-                                            var dependencyId = "Dependencies_" + i + "__.DateUpdated";
-                                            if (Model.Dependencies[i].DateUpdated != null)
-                                            {
-                                                var dateValue = Model.Dependencies[i].DateUpdated.ToString().Split('/');
-                                                var formattedDate = dateValue[2].Substring(0, 4) + "-" + (dateValue[0].Length == 1 ? "0" + dateValue[0] : dateValue[0]) + "-" + (dateValue[1].Length == 1 ? "0" + dateValue[1] : dateValue[1]);
-                                                <input class="form-control" type="date" id="@dependencyId" name="Dependencies[@i].DateUpdated" value="@formattedDate" />
-                                            }
-                                            else
-                                            {
-                                                <input class="form-control" type="date" id="@dependencyId" name="Dependencies[@i].DateUpdated" />
-                                            }
-                                        }
-
-                                        @Html.ValidationMessageFor(m => m.Dependencies[i].DateUpdated)
-                                    </th>
-                                    <th>
-                                        <button type="button" onclick="removeDependency(this.id);" id=" DependenciesBtn_@i" title="Remove Dependency" class="rem-btn"><i class="fa fa-minus-circle"></i></button>
-                                    </th>
-                                    <th class="pure-control-group hidden">
-                                        @Html.HiddenFor(m => m.Dependencies[i].Id);
-                                        @Html.HiddenFor(m => m.Dependencies[i].RepositoryId);
-                                        @Html.HiddenFor(m => m.Dependencies[i].KnownDependenciesId);
-                                    </th>
+                                @Html.ValidationMessageFor(m => m.Dependencies[i].DateUpdated)
+                            </th>
+                            <th>
+                                <button type="button" onclick="removeDependency(this.id);" id=" DependenciesBtn_@i" title="Remove Dependency" class="rem-btn"><i class="fa fa-minus-circle"></i></button>
+                            </th>
+                            <th class="pure-control-group hidden">
+                                @Html.HiddenFor(m => m.Dependencies[i].Id);
+                                @Html.HiddenFor(m => m.Dependencies[i].RepositoryId);
+                                @Html.HiddenFor(m => m.Dependencies[i].KnownDependenciesId);
+                            </th>
                                 </tr>
                             }
                         }

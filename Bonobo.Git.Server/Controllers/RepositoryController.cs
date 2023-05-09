@@ -149,9 +149,9 @@ namespace Bonobo.Git.Server.Controllers
                     }
                 }
             }
-
-
         }
+
+
         private void HandleKnownDependencyErrors(RepositoryDetailModel model)
         {
             PopulateKnownDependencyDropdownOptions(ref model);
@@ -177,23 +177,29 @@ namespace Bonobo.Git.Server.Controllers
 
                     if (duplicateKnownDependency != null)
                     {
-                        //ViewBag[newDependency.Key] = newDependency.Value;
+                        //ViewBag[newDependency.Key] = newDependency.Value; ;
                         newDependency.Errors.Clear();
+                        int index = int.Parse(newDependency.Key.Split('[')[1].Split(']')[0].ToString());
+                        if (ViewBag.DependencyNameAttemptedValues == null)
+                        {
+                            ViewBag.DependencyNameAttemptedValues = new Dictionary<int, string>();
+                        }
+
+                        ViewBag.DependencyNameAttemptedValues.Add(index, newDependency.Value);
                         ModelState.AddModelError("", $"{Resources.Known_Dependency_CantHaveDuplicates}: {newDependency.Value}");  
                     }
                     else if (duplicateNewDependency != null)
                     {
                         if (newDependency.Errors.Count >= 1)
                         {
-                            var duplicateDependencyErrors = newDependenciesUsingAddNew
-                                .Where(nd => nd.Value == newDependency.Value)
-                                .Select(nd => nd.Errors)
-                                .ToList();
-                            foreach (var error in duplicateDependencyErrors)
+                            newDependency.Errors.Clear();
+                            int index = int.Parse(newDependency.Key.Split('[')[1].Split(']')[0].ToString());
+                            if (ViewBag.DependencyNameAttemptedValues == null)
                             {
-                                error.Clear();
+                                ViewBag.DependencyNameAttemptedValues = new Dictionary<int, string>();
                             }
-                            ModelState.AddModelError("", $"{Resources.Dependencies_CantHaveDuplicates}: {newDependency.Value}");     // Make more general but still descriptive, remove knowndepid id specific error
+
+                            ViewBag.DependencyNameAttemptedValues.Add(index, newDependency.Value);
                         }
                     }
                     else
@@ -206,7 +212,6 @@ namespace Bonobo.Git.Server.Controllers
                                 System.Globalization.CultureInfo.InvariantCulture));
                         newDependency.Errors.Clear();
                     }
-                    
                 }
             }
             // Could still be duplicate dependencies if ModelState is valid, it just means the user didn't use add new
@@ -238,6 +243,17 @@ namespace Bonobo.Git.Server.Controllers
                 }
             }
         }
+
+        //public void AddNewDependencyErrorToViewBag(object newDependency)
+        //{
+        //    int index = int.Parse(newDependency.Key.Split('[')[1].Split(']')[0].ToString());
+        //    if (ViewBag.DependencyNameAttemptedValues == null)
+        //    {
+        //        ViewBag.DependencyNameAttemptedValues = new Dictionary<int, string>();
+        //    }
+
+        //    ViewBag.DependencyNameAttemptedValues.Add(index, newDependency.Value);
+        //}
 
         public void PopulateKnownDependencyDropdownOptions(ref RepositoryDetailModel model)
         {
