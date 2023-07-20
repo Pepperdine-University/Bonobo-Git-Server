@@ -1,19 +1,19 @@
-﻿using System;
+﻿using Bonobo.Git.Server.App_GlobalResources;
+using Bonobo.Git.Server.Attributes;
+using Bonobo.Git.Server.Data;
+using LibGit2Sharp;
+using Microsoft.IdentityModel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-
-using Bonobo.Git.Server.App_GlobalResources;
-using Bonobo.Git.Server.Attributes;
-using Bonobo.Git.Server.Data;
-
-using LibGit2Sharp;
 using System.Web.Mvc;
 
 namespace Bonobo.Git.Server.Models
@@ -86,7 +86,9 @@ namespace Bonobo.Git.Server.Models
         public const string NameValidityRegex = @"([\w\.-])*([\w])$";
     }
 
-    public class RepositoryDetailModel
+    //TODO: Implement IValidatable Object Abstract Class
+    //https://stackoverflow.com/questions/61049966/how-to-notify-users-for-custom-validation-based-on-multiple-properties
+    public class RepositoryDetailModel : IValidatableObject
     {
         public RepositoryDetailModel()
         {
@@ -123,6 +125,7 @@ namespace Bonobo.Git.Server.Models
         [Display(ResourceType = typeof(Resources), Name = "Repository_Detail_ServiceAccounts")]
         public List<ServiceAccount> ServiceAccounts { get; set; }
 
+        //[DependencyValidator]
         [AllowHtml]
         [Display(ResourceType = typeof(Resources), Name = "Repository_Detail_Dependencies")]
         public List<Dependency> Dependencies { get; set; }
@@ -175,6 +178,228 @@ namespace Bonobo.Git.Server.Models
         [Display(ResourceType = typeof(Resources), Name = "Repository_Detail_LinksUseGlobal")]
         public bool LinksUseGlobal { get; set; }
 
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            RepositoryDetailModel model = (RepositoryDetailModel)validationContext.ObjectInstance;
+            List<ValidationResult> results = new List<ValidationResult>();
+
+            if (model.Dependencies != null && model.Dependencies.Count() > 0)
+            {
+                List<ValidationResult> dependencyErrors = ValidateDependencies(model.Dependencies);
+
+                if (dependencyErrors.Count() > 0)
+                {
+                    foreach(ValidationResult error in dependencyErrors)
+                    {
+                        results.Add(error);
+                    }
+                }
+            }
+            
+            if (model.ServiceAccounts != null && model.ServiceAccounts.Count() > 0)
+            {
+                List<ValidationResult> serviceAccountErrors = ValidateServiceAccounts(model.ServiceAccounts);
+
+                if (serviceAccountErrors.Count() > 0)
+                {
+                    foreach (ValidationResult error in serviceAccountErrors)
+                    {
+                        results.Add(error);
+                    }
+                }
+            }
+
+            if (results.Count() > 0)
+            {
+                return results;
+            }
+
+            return new List<ValidationResult> { ValidationResult.Success };
+        }
+
+        public List<ValidationResult> ValidateDependencies(List<Dependency> dependencies)
+        {
+            List<ValidationResult> results = new List<ValidationResult>();
+
+            //Gets all KnownDependencies from the database to cross-reference names
+            IRepositoryRepository RepositoryRepository = DependencyResolver.Current.GetService<IRepositoryRepository>();
+            List<KnownDependency> knownDependencies = RepositoryRepository.GetAllKnownDependencies().ToList();
+            List<Dependency> newDependencies = dependencies.Where(d => d.Id == Guid.Empty).ToList();
+            List<string> knownDependencyNames = knownDependencies.Select(kd => kd.ComponentName).ToList();
+
+            //Get a list of dependencies with a Future Date
+            List<Dependency> futureDateErrorDependencies = dependencies
+                                                            .Where(dependency => dependency.DateUpdated > DateTime.Today)
+                                                            .ToList();
+            //Handle any dependencies with a future date
+            if (futureDateErrorDependencies != null && futureDateErrorDependencies.Count() > 0)
+            {
+                List<string> memberNames = new List<string>();
+                foreach (Dependency dependency in futureDateErrorDependencies)
+                {
+                    int index = dependencies.IndexOf(dependency);
+                    memberNames.Add($"Dependencies[{index}].DateUpdated");
+                }
+
+                string errorMessage = Resources.Dependency_Future_Date;
+                results.Add(new ValidationResult(errorMessage, memberNames));
+            }
+
+            //Loop over new dependencies and handle errors
+            foreach (Dependency newDependency in newDependencies)
+            {
+                //Set the ComponentName to null if there is a KnownDependency Id selected
+                if (newDependency.KnownDependenciesId != Guid.Empty)
+                {
+                    newDependency.KnownDependency.ComponentName = null;
+                }
+
+                //Check for duplicate KnownDependency Ids
+                bool duplicateKnownDependencies = dependencies
+                                                    .Where(d => newDependency.KnownDependenciesId != Guid.Empty &&
+                                                                d.KnownDependenciesId == newDependency.KnownDependenciesId)
+                                                    .Count() > 1;
+                if (duplicateKnownDependencies)
+                {
+                    List<string> memberNames = new List<string>();
+                    List<int> indices = dependencies.Select((item, index) => new { Item = item, Index = index })
+                                    .Where(o => o.Item.KnownDependenciesId == newDependency.KnownDependenciesId)
+                                    .Select(d => d.Index).ToList();
+
+                    foreach (int index in indices)
+                    {
+                        if (dependencies[index].Id == Guid.Empty)
+                        {
+                            memberNames.Add($"Dependencies[{index}].KnownDependenciesId");
+                        }
+                    }
+
+                    //Make sure this error hasn't been handled already for the same dependencies
+                    bool isDuplicateError = results.Where(r => r.ErrorMessage == Resources.Known_Dependency_CantHaveDuplicates && r.MemberNames.All(memberNames.Contains) && memberNames.All(r.MemberNames.Contains)).Count() > 0;
+
+                    if (!isDuplicateError)
+                    {
+                        results.Add(new ValidationResult(Resources.Known_Dependency_CantHaveDuplicates, memberNames));
+                    }
+                }
+
+                string knownDependencyName = newDependency.KnownDependency.ComponentName != null ? newDependency.KnownDependency.ComponentName.Trim().ToLower() : null;
+
+                //Check for duplicate ComponentNames
+                if (knownDependencyName != null && knownDependencyNames.Where(name => name.Trim().ToLower() == knownDependencyName).Count() > 0)
+                {
+                    List<string> memberNames = new List<string>();
+                    List<Dependency> dependenciesWithExistingComponentName = newDependencies
+                                                                                .Where(d => 
+                                                                                        d.KnownDependency.ComponentName != null && 
+                                                                                        d.KnownDependency.ComponentName.Trim().ToLower() == knownDependencyName)
+                                                                                .ToList();
+                    foreach (Dependency dependencyWithExistingComponentName in dependenciesWithExistingComponentName)
+                    {
+                        if (dependencyWithExistingComponentName.Id == Guid.Empty)
+                        {
+                            int index = dependencies.IndexOf(dependencyWithExistingComponentName);
+                            if (index != -1)
+                            {
+                                memberNames.Add($"Dependencies[{index}].KnownDependency.ComponentName");
+                            }
+                        }
+                    }
+
+                    //Make sure this error hasn't been handled already for the same dependencies
+                    bool isDuplicateError = results.Where(r => r.ErrorMessage == Resources.Dependency_Duplicate_Names && r.MemberNames.All(memberNames.Contains) && memberNames.All(r.MemberNames.Contains)).Count() > 0;
+
+                    if (!isDuplicateError)
+                    {
+                        results.Add(new ValidationResult(Resources.Known_Dependency_CantHaveDuplicateNames, memberNames));
+                    }
+                }
+
+                //Check for duplicate ComponentNames in newly-added dependencies
+                if (knownDependencyName != null && dependencies.Where(d => d.KnownDependency.ComponentName != null && d.KnownDependency.ComponentName.Trim().ToLower() == knownDependencyName).Count() > 1)
+                {
+                    List<string> memberNames = new List<string>();
+                    List<Dependency> dependenciesWithDuplicateComponentName = dependencies.Where(d => d.KnownDependency.ComponentName.Trim().ToLower() == knownDependencyName).ToList();
+                    foreach (Dependency dependencyWithDuplicateComponentName in dependenciesWithDuplicateComponentName)
+                    {
+                        if (dependencyWithDuplicateComponentName.Id == Guid.Empty)
+                        {
+                            int index = dependencies.IndexOf(dependencyWithDuplicateComponentName);
+                            if (index != -1)
+                            {
+                                memberNames.Add($"Dependencies[{index}].KnownDependency.ComponentName");
+                            }
+                        }
+                    }
+
+                    //Make sure this error hasn't been handled already for the same dependencies
+                    bool isDuplicateError = results.Where(r => r.ErrorMessage == Resources.Known_Dependency_CantHaveDuplicates && r.MemberNames.All(memberNames.Contains) && memberNames.All(r.MemberNames.Contains)).Count() > 0;
+
+                    if (!isDuplicateError)
+                    {
+                        results.Add(new ValidationResult(Resources.Known_Dependency_CantHaveDuplicates, memberNames));
+                    }
+                }
+            }
+
+            return results;
+        }
+
+        public List<ValidationResult> ValidateServiceAccounts(List<ServiceAccount> serviceAccounts)
+        {
+            List<ValidationResult> results = new List<ValidationResult>();
+            List<string> serviceAccountNames = serviceAccounts.Select(sa => sa.ServiceAccountName).ToList();
+            List<ServiceAccount> newServiceAccounts = serviceAccounts.Where(sa => sa.Id == Guid.Empty).ToList();
+
+            List<ServiceAccount> futureDateErrorServiceAccounts = serviceAccounts
+                                                            .Where(sa => sa.PassLastUpdated > DateTime.Today)
+                                                            .ToList();
+
+            if (futureDateErrorServiceAccounts != null && futureDateErrorServiceAccounts.Count() > 0)
+            {
+                List<string> memberNames = new List<string>();
+                foreach (ServiceAccount serviceAccount in futureDateErrorServiceAccounts)
+                {
+                    int index = serviceAccounts.IndexOf(serviceAccount);
+                    memberNames.Add($"ServiceAccounts[{index}].PassLastUpdated");
+                }
+
+                string errorMessage = Resources.ServiceAccount_Future_Date;
+                results.Add(new ValidationResult(errorMessage, memberNames));
+            }
+
+            foreach (ServiceAccount serviceAccount in newServiceAccounts)
+            {
+                List<ServiceAccount> duplicateServiceAccounts = serviceAccounts.Where(sa => sa.ServiceAccountName.Trim().ToLower() == serviceAccount.ServiceAccountName.Trim().ToLower()).ToList();
+                if (duplicateServiceAccounts.Count() > 1)
+                {
+                    List<string> memberNames = new List<string>();
+
+                    foreach(ServiceAccount duplicateServiceAccount in duplicateServiceAccounts)
+                    {
+                        int index = serviceAccounts.IndexOf(duplicateServiceAccount);
+                        if (duplicateServiceAccount.Id == Guid.Empty && index != -1)
+                        {
+                            memberNames.Add($"ServiceAccounts[{index}].ServiceAccountName");
+                        }
+                    }
+
+                    bool isDuplicateError = results.Where(r => r.ErrorMessage == Resources.ServiceAccount_Duplicate_Name && r.MemberNames.All(memberNames.Contains) && memberNames.All(r.MemberNames.Contains)).Count() > 0;
+
+                    if (!isDuplicateError)
+                    {
+                        results.Add(new ValidationResult(Resources.ServiceAccount_Duplicate_Name, memberNames));
+                    }
+                }
+            }
+
+            if (results.Count() > 0)
+            {
+                return results;
+            }
+
+            return new List<ValidationResult> { ValidationResult.Success };
+        }
     }
 
     public enum RepositoryDetailStatus
