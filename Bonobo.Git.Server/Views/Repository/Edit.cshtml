@@ -50,13 +50,11 @@ else
                     @Html.LabelFor(m => m.Description)
                     @Html.TextAreaFor(m => m.Description, new { @class = "medium" })
                 </div>
-
                 <div class="pure-control-group">
                     @Html.LabelFor(m => m.Logo.PostedFile)
                     <input type="file" name="Logo.PostedFile" id="Logo_PostedFile" />
                     <sup>.png, .jpg, .jpeg, .gif</sup>
                 </div>
-
                 <div class="pure-control-group">
                     @Html.LabelFor(m => m.Logo.RemoveLogo)
                     @Html.CheckBoxFor(m => m.Logo.RemoveLogo)
@@ -66,7 +64,6 @@ else
                     @Html.CheckBoxFor(m => m.AllowAnonymous, new { @onClick = "document.getElementById('AllowAnonymousPush').disabled = !this.checked" })
                     <i class="fa fa-info-circle" title="@Resources.Repository_AllowAnonymousHint"></i>
                 </div>
-
                 <div class="pure-control-group">
                     @Html.LabelFor(m => m.AllowAnonymousPush)
                     @{
@@ -79,7 +76,6 @@ else
                     @Html.EnumDropDownListFor(m => m.AllowAnonymousPush, attribs)
                     <i class="fa fa-info-circle" title="@Resources.Repository_AllowAnonymousPushHint"></i>
                 </div>
-
                 @if (AppSettings.IsPushAuditEnabled)
                 {
                     <div class="pure-control-group">
@@ -93,12 +89,13 @@ else
     {
         <div class="pure-control-group">
             @Html.LabelFor(m => m.LinksUseGlobal)
-            @Html.CheckBoxFor(m => m.LinksUseGlobal, new {
-                @onClick = "document.getElementById('LinksRegex').disabled = this.checked; " +
-                           "document.getElementById('LinksUrl').disabled =  this.checked; " +
-                           "document.getElementById('LinksRegex').disabled? document.getElementById('LinksRegex').value = '': document.getElementById('LinksRegex').value = ''; " +
-                           "document.getElementById('LinksUrl').disabled? document.getElementById('LinksUrl').value = '': document.getElementById('LinksUrl').value = '';"
-            })
+            @Html.CheckBoxFor(m => m.LinksUseGlobal, new
+       {
+           @onClick = "document.getElementById('LinksRegex').disabled = this.checked; " +
+                        "document.getElementById('LinksUrl').disabled =  this.checked; " +
+                        "document.getElementById('LinksRegex').disabled? document.getElementById('LinksRegex').value = '': document.getElementById('LinksRegex').value = ''; " +
+                        "document.getElementById('LinksUrl').disabled? document.getElementById('LinksUrl').value = '': document.getElementById('LinksUrl').value = '';"
+       })
         </div>
         <div class="pure-control-group">
             @Html.LabelFor(m => m.LinksRegex)
@@ -146,11 +143,12 @@ else
 
                 <fieldset class="pure-control-group">
                     <legend class="add-some-padding">
-                        @Resources.ServiceAccount
+                        @Resources.Repository_Detail_ServiceAccounts
                     </legend>
 
                     @if (Model != null)
-                    {<table class="pure-table pure-control-group" id="service-account-table">
+                    {
+                        <table class="pure-table pure-control-group" id="service-account-table">
                             <tr>
                                 <th class="header-name">@Resources.ServiceAccount_Name</th>
                                 <th class="header-field-2">@Resources.ServiceAccount_PassLastUpdated</th>
@@ -201,7 +199,6 @@ else
 
                         </table>
                     } 
-
                 </fieldset>
 
                 <div class="pure-control-group">
@@ -209,7 +206,7 @@ else
                 </div>
                 <fieldset class="pure-control-group add-little-padding">
                     <legend class="add-some-padding">
-                        @Resources.Dependencies
+                        @Resources.Repository_Detail_Dependencies
                     </legend>
 
                     @{
@@ -234,8 +231,6 @@ else
                                 <input class="form-control" id="Dependencies[{i}].Id" name="Dependencies[{i}].Id" readonly disabled />
                             </th>
                             <th class="pure-control-group">
-                                <div class="hidden"> <input class="field-width" id="Dependencies_{i}__KnownDependency_ComponentName" name="Dependencies[{i}].KnownDependency.ComponentName" type="text"></div>
-                                <span class="field-validation-valid" data-valmsg-for="Dependencies[{i}].KnownDependency.ComponentName" data-valmsg-replace="true"></span>
                                 <select class="dropDownKD valid field-width" data-val="true" data-val-required="The KnownDependenciesId field is required." id="Dependencies_{i}__KnownDependenciesId" name="Dependencies[{i}].KnownDependenciesId" onchange="javascript: DisplayComponentNameNewInputField(this.id)" aria-required="true" aria-invalid="false">
                                     @{
                                         if (Model.KnownDependencies != null)
@@ -256,9 +251,11 @@ else
                                         }
                                     }
                                 </select>
-                                <div class="pure-control-group new-known-dependency" id="newKD-Dependencies_{i}__KnownDependenciesId">
-                                    <input class="pure-form valid field-width" id="KDInputDependencies_{i}__KnownDependenciesId" type="text">
-                                    <button class="return-to-dropdown" type="button" id="{i}" onclick="returnToDropdownFromKDInput(this.id)" title="Return to dropdown" style="background-color: white; border: none;"><i class="fa fa-arrow-left"></i></button>
+                                <div id="divNewKnownDependency_{i}" class="new-known-dependency-container">
+                                    <div class="pure-control-group new-known-dependency">
+                                        <input class="pure-form valid field-width" id="Dependencies_{i}__KnownDependency_ComponentName" name="Dependencies[{i}].KnownDependency.ComponentName" type="text">
+                                        <button class="return-to-dropdown" type="button" id="{i}" onclick="returnToDropdownFromKDInput(this.id)" title="Return to dropdown" style="background-color: white; border: none;"><i class="fa fa-arrow-left"></i></button>
+                                    </div>
                                 </div>
                             </th>
                             <th class="col pure-control-group">
@@ -294,8 +291,6 @@ else
                 {
                     <tr class="row Dependencies-details" id="Dependencies_@i" name="Dependencies-details">
                         <th class="pure-control-group">
-                            <div class="hidden"> @Html.TextBoxFor(m => m.Dependencies[i].KnownDependency.ComponentName, htmlAttributes: new { @class = "field-width" })</div>
-                            @Html.ValidationMessageFor(m => m.Dependencies[i].KnownDependency.ComponentName)
                             @{
                                 object attributes;
                                 List<SelectListItem> knownDependenciesList = new List<SelectListItem>();
@@ -315,9 +310,10 @@ else
                                 }
                                 if (Model.Dependencies[i].Id == Guid.Empty)
                                 {
+                                    int errors = ViewData.ModelState.Where(v => v.Key == $"Dependencies[{i}].KnownDependenciesId").First().Value.Errors.Count();
                                     attributes = new
                                     {
-                                        @class = "dropDownKD field-width",
+                                        @class = $"dropDownKD field-width {(errors > 0 ? "input-validation-error" : "")}",
                                         @style = "color: black;",
                                         @onChange = "javascript: DisplayComponentNameNewInputField(this.id)"
                                     };
@@ -334,16 +330,20 @@ else
                                 }
 
                                 @Html.DropDownListFor(m => m.Dependencies[i].KnownDependenciesId, knownDependenciesList, "", attributes);
-
-                                <div class="pure-control-group new-known-dependency" id="newKD-Dependencies_@(i)__KnownDependenciesId">
-                                    <input class="pure-form valid field-width @(ViewBag.DependencyNameAttemptedValues != null && ViewBag.DependencyNameAttemptedValues.ContainsKey(i) ? "input-validation-error" : "")" id="KDInputDependencies_@(i)__KnownDependenciesId" type="text" value="@(ViewBag.DependencyNameAttemptedValues != null && ViewBag.DependencyNameAttemptedValues.ContainsKey(i) ? ViewBag.DependencyNameAttemptedValues[i] : "")" onfocusout="getInput(this.id)">
-                                    <button class="return-to-dropdown" type="button" id="@(i)" onclick="returnToDropdownFromKDInput(this.id)" title="Return to dropdown" style="background-color: white; border: none;"><i class="fa fa-arrow-left"></i></button>
+                                @Html.ValidationMessageFor(m => m.Dependencies[i].KnownDependenciesId);
+                                <div id="divNewKnownDependency_@(i)" class="new-known-dependency-container">
+                                    <div class="pure-control-group new-known-dependency">
+                                        @*<input class="pure-form valid field-width" id="Dependencies_@(i)__KnownDependency_ComponentName" name="Dependencies[@(i)].KnownDependency.ComponentName" type="text">*@
+                                        @Html.TextBoxFor(m => m.Dependencies[i].KnownDependency.ComponentName, new { @class = "pure-form valid field-width" })
+                                        <button class="return-to-dropdown" type="button" id="@(i)" onclick="returnToDropdownFromKDInput(this.id)" title="Return to dropdown" style="background-color: white; border: none;"><i class="fa fa-arrow-left"></i></button>
+                                    </div>
+                                    @Html.ValidationMessageFor(m => m.Dependencies[i].KnownDependency.ComponentName)
                                 </div>
 
                                 // write conditionals to check if its a valid guid, if it's a valid guid then display the dropdown, if not then display the input
-                                if (ViewBag.DependencyNameAttemptedValues != null && ViewBag.DependencyNameAttemptedValues.ContainsKey(i))
+                                if (Model.Dependencies[i].KnownDependenciesId == Guid.Empty && Model.Dependencies[i].KnownDependency.ComponentName != "")
                                 {
-                                    <script>DisplayComponentNameNewInputFieldOnLoad("Dependencies_@(i)__KnownDependenciesId")</script>
+                                    <script>DisplayComponentNameNewInputFieldOnLoad("@(i)")</script>
                                 }
                             }
                             <th class="pure-control-group">
