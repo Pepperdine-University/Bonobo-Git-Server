@@ -12,7 +12,7 @@ i.fa { margin-right: 0.25em; }
     display:none;
 }
 
-table { width: 100%; margin: 2em 0; }
+table { width: 100%; }
 th a { color: #333; }
 th a:hover { text-decoration: none; color: #4183c4; }
 .pure-table td, .pure-table th { padding: 0.8em; word-break: break-word; }
@@ -55,14 +55,18 @@ div.pure-control-group.checkboxlist>span { display: inline-block; }
     background-color: #1e90ff;
     transform: translateX(2px);
     background-color: white;
-    border: none;
 }
 .return-to-dropdown .fa-arrow-left {
     color: black;
 }
+
+.new-known-dependency-container {
+    display: none;
+}
+
 .pure-control-group .new-known-dependency {
     margin: 0px;
-    display: none;
+    display: inline-block;
     position: relative;
 }
 .add-some-padding {
