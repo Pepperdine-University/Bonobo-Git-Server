@@ -3,6 +3,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta charset="utf-8" />
+    @Scripts.Render("~/bundledJs")
     <link rel="shortcut icon" href="~/favicon.ico?v=2" type="image/x-icon" />
     <link rel="stylesheet" href="~/Content/sidebar.css" />
     <link rel="stylesheet" href="~/Content/dropdown.css" />
@@ -78,7 +79,6 @@
         </div>
     </div>
 
-    @Scripts.Render("~/bundledJs")
     @RenderSection("scripts", required: false)
 </body>
 </html>
