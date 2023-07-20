@@ -565,6 +565,15 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A dependency with this name already exists for this repository.
+        /// </summary>
+        public static string Dependency_Duplicate_Names {
+            get {
+                return ResourceManager.GetString("Dependency_Duplicate_Names", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last Updated field can not be in the future.
         /// </summary>
         public static string Dependency_Future_Date {
@@ -954,7 +963,16 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The new component name that you entered already exists.
+        ///   Looks up a localized string similar to The dependency name that you entered already exists.
+        /// </summary>
+        public static string Known_Dependency_CantHaveDuplicateNames {
+            get {
+                return ResourceManager.GetString("Known_Dependency_CantHaveDuplicateNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A dependency with this name already exists for this repository.
         /// </summary>
         public static string Known_Dependency_CantHaveDuplicates {
             get {
@@ -2113,27 +2131,7 @@ namespace Bonobo.Git.Server.App_GlobalResources {
                 return ResourceManager.GetString("Search", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Dependencies.
-        /// </summary>
-        public static string Dependencies
-        {
-            get
-            {
-                return ResourceManager.GetString("Dependencies", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Service Accounts.
-        /// </summary>
-        public static string ServiceAccount {
-            get {
-                return ResourceManager.GetString("ServiceAccount", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Add Service Account.
         /// </summary>
@@ -2149,6 +2147,15 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         public static string ServiceAccount_Delete {
             get {
                 return ResourceManager.GetString("ServiceAccount_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A service account with this name already exists..
+        /// </summary>
+        public static string ServiceAccount_Duplicate_Name {
+            get {
+                return ResourceManager.GetString("ServiceAccount_Duplicate_Name", resourceCulture);
             }
         }
         

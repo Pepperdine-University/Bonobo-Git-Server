@@ -1018,7 +1018,10 @@ The regular C# string formatting rules apply: To get {} in your link you need to
     <value>Add New...</value>
   </data>
   <data name="Known_Dependency_CantHaveDuplicates" xml:space="preserve">
-    <value>The new component name that you entered already exists</value>
+    <value>A dependency with this name already exists for this repository</value>
+  </data>
+  <data name="Known_Dependency_CantHaveDuplicateNames" xml:space="preserve">
+    <value>The dependency name that you entered already exists</value>
   </data>
   <data name="Dependencies_CantHaveDuplicates" xml:space="preserve">
     <value>Cannot create multiple dependencies with the same component name</value>
@@ -1031,5 +1034,11 @@ The regular C# string formatting rules apply: To get {} in your link you need to
   </data>
   <data name="Dependency_Future_Date" xml:space="preserve">
     <value>Last Updated field can not be in the future</value>
+  </data>
+  <data name="Dependency_Duplicate_Names" xml:space="preserve">
+    <value>A dependency with this name already exists for this repository</value>
+  </data>
+  <data name="ServiceAccount_Duplicate_Name" xml:space="preserve">
+    <value>A service account with this name already exists.</value>
   </data>
 </root>
