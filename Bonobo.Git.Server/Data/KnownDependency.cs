@@ -10,6 +10,14 @@ namespace Bonobo.Git.Server.Data
         public Guid Id { get; set; }
         public string ComponentName { get; set; }
 
+        public KnownDependency() { }
+
+        public KnownDependency(string componentName)
+        {
+            Id = Guid.NewGuid();
+            ComponentName = componentName;
+        }
+
         public virtual ICollection<Dependency> Dependencies
         {
             get
