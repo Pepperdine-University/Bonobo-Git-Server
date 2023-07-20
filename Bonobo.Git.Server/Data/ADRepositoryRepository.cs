@@ -19,10 +19,6 @@ namespace Bonobo.Git.Server.Data
             return ADBackend.Instance.Repositories.Add(SanitizeModel(repository));
         }
 
-        public bool CreateKnownDependency(KnownDependency knownDependency)
-        {
-            throw new NotImplementedException();
-        }
         public bool HandleFutureDateErrors(RepositoryModel model)
         {
             throw new NotImplementedException();

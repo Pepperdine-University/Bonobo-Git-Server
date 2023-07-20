@@ -14,12 +14,10 @@ namespace Bonobo.Git.Server.Data
         RepositoryModel GetRepository(Guid id);
         RepositoryModel GetRepository(string Name);
         bool Create(RepositoryModel repository);
-        bool CreateKnownDependency(KnownDependency knownDependency);
         void Update(RepositoryModel repository);
         void Delete(Guid id);
         bool NameIsUnique(string newName, Guid ignoreRepoId);
         void CreateServiceAccount(RepositoryModel model, ServiceAccount serviceAccount);
         void DeleteServiceAccount(RepositoryModel model, ServiceAccount serviceAccount);
-        bool HandleFutureDateErrors(RepositoryModel repository);
     }
 }

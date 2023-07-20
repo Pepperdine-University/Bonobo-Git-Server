@@ -138,11 +138,11 @@ namespace Bonobo.Git.Server.Data
             if (model == null) throw new ArgumentException("model");
             if (model.Name == null) throw new ArgumentException("name");
 
-            using (var database = CreateContext())
+            using (var db = CreateContext())
             {
                 model.EnsureCollectionsAreValid();
                 model.Id = Guid.NewGuid();
-                var repository = new Repository
+                var repo = new Repository
                 {
                     Id = model.Id,
                     Name = model.Name,
@@ -155,34 +155,16 @@ namespace Bonobo.Git.Server.Data
                     LinksUseGlobal = model.LinksUseGlobal,
                     LinksUrl = model.LinksUrl,
                     LinksRegex = model.LinksRegex,
-                    ServiceAccounts = model.ServiceAccounts
                 };
-                database.Repositories.Add(repository);
-                AddMembers(model.Users.Select(x => x.Id), model.Administrators.Select(x => x.Id), model.Teams.Select(x => x.Id), repository, database);
-                //Adds dependencies to model when creating new repository with a randomly generated Guid id
-                if (model.Dependencies != null)
-                {
-                    foreach (var dependency in model.Dependencies.ToList())
-                    {
-                        dependency.KnownDependency = database.KnownDependencies.FirstOrDefault(i => i.Id == dependency.KnownDependenciesId);
-                        dependency.Id = Guid.NewGuid();
-                        dependency.RepositoryId = model.Id;
-                        repository.Dependencies.Add(dependency);
-                    }
-                }
-                //Adds service accounts to model when creating new repository  with a randomly generated Guid id
-                if (model.ServiceAccounts != null)
-                {
-                    foreach (var serviceAccount in model.ServiceAccounts.ToList())
-                    {
-                        serviceAccount.Id = Guid.NewGuid();
-                        serviceAccount.RepositoryId = model.Id;
-                        repository.ServiceAccounts.Add(serviceAccount);
-                    }
-                }
+
+                UpdateServiceAccounts(model, repo, db);
+                UpdateDependencies(model, repo, db);
+
+                db.Repositories.Add(repo);
+                AddMembers(model.Users.Select(x => x.Id), model.Administrators.Select(x => x.Id), model.Teams.Select(x => x.Id), repo, db);
                 try
                 {
-                    database.SaveChanges();
+                    db.SaveChanges();
                 }
                 catch (DbUpdateException ex)
                 {
@@ -204,68 +186,7 @@ namespace Bonobo.Git.Server.Data
         {
             model.ServiceAccounts.Add(serviceAccount);
         }
-        public bool HandleFutureDateErrors(RepositoryModel repo)
-        {
-            if (repo.ServiceAccounts != null)
-            {
-                //checks if Service Account Date is in the future
-                var newServiceAccounts = repo.ServiceAccounts
-                            .Where(sa => sa.PassLastUpdated > DateTime.Today)
-                            .ToArray();
-                foreach (var newServiceAccount in newServiceAccounts)
-                {
-                    if (newServiceAccount != null)
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
-            if (repo.Dependencies != null)
-            {
-                //checks if Dependencies Date is in the future
-                var newDependencies = repo.Dependencies
-                            .Where(dependency => dependency.DateUpdated > DateTime.Today)
-                            .ToArray();
-                foreach (var newDependency in newDependencies)
-                {
-                    if (newDependency != null)
-                    { 
-                        return false;
-                    }
-                }
-                return true;
-            }
-            return true;
-        }
 
-        public bool CreateKnownDependency(KnownDependency knownDependency)
-        {
-            using (var database = CreateContext())
-            {
-                var knownDep = new KnownDependency
-                {
-                    Id = knownDependency.Id,
-                    ComponentName = knownDependency.ComponentName,
-                };
-                database.KnownDependencies.Add(knownDep);
-                try
-                {
-                    database.SaveChanges();
-                }
-                catch (DbUpdateException ex)
-                {
-                    Log.Error(ex, "Failed to create known dependency {RepoName}", knownDependency.ComponentName);
-                    return false;
-                }
-                catch (UpdateException ex)
-                {
-                    Log.Error(ex, "Failed to update {RepoName}", knownDependency.ComponentName);
-                    return false;
-                }
-                return true;
-            }
-        }
         public void UpdateServiceAccounts(RepositoryModel model, Repository repo, BonoboGitServerContext db)
         {
             if (model.ServiceAccounts != null)
@@ -309,11 +230,18 @@ namespace Bonobo.Git.Server.Data
         {
             if (model.Dependencies != null)
             {
-                //Updates Dependencies in database when added with javascript
-                // could check if the dependency.KnownDependenciesId is equal to the add new id, then you know you have to look in the input field, but how do u get access to the contents of that input field from the backend?
                 foreach (var dependency in model.Dependencies.ToList())
                 {
-                    dependency.KnownDependency = db.KnownDependencies.FirstOrDefault(i => i.Id == dependency.KnownDependenciesId);
+                    if (dependency.KnownDependenciesId == Guid.Empty)
+                    {
+                        dependency.KnownDependency = new KnownDependency(dependency.KnownDependency.ComponentName);
+                        dependency.KnownDependenciesId = dependency.KnownDependency.Id;
+                    }
+                    else
+                    {
+                        dependency.KnownDependency = db.KnownDependencies.FirstOrDefault(i => i.Id == dependency.KnownDependenciesId);
+                    }
+                    
                     var existingDependency = repo.Dependencies
                         .SingleOrDefault(c => c.Id == dependency.Id);
 
@@ -344,7 +272,6 @@ namespace Bonobo.Git.Server.Data
                     db.Dependencies.Remove(dep);
                 }
             }
-
         }
 
         public void Update(RepositoryModel model)
@@ -371,18 +298,15 @@ namespace Bonobo.Git.Server.Data
                     repo.LinksRegex = model.LinksRegex;
                     repo.LinksUrl = model.LinksUrl;
                     repo.LinksUseGlobal = model.LinksUseGlobal;
-                
-                    if (HandleFutureDateErrors(model))
-                    {
-                        UpdateServiceAccounts(model, repo, db);
-                        UpdateDependencies(model, repo, db);
-                    }
 
                     if (model.Logo != null)
                         repo.Logo = model.Logo;
 
                     if (model.RemoveLogo)
                         repo.Logo = null;
+
+                    UpdateServiceAccounts(model, repo, db);
+                    UpdateDependencies(model, repo, db);
 
                     repo.Users.Clear();
                     repo.Teams.Clear();
@@ -393,8 +317,6 @@ namespace Bonobo.Git.Server.Data
                 }
             }
         }
-
-
 
         private TeamModel TeamToTeamModel(Team t)
         {
@@ -464,8 +386,6 @@ namespace Bonobo.Git.Server.Data
                     repo.Teams.Add(item);
                 }
             }
-
-
         }
 
         public IList<RepositoryModel> GetTeamRepositories(Guid[] teamsId)
