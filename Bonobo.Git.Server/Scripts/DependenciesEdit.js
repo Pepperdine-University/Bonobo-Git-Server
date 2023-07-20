@@ -28,26 +28,24 @@ function removeDependency(id) {
     })
 }
 
-function DisplayComponentNameNewInputField(dropDownID) {
-    inputField = document.getElementById("KDInput" + dropDownID);
-    dropDown = document.getElementById(dropDownID);
+function DisplayComponentNameNewInputField(dropDownId) {
+    var index = dropDownId.split('_')[1];
+    var newKDId = `divNewKnownDependency_${index}`;
+    dropDown = document.getElementById(dropDownId);
     selectedValue = dropDown[dropDown.selectedIndex].text;
     if (selectedValue == "Add New...") {
-        $("#newKD-" + dropDownID).css("display", "inline-block");
-        $("#" + dropDownID).css("display", "none");
-        changeNameOfInput(inputField, dropDown, 1);
+        $(`#${newKDId}`).css("display", "inline-block");
+        $(`#${dropDownId}`).css("display", "none");
     }
 }
 
+function setComponentName(id) {
+    $(`#${id}`)[0].value = $(`#${id}`).val();
+}
+
 function returnToDropdownFromKDInput(i) {
-    dropDownID = "Dependencies_" + i + "__KnownDependenciesId";
-    $("#" + dropDownID).css("display", "inline-block");
-    $("#newKD-" + dropDownID).css("display", "none");
-
-    document.getElementById("KDInput" + dropDownID).value = "";
-    document.getElementById(dropDownID).selectedIndex = 0;
-
-    changeNameOfInput(inputField, dropDown, 0);
+    $(`#divNewKnownDependency_${i}`).css("display", "none");
+    $(`#Dependencies_${i}__KnownDependenciesId`).css("display", "inline-block");
 }
 
 function changeNameOfInput(inputField, dropDown, addNewSelected) {
@@ -60,33 +58,7 @@ function changeNameOfInput(inputField, dropDown, addNewSelected) {
     }
 }
 
-function DisplayComponentNameNewInputFieldOnLoad(dropDownID) {
-    inputField = document.getElementById("KDInput" + dropDownID);
-    dropDown = document.getElementById(dropDownID);
-    $("#newKD-" + dropDownID).css("display", "inline-block");
-    $("#" + dropDownID).css("display", "none");
-    changeNameOfInput(inputField, dropDown, 1);
+function DisplayComponentNameNewInputFieldOnLoad(i) {
+    $(`#divNewKnownDependency_${i}`).css("display", "inline-block");
+    $(`#Dependencies_${i}__KnownDependenciesId`).css("display", "none");
 }
-
-//window.addEventListener("load", function () {
-//    $(".dropDownKD").each(function () {
-//        console.log(this.selectedIndex);      // we don't have access to the model, not sure if this solution is possible
-//        dropDownID = this.id;
-//        //inputField = document.getElementById("KDInput" + dropDownID);
-//        //dropDown = document.getElementById(dropDownID);
-//        //$("#newKD-" + dropDownID).css("display", "inline-block");
-//        //$("#" + dropDownID).css("display", "none");
-//        //changeNameOfInput(inputField, dropDown, 1);
-//    })
-//});
-
-//window.onload = function () {
-//    $(".dropDownKD").each(function () {
-//        var index = this.id;
-//        if (this.value == "Add New...") {
-//            $("#newKD-" + index).css("display", "inline-block");
-//        } else {
-//            $("#newKD-" + index).css("display", "none");
-//        }
-//    })
-//}
