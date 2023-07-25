@@ -153,7 +153,7 @@
                                     if (dependency.VersionInUse != null)
                                     {
                                         string[] versionInUseParts = dependency.VersionInUse.Split('.');
-                                        versionInUseMajorMinorFormat = (versionInUseParts.Length == 1 ? versionInUseParts[(0)] : $"({versionInUseParts[0]}.{versionInUseParts[1]})");
+                                        versionInUseMajorMinorFormat = (versionInUseParts.Length == 1 ? $"({versionInUseParts[(0)]})" : $"({versionInUseParts[0]}.{versionInUseParts[1]})");
                                     }
                                 }
                                 <i class="fa fa-chevron-down"></i><label for="@dependency.Id" type="text" class="removeVisualInput dependency-label " readonly> @dependency.KnownDependency.ComponentName</label><input class="removeVisualInput overflow-ellipsis" value="@versionInUseMajorMinorFormat" readonly="readonly">
