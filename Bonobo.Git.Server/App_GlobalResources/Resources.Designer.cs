@@ -981,6 +981,15 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The dependency name cannot be empty.
+        /// </summary>
+        public static string Known_Dependency_Empty_Name {
+            get {
+                return ResourceManager.GetString("Known_Dependency_Empty_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ComponentName.
         /// </summary>
         public static string Known_Dependency_Name {
@@ -2156,6 +2165,15 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         public static string ServiceAccount_Duplicate_Name {
             get {
                 return ResourceManager.GetString("ServiceAccount_Duplicate_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The service account name cannot be empty.
+        /// </summary>
+        public static string ServiceAccount_Empty_Name {
+            get {
+                return ResourceManager.GetString("ServiceAccount_Empty_Name", resourceCulture);
             }
         }
         
