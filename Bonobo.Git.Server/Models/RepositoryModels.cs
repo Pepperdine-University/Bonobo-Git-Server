@@ -245,6 +245,8 @@ namespace Bonobo.Git.Server.Models
                 results.Add(new ValidationResult(errorMessage, memberNames));
             }
 
+            List<string> namelessDependencyNames = new List<string>();
+
             //Loop over new dependencies and handle errors
             foreach (Dependency newDependency in newDependencies)
             {
@@ -285,8 +287,16 @@ namespace Bonobo.Git.Server.Models
 
                 string knownDependencyName = newDependency.KnownDependency.ComponentName != null ? newDependency.KnownDependency.ComponentName.Trim().ToLower() : null;
 
-                //Check for duplicate ComponentNames
-                if (knownDependencyName != null && knownDependencyNames.Where(name => name.Trim().ToLower() == knownDependencyName).Count() > 0)
+                //Check for duplicate or empty ComponentNames
+                if ((knownDependencyName == null || knownDependencyName == String.Empty) && newDependency.KnownDependenciesId == Guid.Empty)
+                {
+                    int index = dependencies.IndexOf(newDependency);
+                    if (index != -1)
+                    {
+                        namelessDependencyNames.Add($"Dependencies[{index}].KnownDependency.ComponentName");
+                    }
+                }
+                else if (knownDependencyName != null && knownDependencyNames.Where(name => name.Trim().ToLower() == knownDependencyName).Count() > 0)
                 {
                     List<string> memberNames = new List<string>();
                     List<Dependency> dependenciesWithExistingComponentName = newDependencies
@@ -342,15 +352,17 @@ namespace Bonobo.Git.Server.Models
                 }
             }
 
+            if (namelessDependencyNames.Count() > 0)
+            {
+                results.Add(new ValidationResult(Resources.Known_Dependency_Empty_Name, namelessDependencyNames));
+            }
+
             return results;
         }
 
         public List<ValidationResult> ValidateServiceAccounts(List<ServiceAccount> serviceAccounts)
         {
             List<ValidationResult> results = new List<ValidationResult>();
-            List<string> serviceAccountNames = serviceAccounts.Select(sa => sa.ServiceAccountName).ToList();
-            List<ServiceAccount> newServiceAccounts = serviceAccounts.Where(sa => sa.Id == Guid.Empty).ToList();
-
             List<ServiceAccount> futureDateErrorServiceAccounts = serviceAccounts
                                                             .Where(sa => sa.PassLastUpdated > DateTime.Today)
                                                             .ToList();
@@ -368,29 +380,44 @@ namespace Bonobo.Git.Server.Models
                 results.Add(new ValidationResult(errorMessage, memberNames));
             }
 
-            foreach (ServiceAccount serviceAccount in newServiceAccounts)
-            {
-                List<ServiceAccount> duplicateServiceAccounts = serviceAccounts.Where(sa => sa.ServiceAccountName.Trim().ToLower() == serviceAccount.ServiceAccountName.Trim().ToLower()).ToList();
-                if (duplicateServiceAccounts.Count() > 1)
-                {
-                    List<string> memberNames = new List<string>();
+            List<string> namelessServiceAccounts = new List<string>();
 
-                    foreach(ServiceAccount duplicateServiceAccount in duplicateServiceAccounts)
+            foreach (ServiceAccount serviceAccount in serviceAccounts)
+            {
+                if (serviceAccount.ServiceAccountName != null && serviceAccount.ServiceAccountName != String.Empty)
+                {
+                    List<ServiceAccount> duplicateServiceAccounts = serviceAccounts.Where(sa => 
+                                                                                            (sa.ServiceAccountName != null ? sa.ServiceAccountName.Trim().ToLower() : "") ==
+                                                                                            (serviceAccount.ServiceAccountName != null ? serviceAccount.ServiceAccountName.Trim().ToLower() : ""))
+                                                                                    .ToList();
+                    if (duplicateServiceAccounts.Count() > 1)
                     {
-                        int index = serviceAccounts.IndexOf(duplicateServiceAccount);
-                        if (duplicateServiceAccount.Id == Guid.Empty && index != -1)
+                        List<string> memberNames = new List<string>();
+
+                        foreach (ServiceAccount duplicateServiceAccount in duplicateServiceAccounts)
                         {
+                            int index = serviceAccounts.IndexOf(duplicateServiceAccount);
                             memberNames.Add($"ServiceAccounts[{index}].ServiceAccountName");
                         }
-                    }
 
-                    bool isDuplicateError = results.Where(r => r.ErrorMessage == Resources.ServiceAccount_Duplicate_Name && r.MemberNames.All(memberNames.Contains) && memberNames.All(r.MemberNames.Contains)).Count() > 0;
+                        bool isDuplicateError = results.Where(r => r.ErrorMessage == Resources.ServiceAccount_Duplicate_Name && r.MemberNames.All(memberNames.Contains) && memberNames.All(r.MemberNames.Contains)).Count() > 0;
 
-                    if (!isDuplicateError)
-                    {
-                        results.Add(new ValidationResult(Resources.ServiceAccount_Duplicate_Name, memberNames));
+                        if (!isDuplicateError)
+                        {
+                            results.Add(new ValidationResult(Resources.ServiceAccount_Duplicate_Name, memberNames));
+                        }
                     }
                 }
+                else
+                {
+                    int index = serviceAccounts.IndexOf(serviceAccount);
+                    namelessServiceAccounts.Add($"ServiceAccounts[{index}].ServiceAccountName");
+                }
+            }
+
+            if (namelessServiceAccounts.Count() > 0)
+            {
+                results.Add(new ValidationResult(Resources.ServiceAccount_Empty_Name, namelessServiceAccounts));
             }
 
             if (results.Count() > 0)
