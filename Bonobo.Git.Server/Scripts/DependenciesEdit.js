@@ -36,6 +36,7 @@ function DisplayComponentNameNewInputField(dropDownId) {
     if (selectedValue == "Add New...") {
         $(`#${newKDId}`).css("display", "inline-block");
         $(`#${dropDownId}`).css("display", "none");
+        $(`#${newKDId} input`).focus();
     }
 }
 
