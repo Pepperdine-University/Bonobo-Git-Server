@@ -47,6 +47,7 @@ function setComponentName(id) {
 function returnToDropdownFromKDInput(i) {
     $(`#divNewKnownDependency_${i}`).css("display", "none");
     $(`#Dependencies_${i}__KnownDependenciesId`).css("display", "inline-block");
+    $(`#Dependencies_${i}__KnownDependenciesId`).prop('selectedIndex', 0);
 }
 
 function changeNameOfInput(inputField, dropDown, addNewSelected) {
