@@ -224,14 +224,12 @@ namespace Bonobo.Git.Server.Models
             //Gets all KnownDependencies from the database to cross-reference names
             IRepositoryRepository RepositoryRepository = DependencyResolver.Current.GetService<IRepositoryRepository>();
             List<KnownDependency> knownDependencies = RepositoryRepository.GetAllKnownDependencies().ToList();
-            List<Dependency> newDependencies = dependencies.Where(d => d.Id == Guid.Empty).ToList();
             List<string> knownDependencyNames = knownDependencies.Select(kd => kd.ComponentName).ToList();
 
-            //Get a list of dependencies with a Future Date
+            //Handle any dependencies with a future date
             List<Dependency> futureDateErrorDependencies = dependencies
                                                             .Where(dependency => dependency.DateUpdated > DateTime.Today)
                                                             .ToList();
-            //Handle any dependencies with a future date
             if (futureDateErrorDependencies != null && futureDateErrorDependencies.Count() > 0)
             {
                 List<string> memberNames = new List<string>();
@@ -245,6 +243,10 @@ namespace Bonobo.Git.Server.Models
                 results.Add(new ValidationResult(errorMessage, memberNames));
             }
 
+            //Gets all new Dependencies from the repo's full list of dependencies
+            List<Dependency> newDependencies = dependencies.Where(d => d.Id == Guid.Empty).ToList();
+
+            //Check for any nameless dependencies as we validate so we can attach them all to the same ValidationResult
             List<string> namelessDependencyNames = new List<string>();
 
             //Loop over new dependencies and handle errors
@@ -265,8 +267,8 @@ namespace Bonobo.Git.Server.Models
                 {
                     List<string> memberNames = new List<string>();
                     List<int> indices = dependencies.Select((item, index) => new { Item = item, Index = index })
-                                    .Where(o => o.Item.KnownDependenciesId == newDependency.KnownDependenciesId)
-                                    .Select(d => d.Index).ToList();
+                                                    .Where(o => o.Item.KnownDependenciesId == newDependency.KnownDependenciesId)
+                                                    .Select(d => d.Index).ToList();
 
                     foreach (int index in indices)
                     {
@@ -277,7 +279,10 @@ namespace Bonobo.Git.Server.Models
                     }
 
                     //Make sure this error hasn't been handled already for the same dependencies
-                    bool isDuplicateError = results.Where(r => r.ErrorMessage == Resources.Known_Dependency_CantHaveDuplicates && r.MemberNames.All(memberNames.Contains) && memberNames.All(r.MemberNames.Contains)).Count() > 0;
+                    bool isDuplicateError = results.Where(r => 
+                                                          r.ErrorMessage == Resources.Known_Dependency_CantHaveDuplicates && 
+                                                          r.MemberNames.All(memberNames.Contains) && memberNames.All(r.MemberNames.Contains))
+                                                   .Count() > 0;
 
                     if (!isDuplicateError)
                     {
@@ -285,9 +290,10 @@ namespace Bonobo.Git.Server.Models
                     }
                 }
 
+                //Trims and converts the ComponentName to lowercase for comparison
                 string knownDependencyName = newDependency.KnownDependency.ComponentName != null ? newDependency.KnownDependency.ComponentName.Trim().ToLower() : null;
 
-                //Check for duplicate or empty ComponentNames
+                //Handle a null or empty ComponentName if a KnownDependency was not selected
                 if ((knownDependencyName == null || knownDependencyName == String.Empty) && newDependency.KnownDependenciesId == Guid.Empty)
                 {
                     int index = dependencies.IndexOf(newDependency);
@@ -296,6 +302,7 @@ namespace Bonobo.Git.Server.Models
                         namelessDependencyNames.Add($"Dependencies[{index}].KnownDependency.ComponentName");
                     }
                 }
+                //Handle a duplicate ComponentName in the current list of KnownDependency Names
                 else if (knownDependencyName != null && knownDependencyNames.Where(name => name.Trim().ToLower() == knownDependencyName).Count() > 0)
                 {
                     List<string> memberNames = new List<string>();
@@ -317,7 +324,10 @@ namespace Bonobo.Git.Server.Models
                     }
 
                     //Make sure this error hasn't been handled already for the same dependencies
-                    bool isDuplicateError = results.Where(r => r.ErrorMessage == Resources.Dependency_Duplicate_Names && r.MemberNames.All(memberNames.Contains) && memberNames.All(r.MemberNames.Contains)).Count() > 0;
+                    bool isDuplicateError = results.Where(r => 
+                                                        r.ErrorMessage == Resources.Dependency_Duplicate_Names && 
+                                                        r.MemberNames.All(memberNames.Contains) && memberNames.All(r.MemberNames.Contains))
+                                                   .Count() > 0;
 
                     if (!isDuplicateError)
                     {
@@ -343,7 +353,10 @@ namespace Bonobo.Git.Server.Models
                     }
 
                     //Make sure this error hasn't been handled already for the same dependencies
-                    bool isDuplicateError = results.Where(r => r.ErrorMessage == Resources.Known_Dependency_CantHaveDuplicates && r.MemberNames.All(memberNames.Contains) && memberNames.All(r.MemberNames.Contains)).Count() > 0;
+                    bool isDuplicateError = results.Where(r => 
+                                                          r.ErrorMessage == Resources.Known_Dependency_CantHaveDuplicates && 
+                                                          r.MemberNames.All(memberNames.Contains) && memberNames.All(r.MemberNames.Contains))
+                                                   .Count() > 0;
 
                     if (!isDuplicateError)
                     {
@@ -352,6 +365,7 @@ namespace Bonobo.Git.Server.Models
                 }
             }
 
+            //Handles any dependencies without a name on one 
             if (namelessDependencyNames.Count() > 0)
             {
                 results.Add(new ValidationResult(Resources.Known_Dependency_Empty_Name, namelessDependencyNames));
@@ -384,6 +398,7 @@ namespace Bonobo.Git.Server.Models
 
             foreach (ServiceAccount serviceAccount in serviceAccounts)
             {
+                //Handle Duplicate Service Account Names
                 if (serviceAccount.ServiceAccountName != null && serviceAccount.ServiceAccountName != String.Empty)
                 {
                     List<ServiceAccount> duplicateServiceAccounts = serviceAccounts.Where(sa => 
@@ -400,7 +415,10 @@ namespace Bonobo.Git.Server.Models
                             memberNames.Add($"ServiceAccounts[{index}].ServiceAccountName");
                         }
 
-                        bool isDuplicateError = results.Where(r => r.ErrorMessage == Resources.ServiceAccount_Duplicate_Name && r.MemberNames.All(memberNames.Contains) && memberNames.All(r.MemberNames.Contains)).Count() > 0;
+                        bool isDuplicateError = results.Where(r => 
+                                                              r.ErrorMessage == Resources.ServiceAccount_Duplicate_Name && 
+                                                              r.MemberNames.All(memberNames.Contains) && memberNames.All(r.MemberNames.Contains))
+                                                       .Count() > 0;
 
                         if (!isDuplicateError)
                         {
@@ -408,6 +426,7 @@ namespace Bonobo.Git.Server.Models
                         }
                     }
                 }
+                //Handle null or empty service account name
                 else
                 {
                     int index = serviceAccounts.IndexOf(serviceAccount);
