@@ -269,3 +269,21 @@ img.repo-logo { width:36px; height: auto; image-rendering: -moz-crisp-edges; ima
 .header-field-2{
     width: 30%;
 }
+
+.edit-delete-button {
+    margin-left: 8rem;
+    background-color: red;
+    color: white;
+}
+
+@media only screen and (min-width: 800px) {
+    .edit-delete-button {
+        margin-left: 12rem !important;
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    .edit-delete-button {
+        margin-left: 16rem !important;
+    }
+}

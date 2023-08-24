@@ -17,6 +17,10 @@ else
                 <li><a href="@Url.Action("Tree", new { id = ViewBag.ID })" class="browser"><i class="fa fa-file-code-o"></i> @Resources.Repository_Layout_Browse</a></li>
                 <li><a href="@Url.Action("Commits", new { id = ViewBag.ID })" class="commits"><i class="fa fa-random"></i> @Resources.Repository_Layout_Commits</a></li>
                 <li><a href="@Url.Action("Tags", new { id = ViewBag.ID })" class="tags"><i class="fa fa-tag"></i> @Resources.Repository_Layout_Tags</a></li>
+                @if (ViewBag.IsAdmin)
+                {
+                    <li><a href="@Url.Action("Edit", new { id = ViewBag.ID })" class="edit"><i class="fa fa-pencil-square-o"></i> @Resources.Repository_Detail_Edit</a></li>
+                }
                 @*Dropdown Menu*@
                 <li class="dropdown pure-form">
                     <details style="display:inline-block;">

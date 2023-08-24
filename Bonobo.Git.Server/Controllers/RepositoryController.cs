@@ -287,13 +287,6 @@ namespace Bonobo.Git.Server.Controllers
             return View(SetUrlsConvertRepo(id));
         }
 
-        [WebAuthorizeRepository]
-        public ActionResult Buttons(Guid id) //no matching view when there should be and not being used anywhere?
-        {
-            return View(SetUrlsConvertRepo(id));
-        }
-
-
         /// <summary>
         /// Construct the URLs for the repository
         /// (This code extracted from the view)
@@ -339,6 +332,7 @@ namespace Bonobo.Git.Server.Controllers
             var path = PathEncoder.Decode(encodedPath);
 
             var repo = RepositoryRepository.GetRepository(id);
+            ViewBag.IsAdmin = repo.Administrators.Select(x => x.Id).Contains(User.Id());
 
             using (var browser = new RepositoryBrowser(Path.Combine(UserConfiguration.Current.Repositories, repo.Name)))
             {

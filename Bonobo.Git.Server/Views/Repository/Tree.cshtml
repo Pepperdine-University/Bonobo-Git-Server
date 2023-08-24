@@ -59,8 +59,6 @@
             @{ Html.RenderAction("Detail", "Repository", Model.Id);}
         </div>
 
-        @{ Html.RenderAction("Buttons", "Repository", Model.Id);}
-
         @if (!string.IsNullOrEmpty(Model.Readme))
         {
             <div class="markdown">@Html.MarkdownToHtml(Model.Readme)</div>

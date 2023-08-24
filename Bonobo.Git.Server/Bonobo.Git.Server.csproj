@@ -660,7 +660,6 @@
     <Content Include="Views\Repository\Tags.cshtml" />
     <Content Include="Views\Repository\_Tag.cshtml" />
     <Content Include="Views\_ViewImports.cshtml" />
-    <Content Include="Views\Repository\Buttons.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
