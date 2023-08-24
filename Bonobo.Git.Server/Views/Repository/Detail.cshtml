@@ -109,7 +109,7 @@
                     <details>
                         <summary>
                             <div class="sidebar-text">
-                                <i class="fa fa-chevron-down"></i><input class="removeVisualInput" value="@serviceAccount.ServiceAccountName" readonly />
+                                <input class="removeVisualInput" value="@serviceAccount.ServiceAccountName" readonly />
                             </div>
                         </summary>
                         <div class="pass-info">
@@ -167,7 +167,7 @@
                                         }
                                     }
                                 }
-                                <i class="fa fa-chevron-down"></i><label for="@dependency.Id" type="text" class="removeVisualInput dependency-label " readonly> @dependency.KnownDependency.ComponentName</label><input class="removeVisualInput overflow-ellipsis" value="@versionInUseMajorMinorPatchFormat" readonly="readonly">
+                                <label for="@dependency.Id" type="text" class="removeVisualInput dependency-label " readonly> @dependency.KnownDependency.ComponentName</label><input class="removeVisualInput overflow-ellipsis" value="@versionInUseMajorMinorPatchFormat" readonly="readonly">
                                 <input type="text" id="@dependency.Id" value="@dependency.KnownDependency.ComponentName" hidden>
                             </div>
                         </summary>

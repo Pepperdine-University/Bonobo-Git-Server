@@ -62,7 +62,7 @@
     width: var(--sidebar-label-width);
 }
 .sidebar-text {
-    margin-left: 1em
+    margin-left: 1em;
 }
 .pure-form input[readonly].removeVisualInput {
     background: none;
@@ -71,6 +71,14 @@
     padding: 0;
     box-shadow: none;
     border-radius: 0;
+}
+/* ---------- Sidebar details elements ---------- */
+.sidebar details summary {
+    display: list-item;
+}
+
+.sidebar details summary .sidebar-text {
+    display: inline-block;
 }
 
 /* ---------- Responsive sidebar media queries ---------- */
