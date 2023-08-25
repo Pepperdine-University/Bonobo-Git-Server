@@ -23,7 +23,7 @@ else
                 }
                 @*Dropdown Menu*@
                 <li class="dropdown pure-form">
-                    <details style="display:inline-block;">
+                    <details style="display:inline-block;" class="collapse-on-blur">
                         <summary><i class="fa fa-chevron-down"></i>@Resources.Repository_Layout_Code</summary>
                         <div style="position:absolute;">
                             @*To get dropdown box as Relative to Fixed position*@
@@ -64,14 +64,16 @@ else
     @RenderSection("scripts", false)
     <script>new Clipboard('.copy-to-clip-button');</script>
     <script>
+    
         //Adds the ability to close dropdown when clicked anywhere in the page
-        var details = [...document.querySelectorAll('details')];
-        document.addEventListener('click', function (e) {
-            if (!details.some(f => f.contains(e.target))) {
-                details.forEach(f => f.removeAttribute('open'));
-            } else {
-                details.forEach(f => !f.contains(e.target) ? f.removeAttribute('open') : '');
+        document.addEventListener('click', function(event) {
+	        var detailsQuerySelector = "details.collapse-on-blur[open]";
+            if (!event.target.matches(`${detailsQuerySelector}, ${detailsQuerySelector} *`)) {
+                var details = document.querySelectorAll(detailsQuerySelector);
+                for (var i = 0; i < details.length; i++) {
+                    details[i].removeAttribute("open");
+                }
             }
-        })
+        });
     </script>
 }
