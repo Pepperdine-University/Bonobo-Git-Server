@@ -18,6 +18,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Unity;
+using Semver;
 
 namespace Bonobo.Git.Server.Controllers
 {
@@ -37,6 +38,8 @@ namespace Bonobo.Git.Server.Controllers
 
         [Dependency]
         public IAuthenticationProvider AuthenticationProvider { get; set; }
+
+        public SemVersionStyles Semver { get; set; }
 
         [WebAuthorize]
         public ActionResult Index(string sortGroup = null, string searchString = null)
@@ -82,11 +85,32 @@ namespace Bonobo.Git.Server.Controllers
                 var currentUserIsInAdminList = model.PostedSelectedAdministrators != null && model.PostedSelectedAdministrators.Contains(User.Id());
                 if (currentUserIsInAdminList || User.IsInRole(Definitions.Roles.Administrator))
                 {
+                   
+
                     var existingRepo = RepositoryRepository.GetRepository(model.Id);
                     var repoModel = ConvertRepositoryDetailModel(model);
                     MoveRepo(existingRepo, repoModel);
                     try
                     {
+                        foreach (var dependency in model.Dependencies)
+                        {
+
+                            var test = SemVersion.TryParse(dependency.VersionInUse, Semver, out SemVersion version);
+                            //use the Semver package to validate the version number
+                            if (!string.IsNullOrEmpty(dependency.VersionInUse) && !SemVersion.TryParse(dependency.VersionInUse, Semver, out version))
+                            {
+                                ModelState.AddModelError("",  Resources.Dependencies_VersionFormatError);
+                                TempData["Success"] = false;        
+
+                                MoveRepo(repoModel, existingRepo);
+                                PopulateCheckboxListData(ref model);
+                                PopulateKnownDependencyDropdownOptions(ref model);
+                                TempData["Success"] = false;
+                                return View(model);
+                            }
+
+                        }
+
                         RepositoryRepository.Update(repoModel);
                         TempData["Success"] = true;
                         return RedirectToAction("Edit", new { id = model.Id });

@@ -149,14 +149,25 @@
                         <summary>
                             <div class="sidebar-text">
                                 @{
-                                    string versionInUseMajorMinorFormat = "";
+                                    string versionInUseMajorMinorPatchFormat = "";
                                     if (dependency.VersionInUse != null)
                                     {
                                         string[] versionInUseParts = dependency.VersionInUse.Split('.');
-                                        versionInUseMajorMinorFormat = (versionInUseParts.Length == 1 ? $"({versionInUseParts[(0)]})" : $"({versionInUseParts[0]}.{versionInUseParts[1]})");
+                                        switch (versionInUseParts.Length)
+                                        {
+                                            case 1:
+                                                versionInUseMajorMinorPatchFormat = $"({versionInUseParts[(0)]})";
+                                                break;
+                                            case 2:
+                                                versionInUseMajorMinorPatchFormat = $"({versionInUseParts[(0)]})";
+                                                break;
+                                            case 3:
+                                                versionInUseMajorMinorPatchFormat = $"({versionInUseParts[0]}.{versionInUseParts[1]}.{versionInUseParts[2]})";
+                                                break;
+                                        }
                                     }
                                 }
-                                <i class="fa fa-chevron-down"></i><label for="@dependency.Id" type="text" class="removeVisualInput dependency-label " readonly> @dependency.KnownDependency.ComponentName</label><input class="removeVisualInput overflow-ellipsis" value="@versionInUseMajorMinorFormat" readonly="readonly">
+                                <i class="fa fa-chevron-down"></i><label for="@dependency.Id" type="text" class="removeVisualInput dependency-label " readonly> @dependency.KnownDependency.ComponentName</label><input class="removeVisualInput overflow-ellipsis" value="@versionInUseMajorMinorPatchFormat" readonly="readonly">
                                 <input type="text" id="@dependency.Id" value="@dependency.KnownDependency.ComponentName" hidden>
                             </div>
                         </summary>

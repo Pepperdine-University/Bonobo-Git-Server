@@ -1008,6 +1008,9 @@ The regular C# string formatting rules apply: To get {} in your link you need to
   <data name="Dependencies_VersionInUse" xml:space="preserve">
     <value>Version In Use</value>
   </data>
+  <data name="Dependencies_VersionFormatError" xml:space="preserve">
+    <value>Dependency version does not match correct format (major.minor.patch).</value>
+  </data>
   <data name="Known_Dependency_Name" xml:space="preserve">
     <value>ComponentName</value>
   </data>

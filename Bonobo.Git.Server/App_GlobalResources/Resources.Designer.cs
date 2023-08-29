@@ -556,6 +556,15 @@ namespace Bonobo.Git.Server.App_GlobalResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dependency version does not match correct format (major.minor.patch)..
+        /// </summary>
+        public static string Dependencies_VersionFormatError {
+            get {
+                return ResourceManager.GetString("Dependencies_VersionFormatError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Version In Use.
         /// </summary>
         public static string Dependencies_VersionInUse {
