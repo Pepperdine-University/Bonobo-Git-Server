@@ -357,7 +357,7 @@ namespace Bonobo.Git.Server.Controllers
             var path = PathEncoder.Decode(encodedPath);
 
             var repo = RepositoryRepository.GetRepository(id);
-            ViewBag.IsAdmin = User.IsInRole(Definitions.Roles.Administrator) | repo.Administrators.Select(x => x.Id).Contains(User.Id());
+            ViewBag.IsAdmin = User.IsInRole(Definitions.Roles.Administrator) || repo.Administrators.Select(x => x.Id).Contains(User.Id());
 
             using (var browser = new RepositoryBrowser(Path.Combine(UserConfiguration.Current.Repositories, repo.Name)))
             {
