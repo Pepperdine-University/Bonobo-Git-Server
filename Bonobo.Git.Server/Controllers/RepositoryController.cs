@@ -298,7 +298,7 @@ namespace Bonobo.Git.Server.Controllers
         {
             ViewBag.ID = id;
             var model = ConvertRepositoryModel(RepositoryRepository.GetRepository(id), User);
-            ViewBag.IsAdmin = model.Administrators.Select(x => x.Id).Contains(User.Id());
+            ViewBag.IsAdmin = User.IsInRole(Definitions.Roles.Administrator) || model.Administrators.Select(x => x.Id).Contains(User.Id());
             if (model != null)
             {
                 model.IsCurrentUserAdministrator = RepositoryPermissionService.HasPermission(User.Id(), model.Id, RepositoryAccessLevel.Administer);
@@ -357,7 +357,7 @@ namespace Bonobo.Git.Server.Controllers
             var path = PathEncoder.Decode(encodedPath);
 
             var repo = RepositoryRepository.GetRepository(id);
-            ViewBag.IsAdmin = repo.Administrators.Select(x => x.Id).Contains(User.Id());
+            ViewBag.IsAdmin = User.IsInRole(Definitions.Roles.Administrator) | repo.Administrators.Select(x => x.Id).Contains(User.Id());
 
             using (var browser = new RepositoryBrowser(Path.Combine(UserConfiguration.Current.Repositories, repo.Name)))
             {
@@ -398,7 +398,7 @@ namespace Bonobo.Git.Server.Controllers
         {
             ViewBag.ID = id;
             var repo = RepositoryRepository.GetRepository(id);
-            ViewBag.IsAdmin = repo.Administrators.Select(x => x.Id).Contains(User.Id());
+            ViewBag.IsAdmin = User.IsInRole(Definitions.Roles.Administrator) || repo.Administrators.Select(x => x.Id).Contains(User.Id());
             using (var browser = new RepositoryBrowser(Path.Combine(UserConfiguration.Current.Repositories, repo.Name)))
             {
                 var name = PathEncoder.Decode(encodedName);
@@ -421,7 +421,7 @@ namespace Bonobo.Git.Server.Controllers
             ViewBag.ID = id;
 
             var repo = RepositoryRepository.GetRepository(id);
-            ViewBag.IsAdmin = repo.Administrators.Select(x => x.Id).Contains(User.Id());
+            ViewBag.IsAdmin = User.IsInRole(Definitions.Roles.Administrator) || repo.Administrators.Select(x => x.Id).Contains(User.Id());
             using (var browser = new RepositoryBrowser(Path.Combine(UserConfiguration.Current.Repositories, repo.Name)))
             {
                 var name = PathEncoder.Decode(encodedName);
@@ -453,7 +453,7 @@ namespace Bonobo.Git.Server.Controllers
             ViewBag.ID = id;
             ViewBag.ShowShortMessageOnly = true;
             var repo = RepositoryRepository.GetRepository(id);
-            ViewBag.IsAdmin = repo.Administrators.Select(x => x.Id).Contains(User.Id());
+            ViewBag.IsAdmin = User.IsInRole(Definitions.Roles.Administrator) || repo.Administrators.Select(x => x.Id).Contains(User.Id());
             using (var browser = new RepositoryBrowser(Path.Combine(UserConfiguration.Current.Repositories, repo.Name)))
             {
                 var name = PathEncoder.Decode(encodedName);
@@ -532,7 +532,7 @@ namespace Bonobo.Git.Server.Controllers
             ViewBag.ID = id;
             ViewBag.ShowShortMessageOnly = true;
             var repo = RepositoryRepository.GetRepository(id);
-            ViewBag.IsAdmin = repo.Administrators.Select(x => x.Id).Contains(User.Id());
+            ViewBag.IsAdmin = User.IsInRole(Definitions.Roles.Administrator) || repo.Administrators.Select(x => x.Id).Contains(User.Id());
             using (var browser = new RepositoryBrowser(Path.Combine(UserConfiguration.Current.Repositories, repo.Name)))
             {
                 var name = PathEncoder.Decode(encodedName);
@@ -560,7 +560,7 @@ namespace Bonobo.Git.Server.Controllers
             ViewBag.ID = id;
             ViewBag.ShowShortMessageOnly = true;
             var repo = RepositoryRepository.GetRepository(id);
-            ViewBag.IsAdmin = repo.Administrators.Select(x => x.Id).Contains(User.Id());
+            ViewBag.IsAdmin = User.IsInRole(Definitions.Roles.Administrator) || repo.Administrators.Select(x => x.Id).Contains(User.Id());
             using (var browser = new RepositoryBrowser(Path.Combine(UserConfiguration.Current.Repositories, repo.Name)))
             {
                 var name = PathEncoder.Decode(encodedName);
@@ -624,7 +624,7 @@ namespace Bonobo.Git.Server.Controllers
             ViewBag.ID = id;
             ViewBag.ShowShortMessageOnly = false;
             var repo = RepositoryRepository.GetRepository(id);
-            ViewBag.IsAdmin = repo.Administrators.Select(x => x.Id).Contains(User.Id());
+            ViewBag.IsAdmin = User.IsInRole(Definitions.Roles.Administrator) || repo.Administrators.Select(x => x.Id).Contains(User.Id());
             using (var browser = new RepositoryBrowser(Path.Combine(UserConfiguration.Current.Repositories, repo.Name)))
             {
                 var model = browser.GetCommitDetail(commit);
@@ -646,7 +646,7 @@ namespace Bonobo.Git.Server.Controllers
             model.Name = "";
             PopulateCheckboxListData(ref model);
             ViewBag.ID = id;
-            ViewBag.IsAdmin = model.Administrators.Select(x => x.Id).Contains(User.Id());
+            ViewBag.IsAdmin = User.IsInRole(Definitions.Roles.Administrator) || model.Administrators.Select(x => x.Id).Contains(User.Id());
             return View(model);
         }
 
@@ -713,7 +713,7 @@ namespace Bonobo.Git.Server.Controllers
             }
 
             ViewBag.ID = id;
-            ViewBag.IsAdmin = model.Administrators.Select(x => x.Id).Contains(User.Id());
+            ViewBag.IsAdmin = User.IsInRole(Definitions.Roles.Administrator) || model.Administrators.Select(x => x.Id).Contains(User.Id());
             PopulateCheckboxListData(ref model);
             return View(model);
         }
