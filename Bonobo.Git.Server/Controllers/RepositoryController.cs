@@ -19,11 +19,14 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Unity;
 using Semver;
+using LibGit2Sharp;
 
 namespace Bonobo.Git.Server.Controllers
 {
     public class RepositoryController : Controller
     {
+        private SemVersion version;
+
         [Dependency]
         public ITeamRepository TeamRepository { get; set; }
 
@@ -92,24 +95,28 @@ namespace Bonobo.Git.Server.Controllers
                     MoveRepo(existingRepo, repoModel);
                     try
                     {
-                        foreach (var dependency in model.Dependencies)
+                        if (model.Dependencies != null && model.Dependencies.Count > 0)
                         {
-
-                            var test = SemVersion.TryParse(dependency.VersionInUse, Semver, out SemVersion version);
-                            //use the Semver package to validate the version number
-                            if (!string.IsNullOrEmpty(dependency.VersionInUse) && !SemVersion.TryParse(dependency.VersionInUse, Semver, out version))
+                            foreach (var dependency in model.Dependencies)
                             {
-                                ModelState.AddModelError("",  Resources.Dependencies_VersionFormatError);
-                                TempData["Success"] = false;        
 
-                                MoveRepo(repoModel, existingRepo);
-                                PopulateCheckboxListData(ref model);
-                                PopulateKnownDependencyDropdownOptions(ref model);
-                                TempData["Success"] = false;
-                                return View(model);
+
+                                //use the Semver package to validate the version number
+                                if (!string.IsNullOrEmpty(dependency.VersionInUse) && !SemVersion.TryParse(dependency.VersionInUse, Semver, out version))
+                                {
+                                    ModelState.AddModelError("", Resources.Dependencies_VersionFormatError);
+                                    TempData["Success"] = false;
+
+                                    MoveRepo(repoModel, existingRepo);
+                                    PopulateCheckboxListData(ref model);
+                                    PopulateKnownDependencyDropdownOptions(ref model);
+                                    TempData["Success"] = false;
+                                    return View(model);
+                                }
+
                             }
-
                         }
+
 
                         RepositoryRepository.Update(repoModel);
                         TempData["Success"] = true;
